@@ -141,18 +141,36 @@ public class Menu  implements ActionListener{
 		
 		if ( e.getSource() == multiBtn) {
 			int selected;
-			JTextField spieler1 = new JTextField();
-			JTextField spieler2 = new JTextField();
+			JTextField player1 = new JTextField();
+			JTextField player2 = new JTextField();
+			String player1Warning = "";
+			String player2Warning = "";
 			
-			Object[] message = {"<html>Bitte Namen eingeben!<br/><i style=\"color:red\"><sub>maximal 8 Zeichen</sub></i></html>","Spieler 1:", spieler1, 
-	        		"Spieler 2:", spieler2,};
 			do {
+				Object[] message = {"<html>Bitte Namen eingeben!<br/><i style=\"color:red\"><sub>maximal 8 Zeichen</sub></i></html>","Spieler 1:", player1, player1Warning, 
+		        				"Spieler 2:", player2,player2Warning};
 			selected = JOptionPane.showConfirmDialog(null, message, "Spielernamen", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-			} while (selected == 0 && (spieler1.getText().isEmpty() || spieler1.getText().length() > 8 || spieler2.getText().isEmpty() || spieler2.getText().length() > 8));
 			
-			if (selected == 0) {
-				Game.spieler1 = spieler1.getText();
-				Game.spieler2 = spieler2.getText();
+			if (!player1.getText().isEmpty() && !player1.getText().matches("^[a-zA-Z]+$")) {
+				player1.setText("");
+				player1Warning = "<html><p style=\"color:red\">Nur Buchstaben erlaubt!</p></html>";
+			} else {
+				player1Warning = "";
+			}
+			
+			if (!player2.getText().isEmpty() && !player2.getText().matches("^[a-zA-Z]+$")) {
+				player2.setText("");
+				player2Warning = "<html><p style=\"color:red\">Nur Buchstaben erlaubt!</p></html>";
+			} else {
+				player2Warning = "";
+			}
+			
+			} while (selected == 0 && (player1.getText().isEmpty() || player1.getText().length() > 8 || player2.getText().isEmpty() || player2.getText().length() > 8));
+
+			
+			if (selected == 10) {
+				Game.spieler1 = player1.getText();
+				Game.spieler2 = player2.getText();
 				Game.multiplayerGameStarted = true;
 				jf.removeAll();
 			}
