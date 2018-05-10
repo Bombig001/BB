@@ -168,7 +168,7 @@ public class Menu  implements ActionListener{
 			} while (selected == 0 && (player1.getText().isEmpty() || player1.getText().length() > 8 || player2.getText().isEmpty() || player2.getText().length() > 8));
 
 			
-			if (selected == 10) {
+			if (selected == 0) {
 				Game.spieler1 = player1.getText();
 				Game.spieler2 = player2.getText();
 				Game.multiplayerGameStarted = true;
