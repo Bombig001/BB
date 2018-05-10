@@ -79,6 +79,8 @@ public class Game extends JComponent implements ActionListener {
 			} else if (((Paddle) player1Paddle).getScore() < ((Paddle) player2Paddle).getScore()) {
 				gfx.drawImage(p2winns, GameController.windowWidth/4, 300, null);			
 			}
+		} else {
+			gfx.drawImage(p1winns, 35, 300, null);
 		}
 	}
 	
