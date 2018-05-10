@@ -68,8 +68,6 @@ public class Brick extends Item {
 		int h = this.getPos().getHeight().intValue();
 		
 		
-		gfx.setColor(new Color(0,0,0,150));
-		gfx.fillRect(x+7, y+7, w, h);
 		//gfx.fillRect(x, y, w, h);
 		if (this.getHealth() == 1) {
 			gfx.drawImage(state0, x, y, w, h, null);

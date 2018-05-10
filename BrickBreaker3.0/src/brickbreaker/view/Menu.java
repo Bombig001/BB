@@ -1,24 +1,16 @@
 package brickbreaker.view;
 
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 
-import brickbreaker.controller.GameController;
 import brickbreaker.model.Ball;
 import brickbreaker.model.Brick;
 import brickbreaker.model.Paddle;
@@ -135,45 +127,61 @@ public class Menu  implements ActionListener{
 		
 		if ( e.getSource() == singleBtn) {
 			do {
-				GameController.spieler1 = JOptionPane.showInputDialog(null, "<html>Namen eingeben: <br/><i style=\"color:red\"><sub>maximal 8 Zeichen</sub></i></html>", "Spielername", JOptionPane.PLAIN_MESSAGE);
-				if(GameController.spieler1 == null) {
-					GameController.spieler1 = "abbruch";
+				Game.spieler1 = JOptionPane.showInputDialog(null, "<html>Namen eingeben: <br/><i style=\"color:red\"><sub>maximal 8 Zeichen</sub></i></html>", "Spielername", JOptionPane.PLAIN_MESSAGE);
+				if(Game.spieler1 == null) {
+					Game.spieler1 = "abbruch";
 				}
-			} while (GameController.spieler1.equals("") || GameController.spieler1.length() > 8);
+			} while (Game.spieler1.equals("") || Game.spieler1.length() > 8);
 			
-			if(!GameController.spieler1.equals("abbruch")) {
-				Game.gameStarted = true;
+			if(!Game.spieler1.equals("abbruch")) {
+				Game.singleplayerGameStarted = true;
 				jf.removeAll();
 			}
 		}
 		
 		if ( e.getSource() == multiBtn) {
+			int selected;
 			JTextField spieler1 = new JTextField();
 			JTextField spieler2 = new JTextField();
-			JOptionPane pane;
-			do {
-	                Object[] message = {"<html>Bitte Namen eingeben!<br/><i style=\"color:red\"><sub>maximal 8 Zeichen</sub></i></html>","Spieler 1:", spieler1, 
-	        		"Spieler 2:", spieler2,};
-
-	                pane = new JOptionPane( message, 
-	                                                JOptionPane.PLAIN_MESSAGE, 
-	                                                JOptionPane.OK_CANCEL_OPTION);
-	                pane.createDialog(null, "Spielernamen").setVisible(true);
-	                if (pane.getValue() == null || pane.getValue().hashCode() == 2) {
-	                	GameController.spieler1 = "abbruch";
-	                	GameController.spieler2 = "abbruch";
-	                }else {
-	                	GameController.spieler1 = spieler1.getText();
-	                	GameController.spieler2 = spieler2.getText();
-	                }
-	                
-	                
-			} while(GameController.spieler1.equals("") || GameController.spieler1.length() > 8 || GameController.spieler2.equals("") || GameController.spieler2.length() > 8);
 			
-			if(!GameController.spieler1.equals("abbruch") && !GameController.spieler2.equals("abbruch")) {
-				Game.gameStarted = true;
+			Object[] message = {"<html>Bitte Namen eingeben!<br/><i style=\"color:red\"><sub>maximal 8 Zeichen</sub></i></html>","Spieler 1:", spieler1, 
+	        		"Spieler 2:", spieler2,};
+			do {
+			selected = JOptionPane.showConfirmDialog(null, message, "Spielernamen", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+			} while (selected == 0 && (spieler1.getText().isEmpty() || spieler1.getText().length() > 8 || spieler2.getText().isEmpty() || spieler2.getText().length() > 8));
+			
+			if (selected == 0) {
+				Game.spieler1 = spieler1.getText();
+				Game.spieler2 = spieler2.getText();
+				Game.multiplayerGameStarted = true;
 				jf.removeAll();
 			}
+//			JTextField spieler1 = new JTextField();
+//			JTextField spieler2 = new JTextField();
+//			JOptionPane pane;
+//			do {
+//	                Object[] message = {"<html>Bitte Namen eingeben!<br/><i style=\"color:red\"><sub>maximal 8 Zeichen</sub></i></html>","Spieler 1:", spieler1, 
+//	        		"Spieler 2:", spieler2,};
+//
+//	                pane = new JOptionPane( message, 
+//	                                                JOptionPane.PLAIN_MESSAGE, 
+//	                                                JOptionPane.OK_CANCEL_OPTION);
+//	                pane.createDialog(null, "Spielernamen").setVisible(true);
+//	                if (pane.getValue() == null || pane.getValue().hashCode() == 2) {
+//	                	Game.spieler1 = "abbruch";
+//	                	Game.spieler2 = "abbruch";
+//	                }else {
+//	                	Game.spieler1 = spieler1.getText();
+//	                	Game.spieler2 = spieler2.getText();
+//	                }
+//	                
+//	                
+//			} while(Game.spieler1.equals("") || Game.spieler1.length() > 8);
+//			
+//			if(!Game.spieler1.equals("abbruch") && !Game.spieler2.equals("abbruch")) {
+//				Game.multiplayerGameStarted = true;
+//				jf.removeAll();
+//			}
 		}
 		
 		if (e.getSource() == computerBtn) {

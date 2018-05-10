@@ -18,6 +18,7 @@ import javax.swing.KeyStroke;
 
 import brickbreaker.controller.GameController;
 import brickbreaker.sound.Sound;
+import brickbreaker.view.Game;
 
 public class Paddle extends Item {
 	private String name;
@@ -27,22 +28,24 @@ public class Paddle extends Item {
 	private Image state0;
 	private Image state1;
 	private Image state2;
-	private JComponent game;
 	private TastaturEingabe tast;
 	private boolean enLargedEffect;
 	private int speed;
 	private static Sound paddleToBallSound;
+	private Players player;
 
-	public Paddle(JComponent game,String name, Integer x, Integer y, Integer w, Integer h) {
+	public Paddle(JComponent game,String name, Integer x, Integer y, Integer w, Integer h, Players player) {
 		super(x, y, w, h, 3);
 		enLargedEffect = false;
 		this.name = name;
+		score = 0;
 		speed = 7;
 		tast = new TastaturEingabe(game);
 		state0  = new ImageIcon(this.getClass().getResource("/res/images/paddle/state0.png")).getImage();
 		state1  = new ImageIcon(this.getClass().getResource("/res/images/paddle/state1.png")).getImage();
 		state2  = new ImageIcon(this.getClass().getResource("/res/images/paddle/state2.png")).getImage();
 		paddleToBallSound = new Sound("/res/sounds/bouncePaddle.wav",-10.0f);
+		this.player = player;
 	}
 	
 	public Integer getScore() {
@@ -71,12 +74,25 @@ public class Paddle extends Item {
 		int w_ = i.getPos().getWidth().intValue();
 		int h_ = i.getPos().getHeight().intValue();
 		
-		if (x <= 0) {
-			this.getPos().setPosX(0);
-		}
+		if (Game.multiplayerGameStarted && player == Players.PLAYER1) {
 		
-		if (x+w+speed >= GameController.windowWidth) {
-			this.getPos().setPosX(GameController.windowWidth - w-speed);
+			if (x <= GameController.windowWidth/2+8) {
+				this.getPos().setPosX(GameController.windowWidth/2+8);
+			}
+			
+			if (x+w+speed >= GameController.windowWidth) {
+				this.getPos().setPosX(GameController.windowWidth - w-speed);
+			}
+			
+		}
+		if (player == Players.PLAYER2 || Game.singleplayerGameStarted) {
+			if (x <= 0) {
+				this.getPos().setPosX(0);
+			}
+			
+			if (x+w+speed >= Math.max(720,GameController.windowWidth/2)) {
+				this.getPos().setPosX(Math.max(720,GameController.windowWidth/2) - w-speed);
+			}
 		}
 		
 		// colission test
@@ -105,22 +121,13 @@ public class Paddle extends Item {
 		int w = this.getPos().getWidth().intValue();
 		int h = this.getPos().getHeight().intValue();
 		
-		//gfx.drawImage(state0, x, y, w, h, null);		
-		
-		gfx.setColor(new Color(0,0,0,150));
-		gfx.fillOval(x+7, y+7, w, h);
-		
 		if (stateCounter <= 10) {
 			img = state0;
-			//gfx.drawImage(state1, x, y, w, h, null);
 		} else if (stateCounter <= 20) {
 			img = state1;
-			//gfx.drawImage(state1, x, y, w, h, null);
 		} else if (stateCounter <= 30) {
 			img = state2;
-			//gfx.drawImage(state2, x, y, w, h, null);
 		} else if (stateCounter <= 40) {
-			//gfx.drawImage(state2, x, y, w, h, null);
 			stateCounter = 0;
 		}
 		gfx.drawImage(img, x, y, w, h, null);
@@ -129,20 +136,35 @@ public class Paddle extends Item {
 	
 	@Override
 	public void update() {
-		tast.tasteGedrückt(KeyEvent.VK_LEFT,"links", (evt) -> {
-			this.setVelX(-speed);
-		});
-		tast.tasteLosgelassen(KeyEvent.VK_LEFT,"linksStop", (evt) -> {
-			this.setVelX(0);
-		});
-		
-		tast.tasteGedrückt(KeyEvent.VK_RIGHT,"rechts", (evt) -> {
-			this.setVelX(speed);
-		});
-		tast.tasteLosgelassen(KeyEvent.VK_RIGHT,"rechtsStop", (evt) -> {
-			this.setVelX(0);
-		});
-		
+		if (player == Players.PLAYER1) {
+			tast.tasteGedrückt(KeyEvent.VK_LEFT,"linksPlayer1", (evt) -> {
+				this.setVelX(-speed);
+			});
+			tast.tasteLosgelassen(KeyEvent.VK_LEFT,"linksStopPlayer1", (evt) -> {
+				this.setVelX(0);
+			});
+			
+			tast.tasteGedrückt(KeyEvent.VK_RIGHT,"rechtsPlayer1", (evt) -> {
+				this.setVelX(speed);
+			});
+			tast.tasteLosgelassen(KeyEvent.VK_RIGHT,"rechtsStopPlayer1", (evt) -> {
+				this.setVelX(0);
+			});
+		} else if (player == Players.PLAYER2){
+			tast.tasteGedrückt(KeyEvent.VK_A,"linksPlayer2", (evt) -> {
+				this.setVelX(-speed);
+			});
+			tast.tasteLosgelassen(KeyEvent.VK_A,"linksStopPlayer2", (evt) -> {
+				this.setVelX(0);
+			});
+			
+			tast.tasteGedrückt(KeyEvent.VK_D,"rechtsPlayer2", (evt) -> {
+				this.setVelX(speed);
+			});
+			tast.tasteLosgelassen(KeyEvent.VK_D,"rechtsStopPlayer2", (evt) -> {
+				this.setVelX(0);
+			});
+		}
 		this.getPos().setPosX(this.getPos().getPosX() + getVelX());
 		this.getPos().setPosY(this.getPos().getPosY() + getVelY());
 	}

@@ -1,7 +1,6 @@
 package brickbreaker.controller;
 
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
@@ -9,11 +8,8 @@ import javax.swing.JFrame;
 import javax.swing.Timer;
 
 import brickbreaker.view.Game;
-import brickbreaker.view.Menu;
 
 public class GameController {
-	public static String spieler1;
-	public static String spieler2;
 	public static int windowWidth = 720;
 	public static int windowHeight = 720;
 	
@@ -22,7 +18,7 @@ public class GameController {
 		gc.InitWindow();
 	}
 	
-	public void InitWindow() {
+	private void InitWindow() {
 		Game game;
 		JFrame window = new JFrame("Brick Breaker Ultimate");
 		game = new Game(window);
