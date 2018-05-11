@@ -12,7 +12,7 @@ import brickbreaker.sound.Sound;
 import brickbreaker.view.Game;
 
 public class Ball extends Item {
-	private int speed = 5;
+	private int speed = 0;
 	private Image state0;
 	private static Sound ballSound;
 	private Players player;
@@ -25,6 +25,12 @@ public class Ball extends Item {
 		state0 = new ImageIcon(this.getClass().getResource("/res/images/ball/ball0.png")).getImage(); 
 		ballSound = new Sound("/res/sounds/bounce.wav",-10.0f);
 		this.player = player;
+	}
+	
+	public void respawn() {
+		this.getPos().setPosX(300);
+		this.getPos().setPosY(500);
+		this.speed = 0;
 	}
 	
 	public static Sound getBallSound() {
@@ -60,8 +66,7 @@ public class Ball extends Item {
 			}
 			
 			if (y+h >= GameController.windowHeight) {
-				this.getPos().setPosX(200+GameController.windowWidth/2+8);
-				this.getPos().setPosY(100);
+				respawn();
 			}	
 		}
 		
@@ -82,8 +87,7 @@ public class Ball extends Item {
 			}
 			
 			if (y+h >= GameController.windowHeight) {
-				this.getPos().setPosX(200);
-				this.getPos().setPosY(100);
+				respawn();
 			}	
 		}
 		return false;
@@ -112,5 +116,7 @@ public class Ball extends Item {
 
 	public void setSpeed(int speed) {
 		this.speed = speed;
+		this.setVelX(-speed);
+		this.setVelY(speed);
 	}
 }

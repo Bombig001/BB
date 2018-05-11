@@ -29,7 +29,7 @@ public class Paddle extends Item {
 	private Image state0;
 	private Image state1;
 	private Image state2;
-	private TastaturEingabe tast;
+	private TastaturEingabe taste;
 	private boolean extendedEffect;
 	private int speed;
 	private static Sound paddleToBallSound;
@@ -43,7 +43,7 @@ public class Paddle extends Item {
 		this.name = name;
 		score = 0;
 		speed = 7;
-		tast = new TastaturEingabe(game);
+		taste = new TastaturEingabe(game);
 		state0  = new ImageIcon(this.getClass().getResource("/res/images/paddle/state0.png")).getImage();
 		state1  = new ImageIcon(this.getClass().getResource("/res/images/paddle/state1.png")).getImage();
 		state2  = new ImageIcon(this.getClass().getResource("/res/images/paddle/state2.png")).getImage();
@@ -158,36 +158,50 @@ public class Paddle extends Item {
 	@Override
 	public void update() {
 		if (player == Players.PLAYER1) {
-			tast.tasteGedrückt(KeyEvent.VK_LEFT,"linksPlayer1", (evt) -> {
+			taste.tasteGedrückt(KeyEvent.VK_LEFT,"player1Links", (evt) -> {
 				this.setVelX(-speed);
 			});
-			tast.tasteLosgelassen(KeyEvent.VK_LEFT,"linksStopPlayer1", (evt) -> {
+			taste.tasteLosgelassen(KeyEvent.VK_LEFT,"player1LinksStop", (evt) -> {
 				this.setVelX(0);
 			});
 			
-			tast.tasteGedrückt(KeyEvent.VK_RIGHT,"rechtsPlayer1", (evt) -> {
+			taste.tasteGedrückt(KeyEvent.VK_RIGHT,"player1Rechts", (evt) -> {
 				this.setVelX(speed);
 			});
-			tast.tasteLosgelassen(KeyEvent.VK_RIGHT,"rechtsStopPlayer1", (evt) -> {
+			taste.tasteLosgelassen(KeyEvent.VK_RIGHT,"player1RechtsStop", (evt) -> {
 				this.setVelX(0);
+			});
+			taste.tasteLosgelassen(KeyEvent.VK_ENTER,"player1BallGainSpeed", (evt) -> {
+				if (((Ball) ball).getSpeed() == 0) {
+					((Ball) ball).setSpeed(5);
+				}
 			});
 		} else if (player == Players.PLAYER2) {
-			tast.tasteGedrückt(KeyEvent.VK_A,"linksPlayer2", (evt) -> {
+			taste.tasteGedrückt(KeyEvent.VK_A,"player2Links", (evt) -> {
 				this.setVelX(-speed);
 			});
-			tast.tasteLosgelassen(KeyEvent.VK_A,"linksStopPlayer2", (evt) -> {
+			taste.tasteLosgelassen(KeyEvent.VK_A,"player2LinksStop", (evt) -> {
 				this.setVelX(0);
 			});
 			
-			tast.tasteGedrückt(KeyEvent.VK_D,"rechtsPlayer2", (evt) -> {
+			taste.tasteGedrückt(KeyEvent.VK_D,"player2Rechts", (evt) -> {
 				this.setVelX(speed);
 			});
-			tast.tasteLosgelassen(KeyEvent.VK_D,"rechtsStopPlayer2", (evt) -> {
+			taste.tasteLosgelassen(KeyEvent.VK_D,"player2RechtsStop", (evt) -> {
 				this.setVelX(0);
+			});
+			
+			taste.tasteLosgelassen(KeyEvent.VK_SPACE,"player2BallGainSpeed", (evt) -> {
+				if (((Ball) ball).getSpeed() == 0) {
+					((Ball) ball).setSpeed(5);
+				}
 			});
 		} else if (player == Players.COMPUTER) {
 			if (strgy != null) {
 				if (!strgy.getRandomChance()) {
+					if (((Ball) ball).getSpeed() == 0) {
+						((Ball) ball).setSpeed(5);
+					}
 					if (ball.getPos().getPosX() > (this.getPos().getPosX() + this.getPos().getHeight().intValue())) {
 						this.setVelX(speed);
 					} else {
@@ -199,6 +213,14 @@ public class Paddle extends Item {
 			} else {
 				strgy = new Strategy(Game.schwierigkeitsgrad);
 			}
+		}
+		if (((Ball) ball).getSpeed() == 0) {
+			int x = this.getPos().getPosX().intValue();
+			int y = this.getPos().getPosY().intValue();
+			int w = this.getPos().getWidth().intValue();
+			int h = this.getPos().getHeight().intValue();
+			ball.setPos(x+w/2, y-h);
+			
 		}
 		this.getPos().setPosX(this.getPos().getPosX() + getVelX());
 	}
