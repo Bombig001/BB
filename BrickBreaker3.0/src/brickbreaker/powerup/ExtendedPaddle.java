@@ -7,10 +7,10 @@ import brickbreaker.model.Paddle;
 import brickbreaker.controller.GameController;
 import brickbreaker.model.Item;
 
-public class EnlargePaddle extends PowerUp{
+public class ExtendedPaddle extends PowerUp{
 	private Item itemToEffect;
 
-	public EnlargePaddle(Integer x, Integer y, Integer w, Integer h, Item i) {
+	public ExtendedPaddle(Integer x, Integer y, Integer w, Integer h, Item i) {
 		super(x, y, w, h);
 		this.setCoolDown(3);
 		itemToEffect = i;
@@ -31,7 +31,7 @@ public class EnlargePaddle extends PowerUp{
 		if (x_+w_ >= x && x_ <= x+w && y_+h_ >= y && y_ <= y+h){
 			if (this.isVisible()) {
 				this.setVisible(false);
-				if (!((Paddle) itemToEffect).isEnLargedEffect()) {
+				if (!((Paddle) itemToEffect).isExtendedEffect()) {
 					this.setCollected(true);
 				} else {
 					this.setDead(true);
@@ -65,13 +65,13 @@ public class EnlargePaddle extends PowerUp{
 		if(isVisible()) {
 			this.getPos().setPosY(this.getPos().getPosY() + getVelY());
 		}
-		if (!((Paddle) itemToEffect).isEnLargedEffect() && this.isCollected()) {
-			((Paddle) itemToEffect).setEnLargedEffect(true);
+		if (!((Paddle) itemToEffect).isExtendedEffect() && this.isCollected()) {
+			((Paddle) itemToEffect).setExtendedEffect(true);
 			this.setTimeStart(Instant.now());
 			startEffect();
 		}else if (this.getTimeStart() != null && this.isCollected() && this.checkIfExpired()) {
 			stopEffect();
-			((Paddle) itemToEffect).setEnLargedEffect(false);
+			((Paddle) itemToEffect).setExtendedEffect(false);
 			this.setCollected(false);
 		}
 		
