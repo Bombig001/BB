@@ -14,6 +14,7 @@ public class Brick extends Item {
 	private boolean isSmashed;
 	private Image state0;
 	private Image state1;
+	private Image state2;
 	private static Sound brickToBallSound0;
 	private static Sound brickToBallSound1;
 
@@ -28,6 +29,11 @@ public class Brick extends Item {
 		} else if (color == 3) {
 			state0 = new ImageIcon(this.getClass().getResource("/res/images/bricks/yellow0.png")).getImage();
 			state1 = new ImageIcon(this.getClass().getResource("/res/images/bricks/yellow1.png")).getImage();
+		} else if ( color == 4) {
+			this.setHealth(3);
+			state0 = new ImageIcon(this.getClass().getResource("/res/images/bricks/grey0.png")).getImage();
+			state1 = new ImageIcon(this.getClass().getResource("/res/images/bricks/grey1.png")).getImage();
+			state2 = new ImageIcon(this.getClass().getResource("/res/images/bricks/grey2.png")).getImage();
 		}
 		
 		brickToBallSound0 = new Sound("/res/sounds/bounceBrick0.wav",-10.0f);
@@ -71,8 +77,10 @@ public class Brick extends Item {
 		//gfx.fillRect(x, y, w, h);
 		if (this.getHealth() == 1) {
 			gfx.drawImage(state0, x, y, w, h, null);
-		} if (this.getHealth() == 2) {
+		} else if (this.getHealth() == 2) {
 			gfx.drawImage(state1, x, y, w, h, null);
+		} else if (this.getHealth() == 3) {
+			gfx.drawImage(state2, x, y, w, h, null);
 		}
 	}
 

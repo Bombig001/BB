@@ -23,7 +23,7 @@ import brickbreaker.model.Ball;
 import brickbreaker.model.Brick;
 import brickbreaker.model.Item;
 import brickbreaker.model.Paddle;
-import brickbreaker.model.Players;
+import brickbreaker.player.Players;
 import brickbreaker.powerup.ExtendedPaddle;
 import brickbreaker.powerup.PowerUp;
 
@@ -34,7 +34,7 @@ public class Game extends JComponent implements ActionListener {
 	public static String spieler2;
 	public static int schwierigkeitsgrad;
 	private Graphics gfx;
-	private int level = 0;
+	private int level = 1;
 	private Level player1CurrentLevel;
 	private Level player2CurrentLevel;
 	private ArrayList<Item> player1Entities;
@@ -62,6 +62,7 @@ public class Game extends JComponent implements ActionListener {
 //		mainMenu = new Menu(this, true);
 //		window.addKeyListener((KeyListener) p1);
 //		window.addMouseMotionListener(this);
+		schwierigkeitsgrad = 0;
 		mainMenu = new Menu(this);
 		background  = new ImageIcon(this.getClass().getResource("/res/images/background/1.jpg")).getImage();
 		background2 = new ImageIcon(this.getClass().getResource("/res/images/background/3.jpg")).getImage();
@@ -78,9 +79,9 @@ public class Game extends JComponent implements ActionListener {
 	}
 	
 	private void gameOverScreen() {
+		System.out.println(level);
 		timeStop = Instant.now();
 		timePastBetween = Duration.between(timeStart, timeStop);
-		System.out.println(timePastBetween.getSeconds());
 			
 		if (multiplayerGameStarted) {
 			if (((Paddle) player1Paddle).getScore() > ((Paddle) player2Paddle).getScore()) {
@@ -103,7 +104,7 @@ public class Game extends JComponent implements ActionListener {
 	}
 	
 	private void setupSingleplayerMode() {
-		player1CurrentLevel.setCurrentLevel(Math.min(level += 1, player1CurrentLevel.getMaxLevel()));
+		player1CurrentLevel.setCurrentLevel(Math.min(level, player1CurrentLevel.getMaxLevel()));
 		player1Entities.clear();
 		powerups.clear();
 		player1Entities = player1CurrentLevel.getBrickList();
@@ -116,11 +117,21 @@ public class Game extends JComponent implements ActionListener {
 	private void setupMultiplayerMode() {
 		setupSingleplayerMode();
 		
+		if (player2Paddle == null && player2Ball == null) {
+			if (schwierigkeitsgrad == 0) {
+				player2Ball = new Ball(260, 100, 18, 18,0, Players.PLAYER2);
+				player2Paddle = new Paddle(this,spieler1,300, 650, 97, 26, Players.PLAYER2,player2Ball);
+			} else {
+				player2Ball = new Ball(260, 100, 18, 18,0, Players.PLAYER2);
+				player2Paddle = new Paddle(this,spieler1,300, 650, 97, 26, Players.COMPUTER,player2Ball);
+			}
+		}
+		
 		GameController.windowWidth = 1456;
 		window.setSize(GameController.windowWidth, GameController.windowHeight);
 		window.setLocationRelativeTo(null);
 		
-		player2CurrentLevel.setCurrentLevel(Math.min(level += 1, player2CurrentLevel.getMaxLevel()));
+		player2CurrentLevel.setCurrentLevel(Math.min(level, player2CurrentLevel.getMaxLevel()));
 		player2Entities.clear();
 		player2Entities = player2CurrentLevel.getBrickList();
 		player2Paddle.setPos(300, 650);
@@ -196,6 +207,7 @@ public class Game extends JComponent implements ActionListener {
 		if (gameOver) {
 			if (timeStart == null) {
 				timeStart = Instant.now();
+				level += 1;
 			}
 			gameOverScreen();
 		}

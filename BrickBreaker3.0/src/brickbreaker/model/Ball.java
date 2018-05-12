@@ -1,32 +1,43 @@
 package brickbreaker.model;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Toolkit;
 
 import javax.swing.ImageIcon;
 
 import brickbreaker.controller.GameController;
+import brickbreaker.player.Players;
 import brickbreaker.sound.Sound;
 import brickbreaker.view.Game;
 
 public class Ball extends Item {
-	private int speed = 0;
+	private int defSpeed;
+	private int speed;
 	private Image state0;
 	private static Sound ballSound;
 	private Players player;
 
 	public Ball(Integer x, Integer y, Integer w, Integer h, int i, Players player) {
 		super(x, y, w, h, 1);
+		defSpeed = 5;
+		speed = 0;
 		this.setVelX(-speed);
 		this.setVelY(speed);
 		//state0 = Toolkit.getDefaultToolkit().getImage("res/ball/ball0.png");
-		state0 = new ImageIcon(this.getClass().getResource("/res/images/ball/ball0.png")).getImage(); 
+		if (player == Players.PLAYER1) {
+			state0 = new ImageIcon(this.getClass().getResource("/res/images/ball/ball0.png")).getImage(); 
+		} else {
+			state0 = new ImageIcon(this.getClass().getResource("/res/images/ball/ball1.png")).getImage();
+		}
 		ballSound = new Sound("/res/sounds/bounce.wav",-10.0f);
 		this.player = player;
 	}
 	
+	public int getDefSpeed() {
+		return defSpeed;
+	}
+
+
 	public void respawn() {
 		this.getPos().setPosX(300);
 		this.getPos().setPosY(500);
@@ -44,10 +55,10 @@ public class Ball extends Item {
 		int w = this.getPos().getWidth().intValue();
 		int h = this.getPos().getHeight().intValue();
 		
-		int x_ = i.getPos().getPosX().intValue();
-		int y_ = i.getPos().getPosY().intValue();
-		int w_ = i.getPos().getWidth().intValue();
-		int h_ = i.getPos().getHeight().intValue();
+//		int x_ = i.getPos().getPosX().intValue();
+//		int y_ = i.getPos().getPosY().intValue();
+//		int w_ = i.getPos().getWidth().intValue();
+//		int h_ = i.getPos().getHeight().intValue();
 		
 		if (Game.multiplayerGameStarted && player == Players.PLAYER1) {
 			if (x+speed <= GameController.windowWidth/2+8) {
@@ -70,7 +81,7 @@ public class Ball extends Item {
 			}	
 		}
 		
-		if (player == Players.PLAYER2 || Game.singleplayerGameStarted) {
+		if (player == Players.PLAYER2 || player == Players.COMPUTER || Game.singleplayerGameStarted) {
 			if (x+speed <= 0) {
 				this.setVelX(speed);
 				ballSound.start();

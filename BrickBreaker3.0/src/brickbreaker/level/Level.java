@@ -7,7 +7,7 @@ import brickbreaker.model.Item;
 public class Level {
 	private int maxLevel = 3;
 	private ArrayList<Item> brickList;
-	private int __ = 0, aa = 1, bb =2,cc = 3;
+	private int __ = 0, aa = 1, bb = 2,cc = 3, dd = 4;
 	private int[][] level1 = {
 			{ __,__,__,__,__,__,__,__,__,__,__},
 			{ __,__,__,__,__,__,__,__,__,__,__},
@@ -17,7 +17,7 @@ public class Level {
 			{ __,__,__,__,__,__,__,__,__,__,__},
 			{ __,__,__,__,__,__,__,__,__,__,__},
 			{ __,__,__,__,__,__,__,__,__,__,__},
-			{ __,__,__,__,__,aa,__,__,__,__,__},
+			{ __,dd,dd,dd,dd,dd,dd,dd,dd,dd,__},
 			{ __,__,__,__,__,__,__,__,__,__,__},
 			{ __,__,__,__,__,__,__,__,__,__,__},
 			{ __,__,__,__,__,__,__,__,__,__,__},
@@ -70,9 +70,7 @@ public class Level {
 				if (mulLvl[y][x] == __) {
 					
 				} else {
-					//Item brick = new Brick((17)+x*(78),(60)+y*(27),77,26,mulLvl[y][x]);
 					Item brick = new Brick((50)+x*55,(100)+y*19,54,18,mulLvl[y][x]);
-					//g.fillRect(brickX+(x*31), brickY+(y*31), 30, 30);
 					brickList.add(brick);
 				}
 			}

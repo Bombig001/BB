@@ -17,6 +17,7 @@ import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 
 import brickbreaker.controller.GameController;
+import brickbreaker.player.Players;
 import brickbreaker.position.Strategy;
 import brickbreaker.sound.Sound;
 import brickbreaker.view.Game;
@@ -44,9 +45,15 @@ public class Paddle extends Item {
 		score = 0;
 		speed = 7;
 		taste = new TastaturEingabe(game);
-		state0  = new ImageIcon(this.getClass().getResource("/res/images/paddle/state0.png")).getImage();
-		state1  = new ImageIcon(this.getClass().getResource("/res/images/paddle/state1.png")).getImage();
-		state2  = new ImageIcon(this.getClass().getResource("/res/images/paddle/state2.png")).getImage();
+		if (player == Players.PLAYER1) {
+		state0  = new ImageIcon(this.getClass().getResource("/res/images/paddle/paddle1state0.png")).getImage();
+		state1  = new ImageIcon(this.getClass().getResource("/res/images/paddle/paddle1state1.png")).getImage();
+		state2  = new ImageIcon(this.getClass().getResource("/res/images/paddle/paddle1state2.png")).getImage();
+		} else {
+			state0  = new ImageIcon(this.getClass().getResource("/res/images/paddle/paddle2state0.png")).getImage();
+			state1  = new ImageIcon(this.getClass().getResource("/res/images/paddle/paddle2state1.png")).getImage();
+			state2  = new ImageIcon(this.getClass().getResource("/res/images/paddle/paddle2state2.png")).getImage();
+		}
 		paddleToBallSound = new Sound("/res/sounds/bouncePaddle.wav",-10.0f);
 		this.player = player;
 		this.ball = ball;
@@ -173,7 +180,7 @@ public class Paddle extends Item {
 			});
 			taste.tasteLosgelassen(KeyEvent.VK_ENTER,"player1BallGainSpeed", (evt) -> {
 				if (((Ball) ball).getSpeed() == 0) {
-					((Ball) ball).setSpeed(5);
+					((Ball) ball).setSpeed(((Ball) ball).getDefSpeed());
 				}
 			});
 		} else if (player == Players.PLAYER2) {
@@ -193,14 +200,14 @@ public class Paddle extends Item {
 			
 			taste.tasteLosgelassen(KeyEvent.VK_SPACE,"player2BallGainSpeed", (evt) -> {
 				if (((Ball) ball).getSpeed() == 0) {
-					((Ball) ball).setSpeed(5);
+					((Ball) ball).setSpeed(((Ball) ball).getDefSpeed());
 				}
 			});
 		} else if (player == Players.COMPUTER) {
 			if (strgy != null) {
 				if (!strgy.getRandomChance()) {
 					if (((Ball) ball).getSpeed() == 0) {
-						((Ball) ball).setSpeed(5);
+						((Ball) ball).setSpeed(((Ball) ball).getDefSpeed());
 					}
 					if (ball.getPos().getPosX() > (this.getPos().getPosX() + this.getPos().getHeight().intValue())) {
 						this.setVelX(speed);
