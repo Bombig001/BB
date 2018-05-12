@@ -21,14 +21,11 @@ public class Brick extends Item {
 	public Brick(Integer x, Integer y, Integer w, Integer h, Integer color) {
 		super(x, y, w, h, 1);
 		if ( color == 1) {
-			state0 = new ImageIcon(this.getClass().getResource("/res/images/bricks/blau0.png")).getImage();
-			state1 = new ImageIcon(this.getClass().getResource("/res/images/bricks/blau1.png")).getImage();
+			state0 = new ImageIcon(this.getClass().getResource("/res/images/bricks/blau1.png")).getImage();
 		} else if ( color == 2) {
-			state0 = new ImageIcon(this.getClass().getResource("/res/images/bricks/rot0.png")).getImage();
-			state1 = new ImageIcon(this.getClass().getResource("/res/images/bricks/rot1.png")).getImage();
+			state0 = new ImageIcon(this.getClass().getResource("/res/images/bricks/rot1.png")).getImage();
 		} else if (color == 3) {
-			state0 = new ImageIcon(this.getClass().getResource("/res/images/bricks/yellow0.png")).getImage();
-			state1 = new ImageIcon(this.getClass().getResource("/res/images/bricks/yellow1.png")).getImage();
+			state0 = new ImageIcon(this.getClass().getResource("/res/images/bricks/yellow1.png")).getImage();
 		} else if ( color == 4) {
 			this.setHealth(3);
 			state0 = new ImageIcon(this.getClass().getResource("/res/images/bricks/grey0.png")).getImage();

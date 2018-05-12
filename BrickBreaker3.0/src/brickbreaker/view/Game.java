@@ -23,6 +23,7 @@ import brickbreaker.model.Ball;
 import brickbreaker.model.Brick;
 import brickbreaker.model.Item;
 import brickbreaker.model.Paddle;
+import brickbreaker.player.Player;
 import brickbreaker.player.Players;
 import brickbreaker.powerup.ExtendedPaddle;
 import brickbreaker.powerup.PowerUp;
@@ -30,20 +31,10 @@ import brickbreaker.powerup.PowerUp;
 public class Game extends JComponent implements ActionListener {
 	public static boolean singleplayerGameStarted = false;
 	public static boolean multiplayerGameStarted = false;
-	public static String spieler1;
-	public static String spieler2;
-	public static int schwierigkeitsgrad;
+	public static Player player1;
+	public static Player player2;
 	private Graphics gfx;
-	private int level = 1;
-	private Level player1CurrentLevel;
-	private Level player2CurrentLevel;
-	private ArrayList<Item> player1Entities;
-	private ArrayList<Item> player2Entities;
-	private ArrayList<PowerUp> powerups;
-	private Item player1Ball = new Ball(260, 100, 18, 18,0, Players.PLAYER1);
-	private Item player1Paddle = new Paddle(this,spieler1,300, 650, 97, 26, Players.PLAYER1,player1Ball);
-	private Item player2Ball = new Ball(260, 100, 18, 18,0, Players.PLAYER2);
-	private Item player2Paddle = new Paddle(this,spieler1,300, 650, 97, 26, Players.COMPUTER,player2Ball);
+	private int level = 2;
 	Image background;
 	Image background2;
 	Image splitter;
@@ -51,7 +42,6 @@ public class Game extends JComponent implements ActionListener {
 	Image p2winns;
 	private boolean gameOver;
 	private Menu mainMenu;
-	private Random rand;
 	private JFrame window;
 	private Instant timeStart;
 	private Instant timeStop;
@@ -62,20 +52,16 @@ public class Game extends JComponent implements ActionListener {
 //		mainMenu = new Menu(this, true);
 //		window.addKeyListener((KeyListener) p1);
 //		window.addMouseMotionListener(this);
-		schwierigkeitsgrad = 0;
 		mainMenu = new Menu(this);
+		mainMenu.start();
 		background  = new ImageIcon(this.getClass().getResource("/res/images/background/1.jpg")).getImage();
 		background2 = new ImageIcon(this.getClass().getResource("/res/images/background/3.jpg")).getImage();
 		splitter = new ImageIcon(this.getClass().getResource("/res/images/background/splitter.jpg")).getImage();
 		p1winns = new ImageIcon(this.getClass().getResource("/res/images/player1winns.png")).getImage();
 		p2winns = new ImageIcon(this.getClass().getResource("/res/images/player2winns.png")).getImage();
-		player1CurrentLevel = new Level();
-		player2CurrentLevel = new Level();
-		player1Entities = new ArrayList<Item>();
-		player2Entities = new ArrayList<Item>();
-		powerups = new ArrayList<PowerUp>();
+		player1 = new Player(this,Players.PLAYER1);
+		player2 = new Player(this,Players.PLAYER2);
 		setupSingleplayerMode();
-		rand = new Random();
 	}
 	
 	private void gameOverScreen() {
@@ -84,10 +70,10 @@ public class Game extends JComponent implements ActionListener {
 		timePastBetween = Duration.between(timeStart, timeStop);
 			
 		if (multiplayerGameStarted) {
-			if (((Paddle) player1Paddle).getScore() > ((Paddle) player2Paddle).getScore()) {
-				gfx.drawImage(p1winns, GameController.windowWidth/4, 300, null);
-			} else if (((Paddle) player1Paddle).getScore() < ((Paddle) player2Paddle).getScore()) {
-				gfx.drawImage(p2winns, GameController.windowWidth/4, 300, null);			
+			if (player1.getScore() > player2.getScore()) {
+				gfx.drawImage(player1.getPlayerwinns(), GameController.windowWidth/4, 300, null);
+			} else if (player1.getScore() < player2.getScore()) {
+				gfx.drawImage(player2.getPlayerwinns(), GameController.windowWidth/4, 300, null);			
 			}
 			
 			if (timePastBetween.getSeconds() >= 5) { 
@@ -104,41 +90,21 @@ public class Game extends JComponent implements ActionListener {
 	}
 	
 	private void setupSingleplayerMode() {
-		player1CurrentLevel.setCurrentLevel(Math.min(level, player1CurrentLevel.getMaxLevel()));
-		player1Entities.clear();
-		powerups.clear();
-		player1Entities = player1CurrentLevel.getBrickList();
-		player1Paddle.setPos(300, 650);
-		((Ball) player1Ball).respawn();
-		player1Entities.add(player1Ball);
-		player1Entities.add(player1Paddle);
+		player1.getCurrentLevel().setCurrentLevel(Math.min(level, player1.getCurrentLevel().getMaxLevel()));
+		player1.loadUpStage();
 	}
 	
 	private void setupMultiplayerMode() {
 		setupSingleplayerMode();
 		
-		if (player2Paddle == null && player2Ball == null) {
-			if (schwierigkeitsgrad == 0) {
-				player2Ball = new Ball(260, 100, 18, 18,0, Players.PLAYER2);
-				player2Paddle = new Paddle(this,spieler1,300, 650, 97, 26, Players.PLAYER2,player2Ball);
-			} else {
-				player2Ball = new Ball(260, 100, 18, 18,0, Players.PLAYER2);
-				player2Paddle = new Paddle(this,spieler1,300, 650, 97, 26, Players.COMPUTER,player2Ball);
-			}
-		}
-		
 		GameController.windowWidth = 1456;
 		window.setSize(GameController.windowWidth, GameController.windowHeight);
 		window.setLocationRelativeTo(null);
 		
-		player2CurrentLevel.setCurrentLevel(Math.min(level, player2CurrentLevel.getMaxLevel()));
-		player2Entities.clear();
-		player2Entities = player2CurrentLevel.getBrickList();
-		player2Paddle.setPos(300, 650);
-		((Ball) player2Ball).respawn();
-		player2Entities.add(player2Ball);
-		player2Entities.add(player2Paddle);
-		for(Item it : player1Entities) {
+		
+		player2.getCurrentLevel().setCurrentLevel(Math.min(level, player2.getCurrentLevel().getMaxLevel()));
+		player2.loadUpStage();
+		for(Item it : player1.getEntities()) {
 			it.getPos().setPosX(it.getPos().getPosX()+GameController.windowWidth/2+8);
 			if (it instanceof Ball) {
 				it.setVelX(-it.getVelX());
@@ -151,14 +117,12 @@ public class Game extends JComponent implements ActionListener {
 //		super.paintComponent(g);
 		gfx = g;
 		if(singleplayerGameStarted) {
-			//this.removeAll();
 			gfx.drawImage(background, 0, 0, GameController.windowWidth, GameController.windowHeight, null);
 			gfx.drawImage(background2,0, 0, GameController.windowWidth, 50,null);
-			//gfx.drawImage(splitter,GameController.windowWidth/2-8, 0, 16, GameController.windowHeight,null);
 			gfx.setColor(Color.lightGray);
 			gfx.setFont(new Font("Times", Font.BOLD, 17));
-			gfx.drawString("Punktzahl: "+ ((Paddle) player1Paddle).getScore(), 0, 20);
-			gfx.drawString("Spielername: \n"+ ((Paddle) player1Paddle).getName(), 500, 20);
+			gfx.drawString("Punktzahl: "+ player1.getScore(), 0, 20);
+			gfx.drawString("Spielername: \n"+ player1.getName(), 500, 20);
 		} else if (multiplayerGameStarted) {
 			if (GameController.windowWidth <= 720) {
 				setupMultiplayerMode();
@@ -167,8 +131,8 @@ public class Game extends JComponent implements ActionListener {
 			gfx.drawImage(background2,0, 0, GameController.windowWidth/2-8, 50,null);
 			gfx.setColor(Color.lightGray);
 			gfx.setFont(new Font("Times", Font.BOLD, 17));
-			gfx.drawString("Punktzahl: "+ ((Paddle) player2Paddle).getScore(), 0, 20);
-			gfx.drawString("Spieler 2: \n"+ ((Paddle) player2Paddle).getName(), 500, 20);
+			gfx.drawString("Punktzahl: "+ player2.getScore(), 0, 20);
+			gfx.drawString("Spieler 2: \n"+ player2.getName(), 500, 20);
 			
 			gfx.drawImage(splitter,GameController.windowWidth/2-8, 0, 16, GameController.windowHeight,null);
 			
@@ -176,30 +140,32 @@ public class Game extends JComponent implements ActionListener {
 			gfx.drawImage(background2,GameController.windowWidth/2+8, 0, GameController.windowWidth/2-8, 50,null);
 			gfx.setColor(Color.lightGray);
 			gfx.setFont(new Font("Times", Font.BOLD, 17));
-			gfx.drawString("Punktzahl: "+ ((Paddle) player1Paddle).getScore(), GameController.windowWidth/2+8, 20);
-			gfx.drawString("Spieler 1: \n"+ ((Paddle) player1Paddle).getName(), GameController.windowWidth/2+8 + 500, 20);
+			gfx.drawString("Punktzahl: "+ player1.getScore(), GameController.windowWidth/2+8, 20);
+			gfx.drawString("Spieler 1: \n"+ player1.getName(), GameController.windowWidth/2+8 + 500, 20);
 			
 		}
-		gameUpdate();
+		gameDraw();
 	}
 	
-	private void gameUpdate() {
+	private void gameDraw() {
 		
 		if (singleplayerGameStarted || multiplayerGameStarted) {
-			((Paddle) player1Paddle).setName(spieler1);
-			((Paddle) player2Paddle).setName(spieler2);
 			
 			if (multiplayerGameStarted) {
-				for(Item it : player2Entities) {
+				for(Item it : player2.getEntities()) {
 					it.draw(gfx);
+				}
+				
+				for (PowerUp pu : player2.getPowerups()) {
+					pu.draw(gfx);
 				}
 			}
 			
-			for(Item it : player1Entities) {
+			for(Item it : player1.getEntities()) {
 				it.draw(gfx);
 			}
 			
-			for (PowerUp pu : powerups) {
+			for (PowerUp pu : player1.getPowerups()) {
 				pu.draw(gfx);
 			}
 		}
@@ -217,66 +183,10 @@ public class Game extends JComponent implements ActionListener {
 	public void actionPerformed(ActionEvent e) {		
 		if(!gameOver && (singleplayerGameStarted || multiplayerGameStarted)) {
 			
-			for (int i = 0; i < player1Entities.size(); i++) {
-				Item it = player1Entities.get(i);
-				if ( it instanceof Brick) {
-					if (!((Brick) it).getIsSmashed()) {
-						if(((Brick) it).colission(player1Ball)) {
-							((Brick) it).dealDamage();
-							if (((Brick) it).getIsSmashed()) {
-								if(rand.nextInt(2) == 1) {
-									PowerUp pwp = new ExtendedPaddle(player1Entities.get(i).getPos().getPosX()+player1Entities.get(i).getPos().getWidth()/2-20, player1Entities.get(i).getPos().getPosY(), 40, 11, player1Paddle);
-									powerups.add(pwp);
-								}
-								player1Entities.remove(i);
-								((Paddle) player1Paddle).setScore(((Paddle) player1Paddle).getScore() + 10);
-								i--;
-							}
-						}
-					}
-				} else {
-					it.update();
-					it.colission(player1Ball);
-				}
-			}
+			player1.updateEntities();
 			
 			if (multiplayerGameStarted) {
-				for (int i = 0; i < player2Entities.size(); i++) {
-					Item it = player2Entities.get(i);
-					if ( it instanceof Brick) {
-						if (!((Brick) it).getIsSmashed()) {
-							if(((Brick) it).colission(player2Ball)) {
-								((Brick) it).dealDamage();
-								if (((Brick) it).getIsSmashed()) {
-									if(rand.nextInt(2) == 1) {
-										PowerUp pwp = new ExtendedPaddle(player2Entities.get(i).getPos().getPosX()+player2Entities.get(i).getPos().getWidth()/2-20, player2Entities.get(i).getPos().getPosY(), 40, 11, player2Paddle);
-										powerups.add(pwp);
-									}
-									player2Entities.remove(i);
-									((Paddle) player2Paddle).setScore(((Paddle) player2Paddle).getScore() + 10);
-									i--;
-								}
-							}
-						}
-					} else {
-						it.update();
-						it.colission(player2Ball);
-					}
-				}
-			}
-			
-			for (int j = 0; j < powerups.size(); j++) {
-				PowerUp pup = powerups.get(j);
-				if (pup.isDead()) {
-					powerups.remove(j);
-					j--;
-				} else {
-					pup.update();
-					pup.colission(player1Paddle);
-					if (multiplayerGameStarted) {
-						pup.colission(player2Paddle);
-					}
-				}
+				player2.updateEntities();
 			}
 			
 			countBricksAndCheckWin();
@@ -292,7 +202,7 @@ public class Game extends JComponent implements ActionListener {
 		int player1Bricks = 0;
 		int player2Bricks = 0;
 		
-		for (Item it : player1Entities) {
+		for (Item it : /*player1Entities*/player1.getEntities()) {
 			if (it instanceof Brick) {
 				player1Bricks++;
 			}
@@ -303,8 +213,8 @@ public class Game extends JComponent implements ActionListener {
 			timeStart = null;
 		}
 		
-		if (!player2Entities.isEmpty()) {
-			for (Item it : player2Entities) {
+		if (!player2.getEntities().isEmpty()) {
+			for (Item it : player2.getEntities()) {
 				if (it instanceof Brick) {
 					player2Bricks++;
 				}

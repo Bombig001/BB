@@ -17,6 +17,8 @@ import javax.swing.JTextField;
 import brickbreaker.model.Ball;
 import brickbreaker.model.Brick;
 import brickbreaker.model.Paddle;
+import brickbreaker.player.Player;
+import brickbreaker.player.Players;
 import brickbreaker.sound.Sound;
 
 public class Menu  implements ActionListener{
@@ -76,6 +78,22 @@ public class Menu  implements ActionListener{
 		settingsBtn = new MenuButton("Einstellungen", 210, 550, 300, 30, new Color(0x738ebc), settingsIcon, this);
 		infoBtn = new MenuButton("Info", 210, 600, 300, 30, new Color(0x738ebc), infoIcon, this);
 		
+//		jf.add(singleBtn);
+//		jf.add(multiBtn);
+//		jf.add(computerBtn);
+//		jf.add(settingsBtn);
+//		jf.add(infoBtn);
+//		jf.add(label);
+//		jf.add(label1);
+//		jf.add(label2);
+//		jf.add(bgLogo);
+//		jf.add(bg);
+		menuSound = new Sound("/res/sounds/op.wav",-30.0f);
+		menuSound.loop();
+	}
+	
+	public void start() {
+		jf.removeAll();
 		jf.add(singleBtn);
 		jf.add(multiBtn);
 		jf.add(computerBtn);
@@ -86,8 +104,6 @@ public class Menu  implements ActionListener{
 		jf.add(label2);
 		jf.add(bgLogo);
 		jf.add(bg);
-		menuSound = new Sound("/res/sounds/op.wav",-30.0f);
-		menuSound.loop();
 	}
 
 	@Override
@@ -96,24 +112,25 @@ public class Menu  implements ActionListener{
 		// Single button
 		if ( e.getSource() == singleBtn) {
 			int selected;
-			JTextField player1 = new JTextField();
+			JTextField player1Name = new JTextField();
 			String player1Warning = "";
 			
 			do {
-				Object[] message = {"<html>Namen eingeben: <br/><i style=\"color:red\"><sub>maximal 8 Zeichen</sub></i></html>", player1,player1Warning};
+				Object[] message = {"<html>Namen eingeben: <br/><i style=\"color:red\"><sub>maximal 8 Zeichen</sub></i></html>", player1Name,player1Warning};
 				selected = JOptionPane.showConfirmDialog(null, message, "Einzelspieler", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 				
-				if (!player1.getText().isEmpty() && !player1.getText().matches("^[a-zA-Z¸‹‰ƒˆ÷ÈË‡‚Á]+$")) {
-					player1.setText("");
+				if (!player1Name.getText().isEmpty() && !player1Name.getText().matches("^[a-zA-Z¸‹‰ƒˆ÷ÈË‡‚Á]+$")) {
+					player1Name.setText("");
 					player1Warning = "<html><p style=\"color:red\">Nur Buchstaben erlaubt!</p></html>";
 				} else {
 					player1Warning = "";
 				}
 				
-			} while (selected == 0 && (player1.getText().isEmpty() || player1.getText().length() > 8));
+			} while (selected == 0 && (player1Name.getText().isEmpty() || player1Name.getText().length() > 8));
 			
 			if(selected == 0) {
-				Game.spieler1 = player1.getText();
+				Game.player1.setName(player1Name.getText());
+				//Game.spieler1 = player1.getText();
 				Game.singleplayerGameStarted = true;
 				jf.removeAll();
 			}
@@ -123,36 +140,39 @@ public class Menu  implements ActionListener{
 		// Multiplayer button
 		if ( e.getSource() == multiBtn) {
 			int selected;
-			JTextField player1 = new JTextField();
-			JTextField player2 = new JTextField();
+			JTextField player1Name = new JTextField();
+			JTextField player2Name = new JTextField();
 			String player1Warning = "";
 			String player2Warning = "";
 			
 			do {
-				Object[] message = {"<html>Bitte Namen eingeben!<br/><i style=\"color:red\"><sub>maximal 8 Zeichen</sub></i></html>","Spieler 1:", player1, player1Warning, 
-		        				"Spieler 2:", player2,player2Warning};
+				Object[] message = {"<html>Bitte Namen eingeben!<br/><i style=\"color:red\"><sub>maximal 8 Zeichen</sub></i></html>","Spieler 1:", player1Name, player1Warning, 
+		        				"Spieler 2:", player2Name,player2Warning};
 			selected = JOptionPane.showConfirmDialog(null, message, "Spieler vs. Spieler", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 			
-			if (!player1.getText().isEmpty() && !player1.getText().matches("^[a-zA-Z¸‹‰ƒˆ÷ÈË‡‚Á]+$")) {
-				player1.setText("");
+			if (!player1Name.getText().isEmpty() && !player1Name.getText().matches("^[a-zA-Z¸‹‰ƒˆ÷ÈË‡‚Á]+$")) {
+				player1Name.setText("");
 				player1Warning = "<html><p style=\"color:red\">Nur Buchstaben erlaubt!</p></html>";
 			} else {
 				player1Warning = "";
 			}
 			
-			if (!player2.getText().isEmpty() && !player2.getText().matches("^[a-zA-Z¸‹‰ƒˆ÷ÈË‡‚Á]+$")) {
-				player2.setText("");
+			if (!player2Name.getText().isEmpty() && !player2Name.getText().matches("^[a-zA-Z¸‹‰ƒˆ÷ÈË‡‚Á]+$")) {
+				player2Name.setText("");
 				player2Warning = "<html><p style=\"color:red\">Nur Buchstaben erlaubt!</p></html>";
 			} else {
 				player2Warning = "";
 			}
 			
-			} while (selected == 0 && (player1.getText().isEmpty() || player1.getText().length() > 8 || player2.getText().isEmpty() || player2.getText().length() > 8));
+			} while (selected == 0 && (player1Name.getText().isEmpty() || player1Name.getText().length() > 8 || player2Name.getText().isEmpty() || player2Name.getText().length() > 8));
 
 			
 			if (selected == 0) {
-				Game.spieler1 = player1.getText();
-				Game.spieler2 = player2.getText();
+				Game.player1.setName(player1Name.getText());
+				//Game.spieler1 = player1.getText();
+				//Game.spieler2 = player2Name.getText();
+				Game.player2.setName(player2Name.getText());
+				//Game.player2 = new Player(Game,Players.PLAYER2);
 				Game.multiplayerGameStarted = true;
 				jf.removeAll();
 			}
@@ -198,36 +218,39 @@ public class Menu  implements ActionListener{
 			
 			String[] options = {"Einfach", "Mittel", "Schwer", "Profi"};
 			int selected;
-			JTextField player1 = new JTextField();
+			JTextField player1Name = new JTextField();
 			String player1Warning = "";
 			JComboBox choise = new JComboBox(options);
 			
 			do {
-				Object[] message = {"<html>Bitte Namen eingeben!<br/><i style=\"color:red\"><sub>maximal 8 Zeichen</sub></i></html>","Spieler 1:", player1, player1Warning, 
+				Object[] message = {"<html>Bitte Namen eingeben!<br/><i style=\"color:red\"><sub>maximal 8 Zeichen</sub></i></html>","Spieler 1:", player1Name, player1Warning, 
 	    				"Schwierigkeistgrad: ", choise};
 				selected = JOptionPane.showConfirmDialog(null, message, "Spieler vs. PC", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 				
-				if (!player1.getText().isEmpty() && !player1.getText().matches("^[a-zA-Z¸‹‰ƒˆ÷ÈË‡‚Á]+$")) {
-					player1.setText("");
+				if (!player1Name.getText().isEmpty() && !player1Name.getText().matches("^[a-zA-Z¸‹‰ƒˆ÷ÈË‡‚Á]+$")) {
+					player1Name.setText("");
 					player1Warning = "<html><p style=\"color:red\">Nur Buchstaben erlaubt!</p></html>";
 				} else {
 					player1Warning = "";
 				}
 				
-			} while (selected == 0 && (player1.getText().isEmpty() || player1.getText().length() > 8));
+			} while (selected == 0 && (player1Name.getText().isEmpty() || player1Name.getText().length() > 8));
 			
 			if (selected == 0) {
+				Game.player1.setName(player1Name.getText());
+				Game.player2.setPlayertyp(Players.COMPUTER);
+				Game.player2.setName("Computer");
+				
 				if (choise.getSelectedItem().equals("Einfach")) {
-					Game.schwierigkeitsgrad = 67;
+					Game.player2.setDifficultyLevel(67);
 				} else if (choise.getSelectedItem().equals("Mittel")) {
-					Game.schwierigkeitsgrad = 70;
+					Game.player2.setDifficultyLevel(70);
 				} else if (choise.getSelectedItem().equals("Schwer")) {
-					Game.schwierigkeitsgrad = 80;
+					Game.player2.setDifficultyLevel(80);
 				} else if (choise.getSelectedItem().equals("Profi")) {
-					Game.schwierigkeitsgrad = 100;
+					Game.player2.setDifficultyLevel(100);
 				}
-				Game.spieler1 = player1.getText();
-				Game.spieler2 = "Computer";
+				
 				Game.multiplayerGameStarted = true;
 				jf.removeAll();
 			}

@@ -10,10 +10,10 @@ import brickbreaker.model.Item;
 public class ExtendedPaddle extends PowerUp{
 	private Item itemToEffect;
 
-	public ExtendedPaddle(Integer x, Integer y, Integer w, Integer h, Item i) {
+	public ExtendedPaddle(Integer x, Integer y, Integer w, Integer h, Item itemToEffect) {
 		super(x, y, w, h);
 		this.setCoolDown(3);
-		itemToEffect = i;
+		this.itemToEffect = itemToEffect;
 	}
 
 	@Override

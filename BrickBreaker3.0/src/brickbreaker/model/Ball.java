@@ -2,6 +2,8 @@ package brickbreaker.model;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.time.Duration;
+import java.time.Instant;
 
 import javax.swing.ImageIcon;
 
@@ -11,41 +13,69 @@ import brickbreaker.sound.Sound;
 import brickbreaker.view.Game;
 
 public class Ball extends Item {
-	private int defSpeed;
 	private int speed;
 	private Image state0;
 	private static Sound ballSound;
-	private Players player;
+	private Players playertyp;
+	private boolean ballStoped;
+	private Instant timeStart;
+	private Instant timeStop;
+	private Duration timePastBetween;
 
-	public Ball(Integer x, Integer y, Integer w, Integer h, int i, Players player) {
+	public Ball(Integer x, Integer y, Integer w, Integer h, int i, Players playertyp) {
 		super(x, y, w, h, 1);
-		defSpeed = 5;
-		speed = 0;
+		speed = 5;
+		ballStoped = true;
 		this.setVelX(-speed);
 		this.setVelY(speed);
 		//state0 = Toolkit.getDefaultToolkit().getImage("res/ball/ball0.png");
-		if (player == Players.PLAYER1) {
+		if (playertyp == Players.PLAYER1) {
 			state0 = new ImageIcon(this.getClass().getResource("/res/images/ball/ball0.png")).getImage(); 
 		} else {
 			state0 = new ImageIcon(this.getClass().getResource("/res/images/ball/ball1.png")).getImage();
 		}
 		ballSound = new Sound("/res/sounds/bounce.wav",-10.0f);
-		this.player = player;
+		this.playertyp = playertyp;
+	}
+
+	public int getSpeed() {
+		return speed;
 	}
 	
-	public int getDefSpeed() {
-		return defSpeed;
+	public void setSpeed(int speed) {
+		this.speed = speed;
+		this.setVelX(-speed);
+		this.setVelY(speed);
 	}
 
-
 	public void respawn() {
-		this.getPos().setPosX(300);
-		this.getPos().setPosY(500);
-		this.speed = 0;
+		timeStop = Instant.now();
+		timePastBetween = Duration.between(timeStart, timeStop);
+		
+		if (timePastBetween.getSeconds() >= 2) {
+			setSpeed(5);
+			ballStoped = true;
+			this.getPos().setPosX(300);
+			this.getPos().setPosY(500);
+			timeStart = null;
+		}
 	}
 	
 	public static Sound getBallSound() {
 		return ballSound;
+	}
+	
+	
+	public void setPlayertyp(Players playertyp) {
+		this.playertyp = playertyp;
+	}
+
+	public boolean isBallStoped() {
+		return ballStoped;
+	}
+
+	public void setBallStoped(boolean ballStoped) {
+		this.ballStoped = ballStoped;
 	}
 
 	@Override
@@ -60,7 +90,7 @@ public class Ball extends Item {
 //		int w_ = i.getPos().getWidth().intValue();
 //		int h_ = i.getPos().getHeight().intValue();
 		
-		if (Game.multiplayerGameStarted && player == Players.PLAYER1) {
+		if (Game.multiplayerGameStarted && playertyp == Players.PLAYER1) {
 			if (x+speed <= GameController.windowWidth/2+8) {
 				this.setVelX(speed);
 				ballSound.start();
@@ -77,11 +107,16 @@ public class Ball extends Item {
 			}
 			
 			if (y+h >= GameController.windowHeight) {
+				if (timeStart == null) {
+					timeStart = Instant.now();
+					this.setSpeed(0);
+					this.setPos(300, 720);
+				}
 				respawn();
 			}	
 		}
 		
-		if (player == Players.PLAYER2 || player == Players.COMPUTER || Game.singleplayerGameStarted) {
+		if (playertyp == Players.PLAYER2 || playertyp == Players.COMPUTER || Game.singleplayerGameStarted) {
 			if (x+speed <= 0) {
 				this.setVelX(speed);
 				ballSound.start();
@@ -98,6 +133,11 @@ public class Ball extends Item {
 			}
 			
 			if (y+h >= GameController.windowHeight) {
+				if (timeStart == null) {
+					timeStart = Instant.now();
+					setSpeed(0);
+					this.setPos(300, 720);
+				}
 				respawn();
 			}	
 		}
@@ -117,17 +157,10 @@ public class Ball extends Item {
 	
 	@Override
 	public void update() {
-		this.getPos().setPosX(this.getPos().getPosX() + getVelX());
-		this.getPos().setPosY(this.getPos().getPosY() + getVelY());
+		if (!ballStoped) {
+			this.getPos().setPosX(this.getPos().getPosX() + getVelX());
+			this.getPos().setPosY(this.getPos().getPosY() + getVelY());
+		}
 	}
 
-	public int getSpeed() {
-		return speed;
-	}
-
-	public void setSpeed(int speed) {
-		this.speed = speed;
-		this.setVelX(-speed);
-		this.setVelY(speed);
-	}
 }

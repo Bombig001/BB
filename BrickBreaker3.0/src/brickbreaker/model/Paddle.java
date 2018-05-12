@@ -23,7 +23,6 @@ import brickbreaker.sound.Sound;
 import brickbreaker.view.Game;
 
 public class Paddle extends Item {
-	private String name;
 	private Integer score;
 	private int stateCounter = 0;
 	private Image img;
@@ -34,18 +33,17 @@ public class Paddle extends Item {
 	private boolean extendedEffect;
 	private int speed;
 	private static Sound paddleToBallSound;
-	private Players player;
+	private Players playertyp;
 	private Item ball;
 	private Strategy strgy;
 
-	public Paddle(JComponent game,String name, Integer x, Integer y, Integer w, Integer h, Players player, Item ball) {
+	public Paddle(JComponent game,String name, Integer x, Integer y, Integer w, Integer h, Players playertyp, Item ball) {
 		super(x, y, w, h, 3);
 		extendedEffect = false;
-		this.name = name;
 		score = 0;
 		speed = 7;
 		taste = new TastaturEingabe(game);
-		if (player == Players.PLAYER1) {
+		if (playertyp == Players.PLAYER1) {
 		state0  = new ImageIcon(this.getClass().getResource("/res/images/paddle/paddle1state0.png")).getImage();
 		state1  = new ImageIcon(this.getClass().getResource("/res/images/paddle/paddle1state1.png")).getImage();
 		state2  = new ImageIcon(this.getClass().getResource("/res/images/paddle/paddle1state2.png")).getImage();
@@ -55,39 +53,24 @@ public class Paddle extends Item {
 			state2  = new ImageIcon(this.getClass().getResource("/res/images/paddle/paddle2state2.png")).getImage();
 		}
 		paddleToBallSound = new Sound("/res/sounds/bouncePaddle.wav",-10.0f);
-		this.player = player;
+		this.playertyp = playertyp;
 		this.ball = ball;
 	}
 	
-	public Integer getScore() {
-		return score;
+	public boolean isExtendedEffect() {
+		return extendedEffect;
 	}
-
-
-
-	public void setScore(Integer score) {
-		this.score = score;
+	
+	public void setExtendedEffect(boolean extendedEffect) {
+		this.extendedEffect = extendedEffect;
 	}
 
 	public static Sound getPaddleToBallSound() {
 		return paddleToBallSound;
 	}
-	
-	
-	public boolean isExtendedEffect() {
-		return extendedEffect;
-	}
 
-	public void setExtendedEffect(boolean extendedEffect) {
-		this.extendedEffect = extendedEffect;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
+	public void setPlayertyp(Players playertyp) {
+		this.playertyp = playertyp;
 	}
 
 	@Override
@@ -102,7 +85,7 @@ public class Paddle extends Item {
 		int w_ = i.getPos().getWidth().intValue();
 		int h_ = i.getPos().getHeight().intValue();
 		
-		if (Game.multiplayerGameStarted && player == Players.PLAYER1) {
+		if (Game.multiplayerGameStarted && playertyp == Players.PLAYER1) {
 		
 			if (x <= GameController.windowWidth/2+8) {
 				this.getPos().setPosX(GameController.windowWidth/2+8);
@@ -113,7 +96,7 @@ public class Paddle extends Item {
 			}
 			
 		}
-		if (player == Players.PLAYER2 || player == Players.COMPUTER || Game.singleplayerGameStarted) {
+		if (playertyp == Players.PLAYER2 || playertyp == Players.COMPUTER || Game.singleplayerGameStarted) {
 			if (x <= 0) {
 				this.getPos().setPosX(0);
 			}
@@ -164,7 +147,7 @@ public class Paddle extends Item {
 	
 	@Override
 	public void update() {
-		if (player == Players.PLAYER1) {
+		if (playertyp == Players.PLAYER1) {
 			taste.tasteGedrückt(KeyEvent.VK_LEFT,"player1Links", (evt) -> {
 				this.setVelX(-speed);
 			});
@@ -179,11 +162,11 @@ public class Paddle extends Item {
 				this.setVelX(0);
 			});
 			taste.tasteLosgelassen(KeyEvent.VK_ENTER,"player1BallGainSpeed", (evt) -> {
-				if (((Ball) ball).getSpeed() == 0) {
-					((Ball) ball).setSpeed(((Ball) ball).getDefSpeed());
+				if (((Ball) ball).isBallStoped()) {
+					((Ball) ball).setBallStoped(false);
 				}
 			});
-		} else if (player == Players.PLAYER2) {
+		} else if (playertyp == Players.PLAYER2) {
 			taste.tasteGedrückt(KeyEvent.VK_A,"player2Links", (evt) -> {
 				this.setVelX(-speed);
 			});
@@ -199,29 +182,38 @@ public class Paddle extends Item {
 			});
 			
 			taste.tasteLosgelassen(KeyEvent.VK_SPACE,"player2BallGainSpeed", (evt) -> {
-				if (((Ball) ball).getSpeed() == 0) {
-					((Ball) ball).setSpeed(((Ball) ball).getDefSpeed());
+				if (((Ball) ball).isBallStoped()) {
+					((Ball) ball).setBallStoped(false);
 				}
 			});
-		} else if (player == Players.COMPUTER) {
+		} else if (playertyp == Players.COMPUTER) {
 			if (strgy != null) {
 				if (!strgy.getRandomChance()) {
-					if (((Ball) ball).getSpeed() == 0) {
-						((Ball) ball).setSpeed(((Ball) ball).getDefSpeed());
-					}
-					if (ball.getPos().getPosX() > (this.getPos().getPosX() + this.getPos().getHeight().intValue())) {
-						this.setVelX(speed);
-					} else {
-						this.setVelX(-speed);
+					if (((Ball) ball).isBallStoped()) {
+						if (this.getPos().getPosX() <= GameController.windowWidth/4 && this.getPos().getPosX() >= GameController.windowWidth/5) {
+							((Ball) ball).setBallStoped(false);
+						} else if (this.getPos().getPosX() < 300){
+							this.setVelX(speed);
+						} else {
+							this.setVelX(-speed);
+						}
+					} else if (!((Ball) ball).isBallStoped() && ((Ball) ball).getSpeed() != 0) {
+						if (ball.getPos().getPosX() > (this.getPos().getPosX() + this.getPos().getHeight().intValue())) {
+							this.setVelX(speed);
+						} else {
+							this.setVelX(-speed);
+						}
 					}
 				} else {
 					this.setVelX(0);
 				}
 			} else {
-				strgy = new Strategy(Game.schwierigkeitsgrad);
+				strgy = new Strategy(Game.player2.getDifficultyLevel());
 			}
 		}
-		if (((Ball) ball).getSpeed() == 0) {
+		
+		// damit ball immer auf paddle bleibt
+		if (((Ball) ball).isBallStoped()) {
 			int x = this.getPos().getPosX().intValue();
 			int y = this.getPos().getPosY().intValue();
 			int w = this.getPos().getWidth().intValue();
