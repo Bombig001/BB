@@ -77,19 +77,6 @@ public class Menu  implements ActionListener{
 		computerBtn = new MenuButton("Spieler vs. PC", 210, 500, 300, 30, new Color(0x738ebc), computerIcon, this);
 		settingsBtn = new MenuButton("Einstellungen", 210, 550, 300, 30, new Color(0x738ebc), settingsIcon, this);
 		infoBtn = new MenuButton("Info", 210, 600, 300, 30, new Color(0x738ebc), infoIcon, this);
-		
-//		jf.add(singleBtn);
-//		jf.add(multiBtn);
-//		jf.add(computerBtn);
-//		jf.add(settingsBtn);
-//		jf.add(infoBtn);
-//		jf.add(label);
-//		jf.add(label1);
-//		jf.add(label2);
-//		jf.add(bgLogo);
-//		jf.add(bg);
-		menuSound = new Sound("/res/sounds/op.wav",-30.0f);
-		menuSound.loop();
 	}
 	
 	public void start() {
@@ -104,6 +91,8 @@ public class Menu  implements ActionListener{
 		jf.add(label2);
 		jf.add(bgLogo);
 		jf.add(bg);
+		menuSound = new Sound("/res/sounds/op.wav",-30.0f);
+		menuSound.loop();
 	}
 
 	@Override
@@ -112,27 +101,38 @@ public class Menu  implements ActionListener{
 		// Single button
 		if ( e.getSource() == singleBtn) {
 			int selected;
+			Integer[] levels = {1, 2, 3, 4, 5};
 			JTextField player1Name = new JTextField();
+			JComboBox<Integer> levelChoise = new JComboBox<Integer>(levels);
 			String player1Warning = "";
 			
 			do {
-				Object[] message = {"<html>Namen eingeben: <br/><i style=\"color:red\"><sub>maximal 8 Zeichen</sub></i></html>", player1Name,player1Warning};
+				Object[] message = {"<html>Namen eingeben(*): <br/><i style=\"color:red;\"><sub>maximal 8 Zeichen</sub></i></html>", player1Name,player1Warning,
+						"<html>Level ausw‰hlen: <br/></html>",levelChoise, "<html><i style=\"font-size:8.5px;\">Felder mit (*) sind Pflichtfelder!</sub></i></html>"};
 				selected = JOptionPane.showConfirmDialog(null, message, "Einzelspieler", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+				
+				if(player1Name.getText().isEmpty()) {
+					player1Warning = "<html><p style=\"color:red;font-size:8.5px;\">Bitte Namen eingeben!</p></html>";
+				}
 				
 				if (!player1Name.getText().isEmpty() && !player1Name.getText().matches("^[a-zA-Z¸‹‰ƒˆ÷ÈË‡‚Á]+$")) {
 					player1Name.setText("");
-					player1Warning = "<html><p style=\"color:red\">Nur Buchstaben erlaubt!</p></html>";
-				} else {
+					player1Warning = "<html><p style=\"color:red;font-size:8.5px;\">Nur Buchstaben erlaubt!</p></html>";
+				} else if (!player1Name.getText().isEmpty()){
 					player1Warning = "";
 				}
 				
 			} while (selected == 0 && (player1Name.getText().isEmpty() || player1Name.getText().length() > 8));
 			
 			if(selected == 0) {
+				Game.level = (int)levelChoise.getSelectedItem();
+				Game.player1.getCurrentLevel().setCurrentLevel(Game.level);
+				Game.player1.loadUpStage();
+				System.out.println(Game.level);
 				Game.player1.setName(player1Name.getText());
-				//Game.spieler1 = player1.getText();
 				Game.singleplayerGameStarted = true;
 				jf.removeAll();
+				
 			}
 		}
 		
@@ -146,21 +146,29 @@ public class Menu  implements ActionListener{
 			String player2Warning = "";
 			
 			do {
-				Object[] message = {"<html>Bitte Namen eingeben!<br/><i style=\"color:red\"><sub>maximal 8 Zeichen</sub></i></html>","Spieler 1:", player1Name, player1Warning, 
-		        				"Spieler 2:", player2Name,player2Warning};
+				Object[] message = {"<html>Bitte Namen eingeben!<br/><i style=\"color:red\"><sub>maximal 8 Zeichen</sub></i></html>","Spieler 1(*):", player1Name, player1Warning, 
+		        				"Spieler 2(*):", player2Name,player2Warning,"<html><i style=\"font-size:8.5px;\">Felder mit (*) sind Pflichtfelder!</sub></i></html>"};
 			selected = JOptionPane.showConfirmDialog(null, message, "Spieler vs. Spieler", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+			
+			if(player1Name.getText().isEmpty()) {
+				player1Warning = "<html><p style=\"color:red;font-size:8.5px;\">Bitte Namen eingeben!</p></html>";
+			}
+			
+			if(player2Name.getText().isEmpty()) {
+				player2Warning = "<html><p style=\"color:red;font-size:8.5px;\">Bitte Namen eingeben!</p></html>";
+			}
 			
 			if (!player1Name.getText().isEmpty() && !player1Name.getText().matches("^[a-zA-Z¸‹‰ƒˆ÷ÈË‡‚Á]+$")) {
 				player1Name.setText("");
-				player1Warning = "<html><p style=\"color:red\">Nur Buchstaben erlaubt!</p></html>";
-			} else {
+				player1Warning = "<html><p style=\"color:red;font-size:8.5px;\">Nur Buchstaben erlaubt!</p></html>";
+			} else if (!player1Name.getText().isEmpty()){
 				player1Warning = "";
 			}
 			
 			if (!player2Name.getText().isEmpty() && !player2Name.getText().matches("^[a-zA-Z¸‹‰ƒˆ÷ÈË‡‚Á]+$")) {
 				player2Name.setText("");
-				player2Warning = "<html><p style=\"color:red\">Nur Buchstaben erlaubt!</p></html>";
-			} else {
+				player2Warning = "<html><p style=\"color:red;font-size:8.5px;\">Nur Buchstaben erlaubt!</p></html>";
+			} else if (!player2Name.getText().isEmpty()){
 				player2Warning = "";
 			}
 			
@@ -220,17 +228,21 @@ public class Menu  implements ActionListener{
 			int selected;
 			JTextField player1Name = new JTextField();
 			String player1Warning = "";
-			JComboBox choise = new JComboBox(options);
+			JComboBox<String> choise = new JComboBox<String>(options);
 			
 			do {
-				Object[] message = {"<html>Bitte Namen eingeben!<br/><i style=\"color:red\"><sub>maximal 8 Zeichen</sub></i></html>","Spieler 1:", player1Name, player1Warning, 
-	    				"Schwierigkeistgrad: ", choise};
+				Object[] message = {"<html>Bitte Namen eingeben!<br/><i style=\"color:red;\"><sub>maximal 8 Zeichen</sub></i></html>","Spieler 1(*):", player1Name, player1Warning, 
+	    				"Schwierigkeistgrad: ", choise, "<html><i style=\"font-size:8.5px;\">Felder mit (*) sind Pflichtfelder!</sub></i></html>"};
 				selected = JOptionPane.showConfirmDialog(null, message, "Spieler vs. PC", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+				
+				if(player1Name.getText().isEmpty()) {
+					player1Warning = "<html><p style=\"color:red;font-size:8.5px;\">Bitte Namen eingeben!</p></html>";
+				}
 				
 				if (!player1Name.getText().isEmpty() && !player1Name.getText().matches("^[a-zA-Z¸‹‰ƒˆ÷ÈË‡‚Á]+$")) {
 					player1Name.setText("");
-					player1Warning = "<html><p style=\"color:red\">Nur Buchstaben erlaubt!</p></html>";
-				} else {
+					player1Warning = "<html><p style=\"color:red;font-size:8.5px;\">Nur Buchstaben erlaubt!</p></html>";
+				} else if (!player1Name.getText().isEmpty()){
 					player1Warning = "";
 				}
 				

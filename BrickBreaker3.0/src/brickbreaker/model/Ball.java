@@ -110,7 +110,7 @@ public class Ball extends Item {
 				if (timeStart == null) {
 					timeStart = Instant.now();
 					this.setSpeed(0);
-					this.setPos(300, 720);
+					this.setPos((int)(GameController.windowWidth/1.4), GameController.windowHeight);
 				}
 				respawn();
 			}	
@@ -136,7 +136,7 @@ public class Ball extends Item {
 				if (timeStart == null) {
 					timeStart = Instant.now();
 					setSpeed(0);
-					this.setPos(300, 720);
+					this.setPos(GameController.windowWidth/5, GameController.windowHeight);
 				}
 				respawn();
 			}	

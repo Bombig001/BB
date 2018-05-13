@@ -33,8 +33,8 @@ public class Game extends JComponent implements ActionListener {
 	public static boolean multiplayerGameStarted = false;
 	public static Player player1;
 	public static Player player2;
+	public static int level = 1;
 	private Graphics gfx;
-	private int level = 2;
 	Image background;
 	Image background2;
 	Image splitter;
@@ -65,7 +65,6 @@ public class Game extends JComponent implements ActionListener {
 	}
 	
 	private void gameOverScreen() {
-		System.out.println(level);
 		timeStop = Instant.now();
 		timePastBetween = Duration.between(timeStart, timeStop);
 			

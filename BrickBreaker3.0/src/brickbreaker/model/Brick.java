@@ -20,17 +20,23 @@ public class Brick extends Item {
 
 	public Brick(Integer x, Integer y, Integer w, Integer h, Integer color) {
 		super(x, y, w, h, 1);
-		if ( color == 1) {
-			state0 = new ImageIcon(this.getClass().getResource("/res/images/bricks/blau1.png")).getImage();
-		} else if ( color == 2) {
-			state0 = new ImageIcon(this.getClass().getResource("/res/images/bricks/rot1.png")).getImage();
-		} else if (color == 3) {
-			state0 = new ImageIcon(this.getClass().getResource("/res/images/bricks/yellow1.png")).getImage();
-		} else if ( color == 4) {
+		if ( color == 1 ) {
 			this.setHealth(3);
 			state0 = new ImageIcon(this.getClass().getResource("/res/images/bricks/grey0.png")).getImage();
 			state1 = new ImageIcon(this.getClass().getResource("/res/images/bricks/grey1.png")).getImage();
 			state2 = new ImageIcon(this.getClass().getResource("/res/images/bricks/grey2.png")).getImage();
+		} else if ( color == 2) {
+			state0 = new ImageIcon(this.getClass().getResource("/res/images/bricks/blau1.png")).getImage();
+		} else if ( color == 3 ) {
+			state0 = new ImageIcon(this.getClass().getResource("/res/images/bricks/rot1.png")).getImage();
+		} else if ( color == 4) {
+			state0 = new ImageIcon(this.getClass().getResource("/res/images/bricks/yellow1.png")).getImage();
+		} else if ( color == 5 ) {
+			state0 = new ImageIcon(this.getClass().getResource("/res/images/bricks/brown1.png")).getImage();
+		} else if ( color == 6 ) {
+			state0 = new ImageIcon(this.getClass().getResource("/res/images/bricks/orange1.png")).getImage();
+		} else if ( color == 7 ) {
+			state0 = new ImageIcon(this.getClass().getResource("/res/images/bricks/green1.png")).getImage();
 		}
 		
 		brickToBallSound0 = new Sound("/res/sounds/bounceBrick0.wav",-10.0f);
