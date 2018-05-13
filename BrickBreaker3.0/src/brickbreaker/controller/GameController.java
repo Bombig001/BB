@@ -32,7 +32,7 @@ public class GameController {
 		Image computerIcon = new ImageIcon(this.getClass().getResource("/res/images/luffy1.png")).getImage();
 		window.setIconImage(computerIcon);
 		window.setVisible(true);
-		Timer t = new Timer(10,game);
+		Timer t = new Timer(20,game);
 		t.start();
 	}
 

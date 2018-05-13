@@ -41,7 +41,7 @@ public class Paddle extends Item {
 		super(x, y, w, h, 3);
 		extendedEffect = false;
 		score = 0;
-		speed = 7;
+		speed = 8;
 		taste = new TastaturEingabe(game);
 		if (playertyp == Players.PLAYER1) {
 		state0  = new ImageIcon(this.getClass().getResource("/res/images/paddle/paddle1state0.png")).getImage();

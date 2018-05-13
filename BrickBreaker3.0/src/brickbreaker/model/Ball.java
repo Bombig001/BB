@@ -25,8 +25,8 @@ public class Ball extends Item {
 
 	public Ball(Integer x, Integer y, Integer w, Integer h, int i, Players playertyp) {
 		super(x, y, w, h, 1);
-		defSpeed = 5;
-		speed = 5;
+		defSpeed = 7;
+		speed = 7;
 		ballStoped = true;
 		this.setVelX(-speed);
 		this.setVelY(speed);
@@ -93,12 +93,12 @@ public class Ball extends Item {
 //		int h_ = i.getPos().getHeight().intValue();
 		
 		if (Game.multiplayerGameStarted && playertyp == Players.PLAYER1) {
-			if (x+speed <= GameController.windowWidth/2+8) {
+			if (x-speed <= GameController.windowWidth/2+8) {
 				this.setVelX(speed);
 				ballSound.start();
 			}
 			
-			if (x+w >= GameController.windowWidth) {
+			if (x+w+speed >= GameController.windowWidth) {
 				this.setVelX(-speed);
 				ballSound.start();
 			}
@@ -119,7 +119,7 @@ public class Ball extends Item {
 		}
 		
 		if (playertyp == Players.PLAYER2 || playertyp == Players.COMPUTER || Game.singleplayerGameStarted) {
-			if (x+speed <= 0) {
+			if (x-speed <= 0) {
 				this.setVelX(speed);
 				ballSound.start();
 			}

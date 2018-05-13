@@ -24,7 +24,7 @@ public abstract class PowerUp implements ItemHandler{
 	
 	public PowerUp(Integer x, Integer y, Integer w, Integer h) {
 		pos = new Position(x, y, w, h);
-		velY = 2;
+		velY = 3;
 		visible = true;
 		collected = false;
 		img = new ImageIcon(this.getClass().getResource("/res/images/powerups/enlarge.png")).getImage(); 
