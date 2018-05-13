@@ -105,9 +105,9 @@ public class Brick extends Item {
 			    }else{
 			    	i.setVelY(-((Ball) i).getSpeed());
 			    }
-			    if(x_+w_ <= x+w/4) {
+			    if(x_+w_ <= /*x+w/4*/x+10) {
 			    	i.setVelX(-((Ball) i).getSpeed());
-			    } else if(x_ >= x+w-(w/4)) {
+			    } else if(x_ >= x+w-/*(w/4)*/10) {
 			    	i.setVelX(((Ball) i).getSpeed());
 			    }
 			    return true;

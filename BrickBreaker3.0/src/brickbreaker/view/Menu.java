@@ -101,7 +101,7 @@ public class Menu  implements ActionListener{
 		// Single button
 		if ( e.getSource() == singleBtn) {
 			int selected;
-			Integer[] levels = {1, 2, 3, 4, 5};
+			Integer[] levels = {1, 2, 3, 4, 5, 6};
 			JTextField player1Name = new JTextField();
 			JComboBox<Integer> levelChoise = new JComboBox<Integer>(levels);
 			String player1Warning = "";

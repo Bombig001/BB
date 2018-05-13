@@ -13,6 +13,7 @@ import brickbreaker.sound.Sound;
 import brickbreaker.view.Game;
 
 public class Ball extends Item {
+	private int defSpeed;
 	private int speed;
 	private Image state0;
 	private static Sound ballSound;
@@ -24,6 +25,7 @@ public class Ball extends Item {
 
 	public Ball(Integer x, Integer y, Integer w, Integer h, int i, Players playertyp) {
 		super(x, y, w, h, 1);
+		defSpeed = 5;
 		speed = 5;
 		ballStoped = true;
 		this.setVelX(-speed);
@@ -53,7 +55,7 @@ public class Ball extends Item {
 		timePastBetween = Duration.between(timeStart, timeStop);
 		
 		if (timePastBetween.getSeconds() >= 2) {
-			setSpeed(5);
+			setSpeed(defSpeed);
 			ballStoped = true;
 			this.getPos().setPosX(300);
 			this.getPos().setPosY(500);

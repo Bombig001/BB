@@ -5,7 +5,7 @@ import brickbreaker.model.Brick;
 import brickbreaker.model.Item;
 
 public class Level {
-	private int maxLevel = 5;
+	private int maxLevel = 6;
 	private ArrayList<Item> brickList;
 	// aa = stone, bb = blue, cc = red, dd = yellow, ee = brown, ff = orange, gg = green
 	private int __ = 0, aa = 1, bb = 2,cc = 3, dd = 4, ee = 5, ff = 6, gg = 7;
@@ -35,9 +35,9 @@ public class Level {
 			{gg,__,gg,__,gg,__,gg,__,gg,__,gg},
 			{gg,__,gg,__,gg,__,gg,__,gg,__,gg},
 			{dd,__,dd,__,gg,__,gg,__,dd,__,dd},
+			{dd,__,dd,__,gg,__,gg,__,dd,__,dd},
+			{dd,__,dd,__,gg,__,gg,__,dd,__,dd},
 			{dd,aa,dd,__,gg,__,gg,__,dd,aa,dd},
-			{__,__,__,__,__,__,__,__,__,__,__},
-			{__,__,__,__,__,__,__,__,__,__,__},
 			{__,__,__,__,__,__,__,__,__,__,__},
 			{__,__,__,__,__,__,__,__,__,__,__},
 			{__,__,__,__,__,__,__,__,__,__,__}
@@ -78,7 +78,7 @@ public class Level {
 	};
 	
 	private int[][] level5 = {
-			{__,__,aa,__,__,__,__,__,aa,__,__},
+			{__,__,aa,aa,__,__,__,aa,aa,__,__},
 			{__,aa,aa,__,__,bb,__,__,aa,aa,__},
 			{__,aa,__,__,bb,bb,bb,__,__,aa,__},
 			{__,aa,__,bb,bb,bb,bb,bb,__,aa,__},
@@ -92,6 +92,24 @@ public class Level {
 			{__,__,__,__,__,__,__,__,__,__,__},
 			{__,__,__,__,__,__,__,__,__,__,__},
 			{__,__,__,__,__,__,__,__,__,__,__}
+	};
+	
+	
+	private int[][] level6 = {
+			{__,__,__,__,__,bb,__,bb,__,__,__},
+			{__,__,__,__,__,bb,__,bb,__,__,__},
+			{__,__,__,__,__,bb,__,bb,__,__,__},
+			{__,__,__,__,__,bb,__,bb,__,__,__},
+			{__,__,__,__,__,bb,__,bb,__,__,__},
+			{__,__,__,__,__,bb,__,bb,__,__,__},
+			{__,__,__,__,__,bb,__,bb,__,__,__},
+			{__,__,__,__,__,bb,__,bb,__,__,__},
+			{__,__,__,__,__,bb,__,bb,__,__,__},
+			{__,__,__,__,__,bb,__,bb,__,__,__},
+			{__,__,__,__,__,bb,__,bb,__,__,__},
+			{__,__,__,__,__,bb,__,bb,__,__,__},
+			{__,__,__,__,__,bb,__,bb,__,__,__},
+			{__,__,__,__,__,bb,__,bb,__,__,__}
 	};
 	
 //	public Level(int lvl) {
@@ -124,6 +142,8 @@ public class Level {
 			current = level4;
 		}else if (lvl == 5) {
 			current = level5;
+		}else if (lvl == 6) {
+			current = level6;
 		}
 		initLevel(current);
 	}
