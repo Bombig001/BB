@@ -128,7 +128,6 @@ public class Menu  implements ActionListener{
 				Game.level = (int)levelChoise.getSelectedItem();
 				Game.player1.getCurrentLevel().setCurrentLevel(Game.level);
 				Game.player1.loadUpStage();
-				System.out.println(Game.level);
 				Game.player1.setName(player1Name.getText());
 				Game.singleplayerGameStarted = true;
 				jf.removeAll();

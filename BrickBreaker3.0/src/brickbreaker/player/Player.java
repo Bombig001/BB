@@ -12,7 +12,12 @@ import brickbreaker.model.Ball;
 import brickbreaker.model.Brick;
 import brickbreaker.model.Item;
 import brickbreaker.model.Paddle;
-import brickbreaker.powerup.ExtendedPaddle;
+import brickbreaker.powerup.PaddleExtended;
+import brickbreaker.powerup.PaddleMissile;
+import brickbreaker.powerup.PaddleShortened;
+import brickbreaker.powerup.BallFast;
+import brickbreaker.powerup.BallMelting;
+import brickbreaker.powerup.BallSlow;
 import brickbreaker.powerup.PowerUp;
 
 public class Player {
@@ -83,6 +88,11 @@ public class Player {
 	public Players getPlayertyp() {
 		return playertyp;
 	}
+	
+	public void resetEffects() {
+		((Ball)ball).resetEffects();
+		((Paddle)paddle).resetEffects();
+	}
 
 	public void setPlayertyp(Players playertyp) {
 		this.playertyp = playertyp;
@@ -115,17 +125,15 @@ public class Player {
 			Item it = entities.get(i);
 			if ( it instanceof Brick) {
 				if (!((Brick) it).getIsSmashed()) {
-					if(((Brick) it).colission(ball)) {
-						((Brick) it).dealDamage();
-						if (((Brick) it).getIsSmashed()) {
-							if(rand.nextInt(2) == 1) {
-								PowerUp pwp = new ExtendedPaddle(entities.get(i).getPos().getPosX()+entities.get(i).getPos().getWidth()/2-20, entities.get(i).getPos().getPosY(), 40, 11, paddle);
-								powerups.add(pwp);
-							}
-							entities.remove(i);
-							score += 10;
-							i--;
+					it.colission(ball);
+					if (((Brick) it).getIsSmashed()) {
+						if(rand.nextInt(2) == 1) {
+							PowerUp pwp = new PaddleMissile(entities.get(i).getPos().getPosX(), entities.get(i).getPos().getPosY(), paddle,entities);
+							powerups.add(pwp);
 						}
+						entities.remove(i);
+						score += 10;
+						i--;
 					}
 				}
 			} else {

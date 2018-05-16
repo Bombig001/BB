@@ -88,7 +88,7 @@ public class Brick extends Item {
 	}
 
 	@Override
-	public boolean colission(Item i) {
+	public void colission(Item i) {
 		int x = this.getPos().getPosX().intValue();
 		int y = this.getPos().getPosY().intValue();
 		int w = this.getPos().getWidth().intValue();
@@ -100,19 +100,20 @@ public class Brick extends Item {
 		int h_ = i.getPos().getHeight().intValue();
 		
 		 if (x_+w_ >= x && x_ <= x+w && y_+h_ >= y && y_ <= y+h){
+			 if (!((Ball) i).isEffectMelting()) {
 			    if (y_ >= y) {
 			    	i.setVelY(((Ball) i).getSpeed());
 			    }else{
 			    	i.setVelY(-((Ball) i).getSpeed());
 			    }
-			    if(x_+w_ <= /*x+w/4*/x+10) {
+			    if(x_+w_ <= x+w/4) {
 			    	i.setVelX(-((Ball) i).getSpeed());
-			    } else if(x_ >= x+w-/*(w/4)*/10) {
+			    } else if(x_ >= x+w-(w/4)) {
 			    	i.setVelX(((Ball) i).getSpeed());
 			    }
-			    return true;
-			  }
-		return false;
+			 }
+			 dealDamage();
+			 }
 	}
 
 	@Override

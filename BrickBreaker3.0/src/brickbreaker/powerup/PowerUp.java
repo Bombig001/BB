@@ -1,50 +1,97 @@
 package brickbreaker.powerup;
 
+import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Toolkit;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.concurrent.Callable;
 
-import javax.swing.ImageIcon;
+import brickbreaker.controller.GameController;
+import brickbreaker.model.Item;
 
-import brickbreaker.model.ItemHandler;
-import brickbreaker.position.Position;
-
-public abstract class PowerUp implements ItemHandler{
-	private Position pos;
-	private int velY;
+public abstract class PowerUp extends Item {
 	private Image img;
 	private boolean visible;
 	private boolean collected;
 	private boolean dead;
 	private int coolDown;
+	private Item itemToEffect;
+	private Callable<Boolean> effect;
 	private Instant timeStart;
 	private Instant timeStop;
 	private Duration timePastBetween;
 	
-	public PowerUp(Integer x, Integer y, Integer w, Integer h) {
-		pos = new Position(x, y, w, h);
-		velY = 3;
+	public PowerUp(Integer x, Integer y, Item itemToEffect) {
+		super(x, y, 50, 13, 1);
+		this.setVelY(1);
 		visible = true;
 		collected = false;
-		img = new ImageIcon(this.getClass().getResource("/res/images/powerups/enlarge.png")).getImage(); 
 		coolDown = 0;
+		this.itemToEffect = itemToEffect;
 	}
-
-	public Position getPos() {
-		return pos;
+	
+	@Override
+	public void colission(Item i) {
+		int x = this.getPos().getPosX().intValue();
+		int y = this.getPos().getPosY().intValue();
+		int w = this.getPos().getWidth().intValue();
+		int h = this.getPos().getHeight().intValue();
+		
+		int x_ = i.getPos().getPosX().intValue();
+		int y_ = i.getPos().getPosY().intValue();
+		int w_ = i.getPos().getWidth().intValue();
+		int h_ = i.getPos().getHeight().intValue();
+		
+		if (x_+w_ >= x && x_ <= x+w && y_+h_ >= y && y_ <= y+h){
+			if (this.isVisible()) {
+				this.setVisible(false);
+				try {
+					if (!effect.call()) {
+						this.setCollected(true);
+					} else {
+						this.setDead(true);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		} else if (y > GameController.windowHeight) {
+			if (this.isVisible()) {
+				this.setVisible(false);
+				this.setDead(true);
+			}
+		}
 	}
-
-	public void setPos(Position pos) {
-		this.pos = pos;
+	
+	@Override
+	public void draw(Graphics gfx) {
+		int x = this.getPos().getPosX().intValue();
+		int y = this.getPos().getPosY().intValue();
+		int w = this.getPos().getWidth().intValue();
+		int h = this.getPos().getHeight().intValue();
+		if (this.isVisible()) {
+			gfx.drawImage(img, x, y, w, h,null);
+		}
+		
 	}
-
-	public int getVelY() {
-		return velY;
-	}
-
-	public void setVelY(int velY) {
-		this.velY = velY;
+	
+	@Override
+	public void update() {
+		if(isVisible()) {
+			this.getPos().setPosY(this.getPos().getPosY() + getVelY());
+		}
+		
+		try {
+			if (!effect.call() && this.isCollected()) {
+				this.setTimeStart(Instant.now());
+				startEffect();
+			}else if (this.getTimeStart() != null && this.isCollected() && this.checkIfExpired()) {
+				stopEffect();
+				this.setCollected(false);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public int getCoolDown() {
@@ -81,12 +128,22 @@ public abstract class PowerUp implements ItemHandler{
 		this.dead = dead;
 	}
 
+	public Item getItemToEffect() {
+		return itemToEffect;
+	}
+
 	public void setTimeStart(Instant timeStart) {
 		this.timeStart = timeStart;
 	}
 	
 	public Instant getTimeStart() {
 		return timeStart;
+	}
+
+	public Duration getTimePastBetween() {
+		timeStop = Instant.now();
+		timePastBetween = Duration.between(timeStart, timeStop);
+		return timePastBetween;
 	}
 
 	public abstract void startEffect();
@@ -102,12 +159,16 @@ public abstract class PowerUp implements ItemHandler{
 			return false;
 		}
 	}
-
+	
+	public void setImg(Image img) {
+		this.img = img;
+	}
+	
 	public Image getImg() {
 		return img;
 	}
 
-	public void setImg(Image img) {
-		this.img = img;
+	public void setEffect(Callable<Boolean> effect) {
+		this.effect = effect;
 	}
 }

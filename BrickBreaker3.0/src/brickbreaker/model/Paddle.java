@@ -30,18 +30,20 @@ public class Paddle extends Item {
 	private Image state1;
 	private Image state2;
 	private TastaturEingabe taste;
-	private boolean extendedEffect;
 	private int speed;
 	private static Sound paddleToBallSound;
 	private Players playertyp;
 	private Item ball;
 	private Strategy strgy;
+	private boolean effectExtended;
+	private boolean effectShortened;
+	private boolean effectMissile;
 
 	public Paddle(JComponent game,String name, Integer x, Integer y, Integer w, Integer h, Players playertyp, Item ball) {
 		super(x, y, w, h, 3);
-		extendedEffect = false;
+		effectExtended = false;
 		score = 0;
-		speed = 8;
+		speed = 9;
 		taste = new TastaturEingabe(game);
 		if (playertyp == Players.PLAYER1) {
 		state0  = new ImageIcon(this.getClass().getResource("/res/images/paddle/paddle1state0.png")).getImage();
@@ -56,13 +58,35 @@ public class Paddle extends Item {
 		this.playertyp = playertyp;
 		this.ball = ball;
 	}
-	
-	public boolean isExtendedEffect() {
-		return extendedEffect;
+
+	public boolean isEffectExtended() {
+		return effectExtended;
+	}
+
+	public void setEffectExtended(boolean effectExtended) {
+		this.effectExtended = effectExtended;
+	}
+
+	public boolean isEffectShortened() {
+		return effectShortened;
+	}
+
+	public void setEffectShortened(boolean effectShortened) {
+		this.effectShortened = effectShortened;
+	}
+
+	public boolean isEffectMissile() {
+		return effectMissile;
+	}
+
+	public void setEffectMissile(boolean effectMissile) {
+		this.effectMissile = effectMissile;
 	}
 	
-	public void setExtendedEffect(boolean extendedEffect) {
-		this.extendedEffect = extendedEffect;
+	public void resetEffects() {
+		effectExtended = false;
+		effectMissile = false;
+		effectShortened = false;
 	}
 
 	public static Sound getPaddleToBallSound() {
@@ -74,7 +98,7 @@ public class Paddle extends Item {
 	}
 
 	@Override
-	public boolean colission(Item i) {
+	public void colission(Item i) {
 		int x = this.getPos().getPosX().intValue();
 		int y = this.getPos().getPosY().intValue();
 		int w = this.getPos().getWidth().intValue();
@@ -119,10 +143,7 @@ public class Paddle extends Item {
 			    	i.setVelX(((Ball) i).getSpeed());
 			    }
 			    paddleToBallSound.start();
-			    return true;
 			  }
-		
-		return false;
 	}
 	
 	@Override
@@ -164,6 +185,8 @@ public class Paddle extends Item {
 			taste.tasteLosgelassen(KeyEvent.VK_ENTER,"player1BallGainSpeed", (evt) -> {
 				if (((Ball) ball).isBallStoped()) {
 					((Ball) ball).setBallStoped(false);
+					((Ball) ball).setSpeed(((Ball) ball).getDefSpeed());
+					((Ball) ball).initVelocity();
 				}
 			});
 		} else if (playertyp == Players.PLAYER2) {
@@ -184,6 +207,8 @@ public class Paddle extends Item {
 			taste.tasteLosgelassen(KeyEvent.VK_SPACE,"player2BallGainSpeed", (evt) -> {
 				if (((Ball) ball).isBallStoped()) {
 					((Ball) ball).setBallStoped(false);
+					((Ball) ball).setSpeed(((Ball) ball).getDefSpeed());
+					((Ball) ball).initVelocity();
 				}
 			});
 		} else if (playertyp == Players.COMPUTER) {
@@ -192,6 +217,8 @@ public class Paddle extends Item {
 					if (((Ball) ball).isBallStoped()) {
 						if (this.getPos().getPosX() <= GameController.windowWidth/4 && this.getPos().getPosX() >= GameController.windowWidth/5) {
 							((Ball) ball).setBallStoped(false);
+							((Ball) ball).setSpeed(((Ball) ball).getDefSpeed());
+							((Ball) ball).initVelocity();
 						} else if (this.getPos().getPosX() < 300){
 							this.setVelX(speed);
 						} else {

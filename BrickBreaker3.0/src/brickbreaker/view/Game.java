@@ -25,7 +25,7 @@ import brickbreaker.model.Item;
 import brickbreaker.model.Paddle;
 import brickbreaker.player.Player;
 import brickbreaker.player.Players;
-import brickbreaker.powerup.ExtendedPaddle;
+import brickbreaker.powerup.PaddleExtended;
 import brickbreaker.powerup.PowerUp;
 
 public class Game extends JComponent implements ActionListener {
@@ -34,7 +34,7 @@ public class Game extends JComponent implements ActionListener {
 	public static Player player1;
 	public static Player player2;
 	public static int level = 1;
-	private Graphics gfx;
+	public static Graphics gfx;
 	Image background;
 	Image background2;
 	Image splitter;
@@ -82,6 +82,10 @@ public class Game extends JComponent implements ActionListener {
 		} else {
 			gfx.drawImage(p1winns, 35, 300, null);
 			if (timePastBetween.getSeconds() >= 5) { 
+//				for (PowerUp pu : player1.getPowerups()) {
+//					pu.stopEffect();
+//				}
+				player1.resetEffects();
 				setupSingleplayerMode();
 				gameOver = false;
 			}

@@ -22,14 +22,16 @@ public class Ball extends Item {
 	private Instant timeStart;
 	private Instant timeStop;
 	private Duration timePastBetween;
+	private boolean effectMelting;
+	private boolean effectFast;
+	private boolean effectSlow;
 
 	public Ball(Integer x, Integer y, Integer w, Integer h, int i, Players playertyp) {
 		super(x, y, w, h, 1);
 		defSpeed = 7;
 		speed = 7;
 		ballStoped = true;
-		this.setVelX(-speed);
-		this.setVelY(speed);
+		this.initVelocity();
 		//state0 = Toolkit.getDefaultToolkit().getImage("res/ball/ball0.png");
 		if (playertyp == Players.PLAYER1) {
 			state0 = new ImageIcon(this.getClass().getResource("/res/images/ball/ball0.png")).getImage(); 
@@ -38,6 +40,11 @@ public class Ball extends Item {
 		}
 		ballSound = new Sound("/res/sounds/bounce.wav",-10.0f);
 		this.playertyp = playertyp;
+		resetEffects();
+	}
+
+	public int getDefSpeed() {
+		return defSpeed;
 	}
 
 	public int getSpeed() {
@@ -46,8 +53,6 @@ public class Ball extends Item {
 	
 	public void setSpeed(int speed) {
 		this.speed = speed;
-		this.setVelX(-speed);
-		this.setVelY(speed);
 	}
 
 	public void respawn() {
@@ -55,12 +60,25 @@ public class Ball extends Item {
 		timePastBetween = Duration.between(timeStart, timeStop);
 		
 		if (timePastBetween.getSeconds() >= 2) {
-			setSpeed(defSpeed);
+			this.resetEffects();
+			this.setSpeed(getDefSpeed());
+			this.initVelocity();
 			ballStoped = true;
 			this.getPos().setPosX(300);
 			this.getPos().setPosY(500);
 			timeStart = null;
 		}
+	}
+	
+	public void initVelocity() {
+		this.setVelX(-speed);
+		this.setVelY(speed);
+	}
+	
+	public void resetEffects() {
+		effectMelting = false;
+		effectFast = false;
+		effectSlow = false;
 	}
 	
 	public static Sound getBallSound() {
@@ -80,8 +98,32 @@ public class Ball extends Item {
 		this.ballStoped = ballStoped;
 	}
 
+	public boolean isEffectMelting() {
+		return effectMelting;
+	}
+
+	public void setEffectMelting(boolean effectMelting) {
+		this.effectMelting = effectMelting;
+	}
+
+	public boolean isEffectFast() {
+		return effectFast;
+	}
+
+	public void setEffectFast(boolean effectFast) {
+		this.effectFast = effectFast;
+	}
+
+	public boolean isEffectSlow() {
+		return effectSlow;
+	}
+
+	public void setEffectSlow(boolean effectSlow) {
+		this.effectSlow = effectSlow;
+	}
+
 	@Override
-	public boolean colission(Item i) {
+	public void colission(Item i) {
 		int x = this.getPos().getPosX().intValue();
 		int y = this.getPos().getPosY().intValue();
 		int w = this.getPos().getWidth().intValue();
@@ -112,6 +154,7 @@ public class Ball extends Item {
 				if (timeStart == null) {
 					timeStart = Instant.now();
 					this.setSpeed(0);
+					this.initVelocity();
 					this.setPos((int)(GameController.windowWidth/1.4), GameController.windowHeight);
 				}
 				respawn();
@@ -138,12 +181,12 @@ public class Ball extends Item {
 				if (timeStart == null) {
 					timeStart = Instant.now();
 					setSpeed(0);
+					this.initVelocity();
 					this.setPos(GameController.windowWidth/5, GameController.windowHeight);
 				}
 				respawn();
 			}	
 		}
-		return false;
 	}
 	
 	@Override
