@@ -13,6 +13,7 @@ import javax.swing.ImageIcon;
 import brickbreaker.model.Brick;
 import brickbreaker.model.Item;
 import brickbreaker.model.Paddle;
+import brickbreaker.player.Player;
 import brickbreaker.view.Game;
 
 public class PaddleMissile extends PowerUp {
@@ -20,14 +21,12 @@ public class PaddleMissile extends PowerUp {
 	private int millisBetweenShoots = 300;
 	private int shoots = millisBetweenShoots;
 	private ArrayList<Missile> missileList;
-	private Item itemToAttack;
-	private Missile myMissile;
-	private ArrayList<Item> entities;
+	private Player player;
 	
-	public PaddleMissile(Integer x, Integer y, Item itemToEffect, ArrayList<Item> entities) {
+	public PaddleMissile(Integer x, Integer y, Item itemToEffect, Player player) {
 		super(x, y, itemToEffect);
 		missileList = new ArrayList<Missile>();
-		this.entities = entities;
+		this.player = player;
 		this.setCoolDown(10);
 		Image img = new ImageIcon(this.getClass().getResource("/res/images/powerups/paddlemissle.png")).getImage();
 		this.setImg(img);
@@ -43,12 +42,14 @@ public class PaddleMissile extends PowerUp {
 		for (Missile m : missileList) {
 			if(m.isVisible()) {
 				m.update();
-				for (int i = 0; i < entities.size(); i++) {
-					Item it = entities.get(i);
+				for (int i = 0; i < player.getEntities().size(); i++) {
+					Item it = player.getEntities().get(i);
 					if (it instanceof Brick) {
 						m.colission(it);
 						if (((Brick) it).getIsSmashed()) {
-							entities.remove(i);
+							player.getEntities().remove(i);
+							player.setScore(player.getScore()+10);
+							i--;
 						}
 					}
 				}
@@ -63,7 +64,8 @@ public class PaddleMissile extends PowerUp {
 		}else if (this.getTimeStart() != null && this.isCollected() && this.checkIfExpired()) {
 			stopEffect();
 			this.setCollected(false);
-		} else if (this.isCollected()){
+			this.setDead(true);
+		} else if (this.getTimeStart() != null && this.isCollected()){
 			startEffect();
 		}
 	}
@@ -79,13 +81,6 @@ public class PaddleMissile extends PowerUp {
 			gfx.drawImage(getImg(), x, y, w, h,null);
 		}
 		
-//		if (myMissile != null) {
-//			gfx.setColor(Color.white);
-//			//gfx.fillRect(myMissile.getPos().getPosX(), myMissile.getPos().getPosY(), 10, 20);
-//			myMissile.draw(gfx);
-//			myMissile.colission(itemToAttack);
-//		}
-		
 		for (Missile m : missileList) {
 			if(m.isVisible()) {
 				m.draw(gfx);
@@ -98,12 +93,14 @@ public class PaddleMissile extends PowerUp {
 	@Override
 	public void startEffect() {
 			((Paddle) this.getItemToEffect()).setEffectMissile(true);
-			if (this.getTimePastBetween().toMillis() >= shoots) {
-			shoots += millisBetweenShoots;
-			Missile myMissile = new Missile(getItemToEffect().getPos().getPosX(), getItemToEffect().getPos().getPosY()-20, 10, 20);
-			Missile myMissile2 = new Missile(getItemToEffect().getPos().getPosX()+(getItemToEffect().getPos().getWidth()-10), getItemToEffect().getPos().getPosY()-20, 10, 20);
-			missileList.add(myMissile);
-			missileList.add(myMissile2);
+			if (this.getTimePastBetween().getSeconds() < 8) {
+				if (this.getTimePastBetween().toMillis() >= shoots) {
+				shoots += millisBetweenShoots;
+				Missile myMissile = new Missile(getItemToEffect().getPos().getPosX(), getItemToEffect().getPos().getPosY()-20, 10, 20);
+				Missile myMissile2 = new Missile(getItemToEffect().getPos().getPosX()+(getItemToEffect().getPos().getWidth()-10), getItemToEffect().getPos().getPosY()-20, 10, 20);
+				missileList.add(myMissile);
+				missileList.add(myMissile2);
+			}
 		}
 	}
 
@@ -111,7 +108,5 @@ public class PaddleMissile extends PowerUp {
 	public void stopEffect() {
 		((Paddle) this.getItemToEffect()).setEffectMissile(false);
 		missileList.clear();
-		this.setCollected(false);
-		this.setDead(true);
 	}
 }

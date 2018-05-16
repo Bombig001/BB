@@ -88,6 +88,7 @@ public abstract class PowerUp extends Item {
 			}else if (this.getTimeStart() != null && this.isCollected() && this.checkIfExpired()) {
 				stopEffect();
 				this.setCollected(false);
+				this.setDead(true);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

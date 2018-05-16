@@ -128,7 +128,7 @@ public class Player {
 					it.colission(ball);
 					if (((Brick) it).getIsSmashed()) {
 						if(rand.nextInt(2) == 1) {
-							PowerUp pwp = new PaddleMissile(entities.get(i).getPos().getPosX(), entities.get(i).getPos().getPosY(), paddle,entities);
+							PowerUp pwp = new PaddleMissile(entities.get(i).getPos().getPosX(), entities.get(i).getPos().getPosY(), paddle,this);
 							powerups.add(pwp);
 						}
 						entities.remove(i);

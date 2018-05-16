@@ -34,7 +34,5 @@ public class BallFast extends PowerUp{
 	public void stopEffect() {
 		((Ball) getItemToEffect()).setEffectFast(false);
 		((Ball) this.getItemToEffect()).setSpeed(((Ball) this.getItemToEffect()).getDefSpeed());
-		this.setDead(true);
-		this.setCollected(false);
 	}
 }

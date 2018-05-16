@@ -36,8 +36,6 @@ public class PaddleExtended extends PowerUp{
 		((Paddle) this.getItemToEffect()).setEffectExtended(false);
 		this.getItemToEffect().getPos().setPosX(this.getItemToEffect().getPos().getPosX()+extendValue);	
 		this.getItemToEffect().getPos().setWidth(this.getItemToEffect().getPos().getWidth()-(extendValue*2));
-		this.setDead(true);
-		this.setCollected(false);
 	}
 	
 }

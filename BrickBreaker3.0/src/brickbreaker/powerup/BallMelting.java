@@ -30,8 +30,6 @@ public class BallMelting extends PowerUp{
 	@Override
 	public void stopEffect() {
 		((Ball) this.getItemToEffect()).setEffectMelting(false);
-		this.setDead(true);
-		this.setCollected(false);
 	}
 
 }
