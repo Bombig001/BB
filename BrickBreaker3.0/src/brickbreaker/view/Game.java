@@ -67,7 +67,7 @@ public class Game extends JComponent implements ActionListener {
 	private void gameOverScreen() {
 		timeStop = Instant.now();
 		timePastBetween = Duration.between(timeStart, timeStop);
-			
+		
 		if (multiplayerGameStarted) {
 			if (player1.getScore() > player2.getScore()) {
 				gfx.drawImage(player1.getPlayerwinns(), GameController.windowWidth/4, 300, null);
@@ -75,16 +75,15 @@ public class Game extends JComponent implements ActionListener {
 				gfx.drawImage(player2.getPlayerwinns(), GameController.windowWidth/4, 300, null);			
 			}
 			
-			if (timePastBetween.getSeconds() >= 5) { 
+			if (timePastBetween.getSeconds() >= 5) {
+				player1.resetEffects();
+				player2.resetEffects();
 				setupMultiplayerMode();
 				gameOver = false;
 			}
 		} else {
 			gfx.drawImage(p1winns, 35, 300, null);
 			if (timePastBetween.getSeconds() >= 5) { 
-//				for (PowerUp pu : player1.getPowerups()) {
-//					pu.stopEffect();
-//				}
 				player1.resetEffects();
 				setupSingleplayerMode();
 				gameOver = false;

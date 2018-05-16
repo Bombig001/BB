@@ -35,5 +35,6 @@ private int speedValue;
 		((Ball) getItemToEffect()).setEffectSlow(false);
 		((Ball) this.getItemToEffect()).setSpeed(((Ball) this.getItemToEffect()).getDefSpeed());
 		this.setDead(true);
+		this.setCollected(false);
 	}
 }

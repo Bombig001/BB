@@ -111,6 +111,7 @@ public class PaddleMissile extends PowerUp {
 	public void stopEffect() {
 		((Paddle) this.getItemToEffect()).setEffectMissile(false);
 		missileList.clear();
+		this.setCollected(false);
 		this.setDead(true);
 	}
 }
