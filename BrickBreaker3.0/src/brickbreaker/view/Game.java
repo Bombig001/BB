@@ -46,6 +46,8 @@ public class Game extends JComponent implements ActionListener {
 	private Instant timeStart;
 	private Instant timeStop;
 	private Duration timePastBetween;
+	private int watingTime = 0;
+	private Integer counter = 5;
 	
 	public Game(JFrame window) {
 		this.window = window;
@@ -70,9 +72,9 @@ public class Game extends JComponent implements ActionListener {
 		
 		if (multiplayerGameStarted) {
 			if (player1.getScore() > player2.getScore()) {
-				gfx.drawImage(player1.getPlayerwinns(), GameController.windowWidth/4, 300, null);
+				gfx.drawImage(player1.getPlayerwinns(), GameController.windowWidth/4, 200, null);
 			} else if (player1.getScore() < player2.getScore()) {
-				gfx.drawImage(player2.getPlayerwinns(), GameController.windowWidth/4, 300, null);			
+				gfx.drawImage(player2.getPlayerwinns(), GameController.windowWidth/4, 200, null);			
 			}
 			
 			if (timePastBetween.getSeconds() >= 5) {
@@ -80,13 +82,38 @@ public class Game extends JComponent implements ActionListener {
 				player2.resetEffects();
 				setupMultiplayerMode();
 				gameOver = false;
+				watingTime = 0;
+				counter = 5;
 			}
 		} else {
-			gfx.drawImage(p1winns, 35, 300, null);
+			gfx.drawImage(p1winns, 35, 200, null);
 			if (timePastBetween.getSeconds() >= 5) { 
 				player1.resetEffects();
 				setupSingleplayerMode();
 				gameOver = false;
+				watingTime = 0;
+				counter = 5;
+			}
+		}
+		if (timePastBetween.getSeconds() >= watingTime) {
+			watingTime++;
+			counter--;
+		}
+		
+		gfx.setColor(new Color(0x6E2C00));
+		gfx.setFont(new Font("Arial", Font.PLAIN, 75));
+		
+		if(multiplayerGameStarted) {
+			if (counter == 0) {
+				gfx.drawString("GO!", GameController.windowWidth/2-60, 400);
+			} else {
+				gfx.drawString(counter.toString(), GameController.windowWidth/2-20, 400);
+			}
+		} else {
+			if (counter == 0) {
+				gfx.drawString("GO!", 300, 400);
+			} else {
+				gfx.drawString(counter.toString(), 340, 400);
 			}
 		}
 	}

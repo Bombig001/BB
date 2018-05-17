@@ -13,10 +13,10 @@ import brickbreaker.sound.Sound;
 import brickbreaker.view.Game;
 
 public class Ball extends Item {
+	private static Sound ballSound = new Sound("/res/sounds/bounce.wav",-10.0f);
 	private int defSpeed;
 	private int speed;
 	private Image state0;
-	private static Sound ballSound;
 	private Players playertyp;
 	private boolean ballStoped;
 	private Instant timeStart;
@@ -38,7 +38,7 @@ public class Ball extends Item {
 		} else {
 			state0 = new ImageIcon(this.getClass().getResource("/res/images/ball/ball1.png")).getImage();
 		}
-		ballSound = new Sound("/res/sounds/bounce.wav",-10.0f);
+		
 		this.playertyp = playertyp;
 		resetEffects();
 	}

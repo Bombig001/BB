@@ -21,7 +21,7 @@ public class Sound {
 		this.pfad = pfad;
 		this.volume = volume;
 		defVolume = volume;
-		//initClip();
+		initClip();
 	}
 	
 	private void initClip() {

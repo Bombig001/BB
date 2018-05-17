@@ -31,7 +31,7 @@ public class Paddle extends Item {
 	private Image state2;
 	private TastaturEingabe taste;
 	private int speed;
-	private static Sound paddleToBallSound;
+	private static Sound paddleToBallSound = new Sound("/res/sounds/bouncePaddle.wav",-10.0f);
 	private Players playertyp;
 	private Item ball;
 	private Strategy strgy;
@@ -54,7 +54,6 @@ public class Paddle extends Item {
 			state1  = new ImageIcon(this.getClass().getResource("/res/images/paddle/paddle2state1.png")).getImage();
 			state2  = new ImageIcon(this.getClass().getResource("/res/images/paddle/paddle2state2.png")).getImage();
 		}
-		paddleToBallSound = new Sound("/res/sounds/bouncePaddle.wav",-10.0f);
 		this.playertyp = playertyp;
 		this.ball = ball;
 	}

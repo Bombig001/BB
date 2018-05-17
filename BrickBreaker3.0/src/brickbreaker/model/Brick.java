@@ -1,9 +1,7 @@
 package brickbreaker.model;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Toolkit;
 
 import javax.swing.ImageIcon;
 
@@ -15,8 +13,8 @@ public class Brick extends Item {
 	private Image state0;
 	private Image state1;
 	private Image state2;
-	private static Sound brickToBallSound0;
-	private static Sound brickToBallSound1;
+	private static Sound brickToBallSound0 = new Sound("/res/sounds/bounceBrick0.wav",-10.0f);
+	private static Sound brickToBallSound1 = new Sound("/res/sounds/bounceBrick1.wav",-10.0f);
 
 	public Brick(Integer x, Integer y, Integer w, Integer h, Integer color) {
 		super(x, y, w, h, 1);
@@ -38,9 +36,6 @@ public class Brick extends Item {
 		} else if ( color == 7 ) {
 			state0 = new ImageIcon(this.getClass().getResource("/res/images/bricks/green1.png")).getImage();
 		}
-		
-		brickToBallSound0 = new Sound("/res/sounds/bounceBrick0.wav",-10.0f);
-		brickToBallSound1 = new Sound("/res/sounds/bounceBrick1.wav",-10.0f);
 	}
 	
 	public void dealDamage() {

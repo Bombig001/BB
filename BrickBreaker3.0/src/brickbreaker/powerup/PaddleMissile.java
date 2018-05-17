@@ -93,11 +93,11 @@ public class PaddleMissile extends PowerUp {
 	@Override
 	public void startEffect() {
 			((Paddle) this.getItemToEffect()).setEffectMissile(true);
-			if (this.getTimePastBetween().getSeconds() < 8) {
+			if (this.getTimePastBetween().getSeconds() < this.getCoolDown()-1) {
 				if (this.getTimePastBetween().toMillis() >= shoots) {
 				shoots += millisBetweenShoots;
-				Missile myMissile = new Missile(getItemToEffect().getPos().getPosX(), getItemToEffect().getPos().getPosY()-20, 10, 20);
-				Missile myMissile2 = new Missile(getItemToEffect().getPos().getPosX()+(getItemToEffect().getPos().getWidth()-10), getItemToEffect().getPos().getPosY()-20, 10, 20);
+				Missile myMissile = new Missile(getItemToEffect().getPos().getPosX(), getItemToEffect().getPos().getPosY()-20, 6, 13);
+				Missile myMissile2 = new Missile(getItemToEffect().getPos().getPosX()+(getItemToEffect().getPos().getWidth()-10), getItemToEffect().getPos().getPosY()-20, 6, 13);
 				missileList.add(myMissile);
 				missileList.add(myMissile2);
 			}

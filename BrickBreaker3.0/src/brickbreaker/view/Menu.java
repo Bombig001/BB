@@ -40,7 +40,7 @@ public class Menu  implements ActionListener{
 	private JLabel label = new JLabel("TOPOMEDICS ©");
 	private JLabel label1 = new JLabel("<html>&nbsp;&nbsp;&nbsp;Creator:<br/>Savas&nbsp;Celik</html>");
 	private JLabel label2 = new JLabel("Version 4.7");
-	private Sound menuSound;
+	private static Sound menuSound = new Sound("/res/sounds/op.wav",-30.0f);
 	
 	public Menu(Game jf) {
 		this.jf = jf;
@@ -91,7 +91,6 @@ public class Menu  implements ActionListener{
 		jf.add(label2);
 		jf.add(bgLogo);
 		jf.add(bg);
-		menuSound = new Sound("/res/sounds/op.wav",-30.0f);
 		menuSound.loop();
 	}
 
@@ -176,10 +175,7 @@ public class Menu  implements ActionListener{
 			
 			if (selected == 0) {
 				Game.player1.setName(player1Name.getText());
-				//Game.spieler1 = player1.getText();
-				//Game.spieler2 = player2Name.getText();
 				Game.player2.setName(player2Name.getText());
-				//Game.player2 = new Player(Game,Players.PLAYER2);
 				Game.multiplayerGameStarted = true;
 				jf.removeAll();
 			}
@@ -270,34 +266,34 @@ public class Menu  implements ActionListener{
 		
 		// Settings button
 		if (e.getSource() == settingsBtn) {
-			JSlider[] SoundSliders = new JSlider[2];
+			JSlider[] soundSliders = new JSlider[2];
 			Object[] buttons = {"Anwenden", "Werkeinstellung", "Abbrechen"}; 
 			int selected;
 			
-			for (int i = 0; i < SoundSliders.length; i++) {
+			for (int i = 0; i < soundSliders.length; i++) {
 				JSlider SoundSlider = new JSlider();
-				SoundSliders[i] = SoundSlider;
-				SoundSliders[i].setMaximum(0);
-				SoundSliders[i].setMinimum(-60);
+				soundSliders[i] = SoundSlider;
+				soundSliders[i].setMaximum(0);
+				soundSliders[i].setMinimum(-60);
 			}
-			SoundSliders[0].setValue((int)menuSound.getVolume());
-			SoundSliders[1].setValue((int)Ball.getBallSound().getVolume());
+			soundSliders[0].setValue((int)menuSound.getVolume());
+			soundSliders[1].setValue((int)Ball.getBallSound().getVolume());
 			
-			Object[] message = {"Hintergrundmusik", SoundSliders[0], "Ball: Abprallung", SoundSliders[1]};
+			Object[] message = {"Hintergrundmusik", soundSliders[0], "Ball: Abprallung", soundSliders[1]};
 			
 	        selected = JOptionPane.showOptionDialog(null, message, "Einstellungen", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, settingsIcon, buttons, null);
 
 	        if (selected == 0) {
-	        	menuSound.setVolume(SoundSliders[0].getValue());
-	        	Ball.getBallSound().setVolume(SoundSliders[1].getValue());
-	        	Brick.getBrickToBallSound0().setVolume(SoundSliders[1].getValue());
-	        	Brick.getBrickToBallSound1().setVolume(SoundSliders[1].getValue());
-	        	Paddle.getPaddleToBallSound().setVolume(SoundSliders[1].getValue());
+	        	menuSound.setVolume(soundSliders[0].getValue());
+	        	Ball.getBallSound().setVolume(soundSliders[1].getValue());
+	        	Brick.getBrickToBallSound0().setVolume(soundSliders[1].getValue());
+	        	Brick.getBrickToBallSound1().setVolume(soundSliders[1].getValue());
+	        	Paddle.getPaddleToBallSound().setVolume(soundSliders[1].getValue());
 	        } else if (selected == 1) {
 	        	menuSound.setVolume(menuSound.getDefVolume());
 	        	Ball.getBallSound().setVolume(Ball.getBallSound().getDefVolume());
-	        	Brick.getBrickToBallSound0().setVolume(Brick.getBrickToBallSound0().getDefVolume());
-	        	Brick.getBrickToBallSound1().setVolume(Brick.getBrickToBallSound1().getDefVolume());
+	        	//Brick.getBrickToBallSound0().setVolume(Brick.getBrickToBallSound0().getDefVolume());
+	        	//Brick.getBrickToBallSound1().setVolume(Brick.getBrickToBallSound1().getDefVolume());
 	        	Paddle.getPaddleToBallSound().setVolume(Paddle.getPaddleToBallSound().getDefVolume());
 	        }
 		}

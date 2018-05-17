@@ -23,7 +23,7 @@ public abstract class PowerUp extends Item {
 	
 	public PowerUp(Integer x, Integer y, Item itemToEffect) {
 		super(x, y, 50, 13, 1);
-		this.setVelY(1);
+		this.setVelY(2);
 		visible = true;
 		collected = false;
 		coolDown = 0;

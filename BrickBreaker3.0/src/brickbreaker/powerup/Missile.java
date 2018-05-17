@@ -15,7 +15,7 @@ public class Missile extends Item {
 	public Missile(Integer x, Integer y, Integer w, Integer h) {
 		super(x, y, w, h, 1);
 		state0 = new ImageIcon(this.getClass().getResource("/res/images/powerups/missileshots.png")).getImage(); 
-		this.setVelY(5);
+		this.setVelY(7);
 		visible = true;
 	}
 	

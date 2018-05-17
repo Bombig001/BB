@@ -32,6 +32,7 @@ public class Player {
 	private int score;
 	Image playerwinns;
 	private Random rand;
+	private int randomInt;
 	
 	public Player(JComponent game, Players playertyp) {
 		this.playertyp = playertyp;
@@ -126,9 +127,24 @@ public class Player {
 			if ( it instanceof Brick) {
 				if (!((Brick) it).getIsSmashed()) {
 					it.colission(ball);
-					if (((Brick) it).getIsSmashed()) {
-						if(rand.nextInt(2) == 1) {
-							PowerUp pwp = new PaddleMissile(entities.get(i).getPos().getPosX(), entities.get(i).getPos().getPosY(), paddle,this);
+					if (((Brick) it).getIsSmashed()) { // rnd.nextInt(100) >= chance
+						if(rand.nextInt(100) <= 25) {
+							PowerUp pwp;
+							randomInt = rand.nextInt(30);
+							//int randomInt = 25;
+							if (randomInt <= 5) {
+								pwp = new BallSlow(entities.get(i).getPos().getPosX(), entities.get(i).getPos().getPosY(), ball);
+							} else if (randomInt <= 10) {
+								pwp = new BallMelting(entities.get(i).getPos().getPosX(), entities.get(i).getPos().getPosY(), ball);
+							} else if (randomInt <= 15) {
+								pwp = new BallFast(entities.get(i).getPos().getPosX(), entities.get(i).getPos().getPosY(), ball);
+							} else if (randomInt <= 20) {
+								pwp = new PaddleShortened(entities.get(i).getPos().getPosX(), entities.get(i).getPos().getPosY(), paddle);
+							} else if (randomInt <= 25) {
+								pwp = new PaddleExtended(entities.get(i).getPos().getPosX(), entities.get(i).getPos().getPosY(), paddle);
+							} else {
+								pwp = new PaddleMissile(entities.get(i).getPos().getPosX(), entities.get(i).getPos().getPosY(), paddle,this);
+							}
 							powerups.add(pwp);
 						}
 						entities.remove(i);
