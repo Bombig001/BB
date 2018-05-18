@@ -23,6 +23,7 @@ import brickbreaker.sound.Sound;
 import brickbreaker.view.Game;
 
 public class Paddle extends Item {
+	private Game game;
 	private Integer score;
 	private int stateCounter = 0;
 	private Image img;
@@ -39,8 +40,9 @@ public class Paddle extends Item {
 	private boolean effectShortened;
 	private boolean effectMissile;
 
-	public Paddle(JComponent game,String name, Integer x, Integer y, Integer w, Integer h, Players playertyp, Item ball) {
+	public Paddle(String name, Integer x, Integer y, Integer w, Integer h, Players playertyp, Item ball, Game game) {
 		super(x, y, w, h, 3);
+		this.game = game;
 		effectExtended = false;
 		score = 0;
 		speed = 9;
@@ -98,6 +100,14 @@ public class Paddle extends Item {
 
 	@Override
 	public void colission(Item i) {
+		int windowwidth;
+		if (GameController.width == GameController.defWidth) {
+			windowwidth = GameController.width/2;
+		} else {
+			windowwidth = GameController.width;
+		}
+		
+		
 		int x = this.getPos().getPosX().intValue();
 		int y = this.getPos().getPosY().intValue();
 		int w = this.getPos().getWidth().intValue();
@@ -108,24 +118,23 @@ public class Paddle extends Item {
 		int w_ = i.getPos().getWidth().intValue();
 		int h_ = i.getPos().getHeight().intValue();
 		
-		if (Game.multiplayerGameStarted && playertyp == Players.PLAYER1) {
+		if (game.multiplayerGameStarted && playertyp == Players.PLAYER1) {
 		
-			if (x <= GameController.windowWidth/2+8) {
-				this.getPos().setPosX(GameController.windowWidth/2+8);
+			if (x <= (GameController.width + 16) / 2) {
+				this.getPos().setPosX((GameController.width + 16) / 2);
 			}
 			
-			if (x+w+speed >= GameController.windowWidth) {
-				this.getPos().setPosX(GameController.windowWidth - w-speed);
+			if (x+w+speed >= GameController.defWidth) {
+				this.getPos().setPosX(GameController.defWidth - w-speed);
 			}
 			
 		}
-		if (playertyp == Players.PLAYER2 || playertyp == Players.COMPUTER || Game.singleplayerGameStarted) {
+		if (playertyp == Players.PLAYER2 || playertyp == Players.COMPUTER || game.singleplayerGameStarted) {
 			if (x <= 0) {
 				this.getPos().setPosX(0);
 			}
-			
-			if (x+w+speed >= Math.max(720,GameController.windowWidth/2)) {
-				this.getPos().setPosX(Math.max(720,GameController.windowWidth/2) - w-speed);
+			if (x+w+speed >= Math.min(windowwidth,GameController.defWidth)) {
+				this.getPos().setPosX(Math.min(windowwidth,GameController.defWidth) - w-speed);
 			}
 		}
 		
@@ -168,14 +177,14 @@ public class Paddle extends Item {
 	@Override
 	public void update() {
 		if (playertyp == Players.PLAYER1) {
-			taste.tasteGedrückt(KeyEvent.VK_LEFT,"player1Links", (evt) -> {
+			taste.tasteGedrÃ¼ckt(KeyEvent.VK_LEFT,"player1Links", (evt) -> {
 				this.setVelX(-speed);
 			});
 			taste.tasteLosgelassen(KeyEvent.VK_LEFT,"player1LinksStop", (evt) -> {
 				this.setVelX(0);
 			});
 			
-			taste.tasteGedrückt(KeyEvent.VK_RIGHT,"player1Rechts", (evt) -> {
+			taste.tasteGedrÃ¼ckt(KeyEvent.VK_RIGHT,"player1Rechts", (evt) -> {
 				this.setVelX(speed);
 			});
 			taste.tasteLosgelassen(KeyEvent.VK_RIGHT,"player1RechtsStop", (evt) -> {
@@ -189,14 +198,14 @@ public class Paddle extends Item {
 				}
 			});
 		} else if (playertyp == Players.PLAYER2) {
-			taste.tasteGedrückt(KeyEvent.VK_A,"player2Links", (evt) -> {
+			taste.tasteGedrÃ¼ckt(KeyEvent.VK_A,"player2Links", (evt) -> {
 				this.setVelX(-speed);
 			});
 			taste.tasteLosgelassen(KeyEvent.VK_A,"player2LinksStop", (evt) -> {
 				this.setVelX(0);
 			});
 			
-			taste.tasteGedrückt(KeyEvent.VK_D,"player2Rechts", (evt) -> {
+			taste.tasteGedrÃ¼ckt(KeyEvent.VK_D,"player2Rechts", (evt) -> {
 				this.setVelX(speed);
 			});
 			taste.tasteLosgelassen(KeyEvent.VK_D,"player2RechtsStop", (evt) -> {
@@ -234,7 +243,7 @@ public class Paddle extends Item {
 					this.setVelX(0);
 				}
 			} else {
-				strgy = new Strategy(Game.player2.getDifficultyLevel());
+				strgy = new Strategy(game.player2.getDifficultyLevel());
 			}
 		}
 		

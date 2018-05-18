@@ -18,7 +18,7 @@ public class TastaturEingabe {
 		ap = comp.getActionMap();
 	}
 	
-	public void tasteGedrückt(int KeyCode,String id, ActionListener lambda) {
+	public void tasteGedrÃ¼ckt(int KeyCode,String id, ActionListener lambda) {
 		inp.put(KeyStroke.getKeyStroke(KeyCode, 0, false), id);
 		ap.put(id, new AbstractAction() {
 			

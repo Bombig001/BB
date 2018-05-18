@@ -19,6 +19,7 @@ import brickbreaker.powerup.BallFast;
 import brickbreaker.powerup.BallMelting;
 import brickbreaker.powerup.BallSlow;
 import brickbreaker.powerup.PowerUp;
+import brickbreaker.view.Game;
 
 public class Player {
 	private String name;
@@ -34,7 +35,7 @@ public class Player {
 	private Random rand;
 	private int randomInt;
 	
-	public Player(JComponent game, Players playertyp) {
+	public Player(Game game, Players playertyp) {
 		this.playertyp = playertyp;
 		if (playertyp == Players.PLAYER1) {
 			playerwinns = new ImageIcon(this.getClass().getResource("/res/images/player1winns.png")).getImage();
@@ -48,8 +49,8 @@ public class Player {
 		currentLevel = new Level();
 		entities = new ArrayList<Item>();
 		powerups = new ArrayList<PowerUp>();
-		ball = new Ball(260, 100, 18, 18,0, playertyp);
-		paddle = new Paddle(game,name,300, 660, 97, 26, playertyp,ball);
+		ball = new Ball(260, 100, 18, 18,0, playertyp, game);
+		paddle = new Paddle(name,300, 660, 97, 26, playertyp, ball, game);
 		score = 0;
 		rand = new Random();
 	}

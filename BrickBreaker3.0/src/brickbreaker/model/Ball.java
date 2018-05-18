@@ -14,6 +14,7 @@ import brickbreaker.view.Game;
 
 public class Ball extends Item {
 	private static Sound ballSound = new Sound("/res/sounds/bounce.wav",-10.0f);
+	private Game game;
 	private int defSpeed;
 	private int speed;
 	private Image state0;
@@ -26,8 +27,9 @@ public class Ball extends Item {
 	private boolean effectFast;
 	private boolean effectSlow;
 
-	public Ball(Integer x, Integer y, Integer w, Integer h, int i, Players playertyp) {
+	public Ball(Integer x, Integer y, Integer w, Integer h, int i, Players playertyp, Game game) {
 		super(x, y, w, h, 1);
+		this.game = game;
 		defSpeed = 7;
 		speed = 7;
 		ballStoped = true;
@@ -124,6 +126,13 @@ public class Ball extends Item {
 
 	@Override
 	public void colission(Item i) {
+		int windowwidth;
+		if (GameController.width == GameController.defWidth) {
+			windowwidth = GameController.width/2;
+		} else {
+			windowwidth = GameController.width;
+		}
+		
 		int x = this.getPos().getPosX().intValue();
 		int y = this.getPos().getPosY().intValue();
 		int w = this.getPos().getWidth().intValue();
@@ -134,13 +143,13 @@ public class Ball extends Item {
 //		int w_ = i.getPos().getWidth().intValue();
 //		int h_ = i.getPos().getHeight().intValue();
 		
-		if (Game.multiplayerGameStarted && playertyp == Players.PLAYER1) {
-			if (x-speed <= GameController.windowWidth/2+8) {
+		if (game.multiplayerGameStarted && playertyp == Players.PLAYER1) {
+			if (x-speed <= (GameController.width + 16) / 2) {
 				this.setVelX(speed);
 				ballSound.start();
 			}
 			
-			if (x+w+speed >= GameController.windowWidth) {
+			if (x+w+speed >= GameController.defWidth) {
 				this.setVelX(-speed);
 				ballSound.start();
 			}
@@ -161,13 +170,13 @@ public class Ball extends Item {
 			}	
 		}
 		
-		if (playertyp == Players.PLAYER2 || playertyp == Players.COMPUTER || Game.singleplayerGameStarted) {
+		if (playertyp == Players.PLAYER2 || playertyp == Players.COMPUTER || game.singleplayerGameStarted) {
 			if (x-speed <= 0) {
 				this.setVelX(speed);
 				ballSound.start();
 			}
 			
-			if (x+w >= Math.max(720,GameController.windowWidth/2-8)) {
+			if (x+w >= Math.min(windowwidth,GameController.defWidth)) {
 				this.setVelX(-speed);
 				ballSound.start();
 			}

@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 
+import brickbreaker.controller.GameController;
 import brickbreaker.model.Ball;
 import brickbreaker.model.Brick;
 import brickbreaker.model.Paddle;
@@ -34,16 +35,16 @@ public class Menu  implements ActionListener{
 	private ImageIcon logoIcon;
 	private ImageIcon settingsIcon;
 	private ImageIcon bgIcon;
-	private Game jf;
+	private Game game;
 	private JLabel bgLogo;
 	private JLabel bg;
-	private JLabel label = new JLabel("TOPOMEDICS ©");
+	private JLabel label = new JLabel("TOPOMEDICS ï¿½");
 	private JLabel label1 = new JLabel("<html>&nbsp;&nbsp;&nbsp;Creator:<br/>Savas&nbsp;Celik</html>");
 	private JLabel label2 = new JLabel("Version 4.7");
 	private static Sound menuSound = new Sound("/res/sounds/op.wav",-30.0f);
 	
-	public Menu(Game jf) {
-		this.jf = jf;
+	public Menu(Game game) {
+		this.game = game;
 		//jf.getConte
 		label.setForeground(new Color(0x83a5db));
 		label.setFont(new Font("Charlemagne Std", Font.BOLD, 12));
@@ -80,17 +81,19 @@ public class Menu  implements ActionListener{
 	}
 	
 	public void start() {
-		jf.removeAll();
-		jf.add(singleBtn);
-		jf.add(multiBtn);
-		jf.add(computerBtn);
-		jf.add(settingsBtn);
-		jf.add(infoBtn);
-		jf.add(label);
-		jf.add(label1);
-		jf.add(label2);
-		jf.add(bgLogo);
-		jf.add(bg);
+		game.removeAll();
+		GameController.getWindow().setSize(720, 720);
+		GameController.getWindow().setLocationRelativeTo(null);
+		game.add(singleBtn);
+		game.add(multiBtn);
+		game.add(computerBtn);
+		game.add(settingsBtn);
+		game.add(infoBtn);
+		game.add(label);
+		game.add(label1);
+		game.add(label2);
+		game.add(bgLogo);
+		game.add(bg);
 		menuSound.loop();
 	}
 
@@ -107,14 +110,14 @@ public class Menu  implements ActionListener{
 			
 			do {
 				Object[] message = {"<html>Namen eingeben(*): <br/><i style=\"color:red;\"><sub>maximal 8 Zeichen</sub></i></html>", player1Name,player1Warning,
-						"<html>Level auswählen: <br/></html>",levelChoise, "<html><i style=\"font-size:8.5px;\">Felder mit (*) sind Pflichtfelder!</sub></i></html>"};
+						"<html>Level auswï¿½hlen: <br/></html>",levelChoise, "<html><i style=\"font-size:8.5px;\">Felder mit (*) sind Pflichtfelder!</sub></i></html>"};
 				selected = JOptionPane.showConfirmDialog(null, message, "Einzelspieler", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 				
 				if(player1Name.getText().isEmpty()) {
 					player1Warning = "<html><p style=\"color:red;font-size:8.5px;\">Bitte Namen eingeben!</p></html>";
 				}
 				
-				if (!player1Name.getText().isEmpty() && !player1Name.getText().matches("^[a-zA-ZüÜäÄöÖéèàâç]+$")) {
+				if (!player1Name.getText().isEmpty() && !player1Name.getText().matches("^[a-zA-Zï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½]+$")) {
 					player1Name.setText("");
 					player1Warning = "<html><p style=\"color:red;font-size:8.5px;\">Nur Buchstaben erlaubt!</p></html>";
 				} else if (!player1Name.getText().isEmpty()){
@@ -124,12 +127,13 @@ public class Menu  implements ActionListener{
 			} while (selected == 0 && (player1Name.getText().isEmpty() || player1Name.getText().length() > 8));
 			
 			if(selected == 0) {
-				Game.level = (int)levelChoise.getSelectedItem();
-				Game.player1.getCurrentLevel().setCurrentLevel(Game.level);
-				Game.player1.loadUpStage();
-				Game.player1.setName(player1Name.getText());
-				Game.singleplayerGameStarted = true;
-				jf.removeAll();
+				game.level = (int)levelChoise.getSelectedItem();
+				game.player1.getCurrentLevel().setCurrentLevel(game.level);
+				game.player1.loadUpStage();
+				game.player1.setName(player1Name.getText());
+				game.singleplayerGameStarted = true;
+				game.removeAll();
+				GameController.getWindow().setSize(GameController.width, 720);
 				
 			}
 		}
@@ -156,14 +160,14 @@ public class Menu  implements ActionListener{
 				player2Warning = "<html><p style=\"color:red;font-size:8.5px;\">Bitte Namen eingeben!</p></html>";
 			}
 			
-			if (!player1Name.getText().isEmpty() && !player1Name.getText().matches("^[a-zA-ZüÜäÄöÖéèàâç]+$")) {
+			if (!player1Name.getText().isEmpty() && !player1Name.getText().matches("^[a-zA-ZÃ¼Ã¨Ã¶Ã©Ã¤Ã Ã§]+$")) {
 				player1Name.setText("");
 				player1Warning = "<html><p style=\"color:red;font-size:8.5px;\">Nur Buchstaben erlaubt!</p></html>";
 			} else if (!player1Name.getText().isEmpty()){
 				player1Warning = "";
 			}
 			
-			if (!player2Name.getText().isEmpty() && !player2Name.getText().matches("^[a-zA-ZüÜäÄöÖéèàâç]+$")) {
+			if (!player2Name.getText().isEmpty() && !player2Name.getText().matches("^[a-zA-ZÃ¼Ã¨Ã¶Ã©Ã¤Ã Ã§]+$")) {
 				player2Name.setText("");
 				player2Warning = "<html><p style=\"color:red;font-size:8.5px;\">Nur Buchstaben erlaubt!</p></html>";
 			} else if (!player2Name.getText().isEmpty()){
@@ -174,10 +178,11 @@ public class Menu  implements ActionListener{
 
 			
 			if (selected == 0) {
-				Game.player1.setName(player1Name.getText());
-				Game.player2.setName(player2Name.getText());
-				Game.multiplayerGameStarted = true;
-				jf.removeAll();
+				game.player1.setName(player1Name.getText());
+				game.player2.setName(player2Name.getText());
+				game.multiplayerGameStarted = true;
+				game.removeAll();
+				GameController.getWindow().setSize(GameController.defWidth, 720);
 			}
 //			JTextField spieler1 = new JTextField();
 //			JTextField spieler2 = new JTextField();
@@ -234,7 +239,7 @@ public class Menu  implements ActionListener{
 					player1Warning = "<html><p style=\"color:red;font-size:8.5px;\">Bitte Namen eingeben!</p></html>";
 				}
 				
-				if (!player1Name.getText().isEmpty() && !player1Name.getText().matches("^[a-zA-ZüÜäÄöÖéèàâç]+$")) {
+				if (!player1Name.getText().isEmpty() && !player1Name.getText().matches("^[a-zA-ZÃ¼Ã¨Ã¶Ã©Ã¤Ã Ã§]+$")) {
 					player1Name.setText("");
 					player1Warning = "<html><p style=\"color:red;font-size:8.5px;\">Nur Buchstaben erlaubt!</p></html>";
 				} else if (!player1Name.getText().isEmpty()){
@@ -244,22 +249,23 @@ public class Menu  implements ActionListener{
 			} while (selected == 0 && (player1Name.getText().isEmpty() || player1Name.getText().length() > 8));
 			
 			if (selected == 0) {
-				Game.player1.setName(player1Name.getText());
-				Game.player2.setPlayertyp(Players.COMPUTER);
-				Game.player2.setName("Computer");
+				game.player1.setName(player1Name.getText());
+				game.player2.setPlayertyp(Players.COMPUTER);
+				game.player2.setName("Computer");
 				
 				if (choise.getSelectedItem().equals("Einfach")) {
-					Game.player2.setDifficultyLevel(67);
+					game.player2.setDifficultyLevel(67);
 				} else if (choise.getSelectedItem().equals("Mittel")) {
-					Game.player2.setDifficultyLevel(70);
+					game.player2.setDifficultyLevel(70);
 				} else if (choise.getSelectedItem().equals("Schwer")) {
-					Game.player2.setDifficultyLevel(80);
+					game.player2.setDifficultyLevel(80);
 				} else if (choise.getSelectedItem().equals("Profi")) {
-					Game.player2.setDifficultyLevel(100);
+					game.player2.setDifficultyLevel(100);
 				}
 				
-				Game.multiplayerGameStarted = true;
-				jf.removeAll();
+				game.multiplayerGameStarted = true;
+				game.removeAll();
+				GameController.getWindow().setSize(GameController.defWidth, 720);
 			}
 		}
 		
@@ -303,8 +309,8 @@ public class Menu  implements ActionListener{
 		if ( e.getSource() == infoBtn) {
 			
 			JOptionPane.showMessageDialog(null, "<html>Creator: Savas Celik<hr/>"
-					+ "Powered By: TOPOMEDICS ©<hr/>"
-					+ "Ort: WISS, Zürich<hr/>" 
+					+ "Powered By: TOPOMEDICS ï¿½<hr/>"
+					+ "Ort: WISS, Zï¿½rich<hr/>" 
 					+ "Version: 4.7<hr/>"
 					+"<img src=\"http://cultofthepartyparrot.com/parrots/hd/parrot.gif\"></html>", "Info", JOptionPane.INFORMATION_MESSAGE);
 			

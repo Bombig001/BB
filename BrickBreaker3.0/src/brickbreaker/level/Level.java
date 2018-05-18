@@ -1,40 +1,26 @@
 package brickbreaker.level;
 
 import java.util.ArrayList;
+
+import brickbreaker.controller.GameController;
 import brickbreaker.model.Brick;
 import brickbreaker.model.Item;
 
 public class Level {
-	private int maxLevel = 6;
+	private static int maxLevel = 6;
 	private ArrayList<Item> brickList;
 	// aa = stone, bb = blue, cc = red, dd = yellow, ee = brown, ff = orange, gg = green
 	private int __ = 0, aa = 1, bb = 2,cc = 3, dd = 4, ee = 5, ff = 6, gg = 7;
 	
-	private int[][] level1 = {
-			{__,__,__,__,__,__,__,__,__,__,__},
-			{__,__,__,__,__,__,__,__,__,__,__},
-			{__,__,__,__,__,__,__,__,__,__,__},
-			{__,__,__,__,__,__,__,__,__,__,__},
-			{__,__,__,__,__,__,__,__,__,__,__},
-			{__,__,__,__,__,__,__,__,__,__,__},
-			{__,__,__,__,__,__,__,__,__,__,__},
-			{__,__,__,__,__,bb,__,__,__,__,__},
-			{__,__,__,__,__,__,__,__,__,__,__},
-			{__,__,__,__,__,__,__,__,__,__,__},
-			{__,__,__,__,__,__,__,__,__,__,__},
-			{__,__,__,__,__,__,__,__,__,__,__},
-			{__,__,__,__,__,__,__,__,__,__,__},
-			{__,__,__,__,__,__,__,__,__,__,__}
-	};
 //	private int[][] level1 = {
-//			{__,ee,ee,ee,ee,ee,ee,ee,ee,ee,__},
-//			{__,ee,ee,ee,ee,ee,ee,ee,ee,ee,__},
-//			{__,ff,aa,ff,ff,ff,ff,ff,aa,ff,__},
-//			{__,ff,__,ff,ff,ff,ff,ff,__,ff,__},
-//			{__,ff,__,ff,ff,ff,ff,ff,__,ff,__},
-//			{__,ff,__,ff,ff,ff,ff,ff,__,ff,__},
-//			{__,ff,__,ff,ff,ff,ff,ff,__,ff,__},
 //			{__,__,__,__,__,__,__,__,__,__,__},
+//			{__,__,__,__,__,__,__,__,__,__,__},
+//			{__,__,__,__,__,__,__,__,__,__,__},
+//			{__,__,__,__,__,__,__,__,__,__,__},
+//			{__,__,__,__,__,__,__,__,__,__,__},
+//			{__,__,__,__,__,__,__,__,__,__,__},
+//			{__,__,__,__,__,__,__,__,__,__,__},
+//			{__,__,__,__,__,bb,__,__,__,__,__},
 //			{__,__,__,__,__,__,__,__,__,__,__},
 //			{__,__,__,__,__,__,__,__,__,__,__},
 //			{__,__,__,__,__,__,__,__,__,__,__},
@@ -42,6 +28,22 @@ public class Level {
 //			{__,__,__,__,__,__,__,__,__,__,__},
 //			{__,__,__,__,__,__,__,__,__,__,__}
 //	};
+	private int[][] level1 = {
+			{__,ee,ee,ee,ee,ee,ee,ee,ee,ee,__},
+			{__,ee,ee,ee,ee,ee,ee,ee,ee,ee,__},
+			{__,ff,aa,ff,ff,ff,ff,ff,aa,ff,__},
+			{__,ff,__,ff,ff,ff,ff,ff,__,ff,__},
+			{__,ff,__,ff,ff,ff,ff,ff,__,ff,__},
+			{__,ff,__,ff,ff,ff,ff,ff,__,ff,__},
+			{__,ff,__,ff,ff,ff,ff,ff,__,ff,__},
+			{__,__,__,__,__,__,__,__,__,__,__},
+			{__,__,__,__,__,__,__,__,__,__,__},
+			{__,__,__,__,__,__,__,__,__,__,__},
+			{__,__,__,__,__,__,__,__,__,__,__},
+			{__,__,__,__,__,__,__,__,__,__,__},
+			{__,__,__,__,__,__,__,__,__,__,__},
+			{__,__,__,__,__,__,__,__,__,__,__}
+	};
 	
 	private int[][] level2 = {
 			{gg,__,gg,__,dd,aa,dd,__,gg,__,gg},
@@ -133,14 +135,16 @@ public class Level {
 //		setCurrentLevel(lvl);
 //	}
 	
-	private void initLevel(int[][] mulLvl) {		
+	private void initLevel(int[][] mulLvl) {
+		int space = (((GameController.defWidth-16) / 2) - 605) / 2;
+		
 		brickList = new ArrayList<Item>();
 		for (int y = 0; y < mulLvl.length; y++) {
 			for (int x = 0; x < mulLvl[y].length; x++) {
 				if (mulLvl[y][x] == __) {
 					
 				} else {
-					Item brick = new Brick((50)+x*55,(100)+y*19,54,18,mulLvl[y][x]);
+					Item brick = new Brick((space)+x*55,(100)+y*19,54,18,mulLvl[y][x]);
 					brickList.add(brick);
 				}
 			}
@@ -169,7 +173,7 @@ public class Level {
 		return brickList;
 	}
 
-	public int getMaxLevel() {
+	public static int getMaxLevel() {
 		return maxLevel;
 	}
 	

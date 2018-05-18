@@ -29,19 +29,18 @@ import brickbreaker.powerup.PaddleExtended;
 import brickbreaker.powerup.PowerUp;
 
 public class Game extends JComponent implements ActionListener {
-	public static boolean singleplayerGameStarted = false;
-	public static boolean multiplayerGameStarted = false;
-	public static Player player1;
-	public static Player player2;
-	public static int level = 1;
-	public static Graphics gfx;
+	public boolean singleplayerGameStarted = false;
+	public boolean multiplayerGameStarted = false;
+	public Player player1;
+	public Player player2;
+	public int level = 1;
+	public Graphics gfx;
 	Image background;
 	Image background2;
 	Image splitter;
 	Image p1winns;
 	Image p2winns;
 	private boolean gameOver;
-	private Menu mainMenu;
 	private JFrame window;
 	private Instant timeStart;
 	private Instant timeStop;
@@ -51,11 +50,8 @@ public class Game extends JComponent implements ActionListener {
 	
 	public Game(JFrame window) {
 		this.window = window;
-//		mainMenu = new Menu(this, true);
 //		window.addKeyListener((KeyListener) p1);
-//		window.addMouseMotionListener(this);
-		mainMenu = new Menu(this);
-		mainMenu.start();
+//		window.addMouseMotionListener(this); 
 		background  = new ImageIcon(this.getClass().getResource("/res/images/background/1.jpg")).getImage();
 		background2 = new ImageIcon(this.getClass().getResource("/res/images/background/3.jpg")).getImage();
 		splitter = new ImageIcon(this.getClass().getResource("/res/images/background/splitter.jpg")).getImage();
@@ -119,7 +115,7 @@ public class Game extends JComponent implements ActionListener {
 	}
 	
 	private void setupSingleplayerMode() {
-		player1.getCurrentLevel().setCurrentLevel(Math.min(level, player1.getCurrentLevel().getMaxLevel()));
+		player1.getCurrentLevel().setCurrentLevel(Math.min(level, Level.getMaxLevel()));
 		player1.loadUpStage();
 	}
 	
@@ -127,14 +123,15 @@ public class Game extends JComponent implements ActionListener {
 		setupSingleplayerMode();
 		
 		GameController.windowWidth = 1456;
-		window.setSize(GameController.windowWidth, GameController.windowHeight);
+		GameController.width = GameController.defWidth;
+		window.setSize(GameController.defWidth, GameController.windowHeight);
 		window.setLocationRelativeTo(null);
 		
 		
-		player2.getCurrentLevel().setCurrentLevel(Math.min(level, player2.getCurrentLevel().getMaxLevel()));
+		player2.getCurrentLevel().setCurrentLevel(Math.min(level, Level.getMaxLevel()));
 		player2.loadUpStage();
 		for(Item it : player1.getEntities()) {
-			it.getPos().setPosX(it.getPos().getPosX()+GameController.windowWidth/2+8);
+			it.getPos().setPosX(it.getPos().getPosX() + (GameController.width + 16) / 2);
 			if (it instanceof Ball) {
 				it.setVelX(-it.getVelX());
 			}
@@ -146,31 +143,31 @@ public class Game extends JComponent implements ActionListener {
 //		super.paintComponent(g);
 		gfx = g;
 		if(singleplayerGameStarted) {
-			gfx.drawImage(background, 0, 0, GameController.windowWidth, GameController.windowHeight, null);
-			gfx.drawImage(background2,0, 0, GameController.windowWidth, 50,null);
+			gfx.drawImage(background, 0, 0, GameController.width, GameController.windowHeight, null);
+			gfx.drawImage(background2,0, 0, GameController.width, 50,null);
 			gfx.setColor(Color.lightGray);
 			gfx.setFont(new Font("Times", Font.BOLD, 17));
 			gfx.drawString("Punktzahl: "+ player1.getScore(), 0, 20);
-			gfx.drawString("Spielername: \n"+ player1.getName(), 500, 20);
+			gfx.drawString("Spielername: \n"+ player1.getName(), GameController.width-220, 20);
 		} else if (multiplayerGameStarted) {
-			if (GameController.windowWidth <= 720) {
+			if (GameController.width < GameController.defWidth) {
 				setupMultiplayerMode();
 			}
-			gfx.drawImage(background, 0, 0, GameController.windowWidth/2-8, GameController.windowHeight, null);
-			gfx.drawImage(background2,0, 0, GameController.windowWidth/2-8, 50,null);
+			gfx.drawImage(background, 0, 0, (GameController.width - 16) / 2, GameController.windowHeight, null);
+			gfx.drawImage(background2,0, 0, (GameController.width - 16) / 2, 50,null);
 			gfx.setColor(Color.lightGray);
 			gfx.setFont(new Font("Times", Font.BOLD, 17));
 			gfx.drawString("Punktzahl: "+ player2.getScore(), 0, 20);
-			gfx.drawString("Spieler 2: \n"+ player2.getName(), 500, 20);
+			gfx.drawString("Spieler 2: \n"+ player2.getName(), ((GameController.width - 16) / 2)-220, 20);
 			
-			gfx.drawImage(splitter,GameController.windowWidth/2-8, 0, 16, GameController.windowHeight,null);
+			gfx.drawImage(splitter,(GameController.width - 16) / 2, 0, 16, GameController.windowHeight,null);
 			
-			gfx.drawImage(background, GameController.windowWidth/2+8, 0, GameController.windowWidth/2-8, GameController.windowHeight, null);
-			gfx.drawImage(background2,GameController.windowWidth/2+8, 0, GameController.windowWidth/2-8, 50,null);
+			gfx.drawImage(background, (GameController.width + 16) / 2, 0, (GameController.width - 16) / 2, GameController.windowHeight, null);
+			gfx.drawImage(background2,(GameController.width + 16) / 2, 0, (GameController.width - 16) / 2, 50,null);
 			gfx.setColor(Color.lightGray);
 			gfx.setFont(new Font("Times", Font.BOLD, 17));
-			gfx.drawString("Punktzahl: "+ player1.getScore(), GameController.windowWidth/2+8, 20);
-			gfx.drawString("Spieler 1: \n"+ player1.getName(), GameController.windowWidth/2+8 + 500, 20);
+			gfx.drawString("Punktzahl: "+ player1.getScore(), (GameController.width + 16) / 2, 20);
+			gfx.drawString("Spieler 1: \n"+ player1.getName(), GameController.width - 220, 20);
 			
 		}
 		gameDraw();
