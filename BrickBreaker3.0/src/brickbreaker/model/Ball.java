@@ -159,12 +159,12 @@ public class Ball extends Item {
 				ballSound.start();
 			}
 			
-			if (y+h >= GameController.windowHeight) {
+			if (y+h >= GameController.height) {
 				if (timeStart == null) {
 					timeStart = Instant.now();
 					this.setSpeed(0);
 					this.initVelocity();
-					this.setPos((int)(GameController.windowWidth/1.4), GameController.windowHeight);
+					this.setPos((int)(GameController.width/1.4), GameController.height);
 				}
 				respawn();
 			}	
@@ -186,12 +186,12 @@ public class Ball extends Item {
 				ballSound.start();
 			}
 			
-			if (y+h >= GameController.windowHeight) {
+			if (y+h >= GameController.height) {
 				if (timeStart == null) {
 					timeStart = Instant.now();
 					setSpeed(0);
 					this.initVelocity();
-					this.setPos(GameController.windowWidth/5, GameController.windowHeight);
+					this.setPos(GameController.width/5, GameController.height);
 				}
 				respawn();
 			}	

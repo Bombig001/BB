@@ -133,8 +133,8 @@ public class Paddle extends Item {
 			if (x <= 0) {
 				this.getPos().setPosX(0);
 			}
-			if (x+w+speed >= Math.min(windowwidth,GameController.defWidth)) {
-				this.getPos().setPosX(Math.min(windowwidth,GameController.defWidth) - w-speed);
+			if (x+w+speed >= windowwidth) {
+				this.getPos().setPosX(windowwidth - w-speed);
 			}
 		}
 		
@@ -223,7 +223,7 @@ public class Paddle extends Item {
 			if (strgy != null) {
 				if (!strgy.getRandomChance()) {
 					if (((Ball) ball).isBallStoped()) {
-						if (this.getPos().getPosX() <= GameController.windowWidth/4 && this.getPos().getPosX() >= GameController.windowWidth/5) {
+						if (this.getPos().getPosX() <= GameController.defWidth/4 && this.getPos().getPosX() >= GameController.defWidth/5) {
 							((Ball) ball).setBallStoped(false);
 							((Ball) ball).setSpeed(((Ball) ball).getDefSpeed());
 							((Ball) ball).initVelocity();

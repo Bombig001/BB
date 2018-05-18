@@ -68,9 +68,9 @@ public class Game extends JComponent implements ActionListener {
 		
 		if (multiplayerGameStarted) {
 			if (player1.getScore() > player2.getScore()) {
-				gfx.drawImage(player1.getPlayerwinns(), GameController.windowWidth/4, 200, null);
+				gfx.drawImage(player1.getPlayerwinns(), (GameController.width-player1.getPlayerwinns().getWidth(null))/2, 200, null);
 			} else if (player1.getScore() < player2.getScore()) {
-				gfx.drawImage(player2.getPlayerwinns(), GameController.windowWidth/4, 200, null);			
+				gfx.drawImage(player2.getPlayerwinns(), (GameController.width-player1.getPlayerwinns().getWidth(null))/2, 200, null);
 			}
 			
 			if (timePastBetween.getSeconds() >= 5) {
@@ -82,7 +82,7 @@ public class Game extends JComponent implements ActionListener {
 				counter = 5;
 			}
 		} else {
-			gfx.drawImage(p1winns, 35, 200, null);
+			gfx.drawImage(player1.getPlayerwinns(), (GameController.width-player1.getPlayerwinns().getWidth(null))/2, 200, null);
 			if (timePastBetween.getSeconds() >= 5) { 
 				player1.resetEffects();
 				setupSingleplayerMode();
@@ -101,15 +101,15 @@ public class Game extends JComponent implements ActionListener {
 		
 		if(multiplayerGameStarted) {
 			if (counter == 0) {
-				gfx.drawString("GO!", GameController.windowWidth/2-60, 400);
+				gfx.drawString("GO!", GameController.width/2-60, 400);
 			} else {
-				gfx.drawString(counter.toString(), GameController.windowWidth/2-20, 400);
+				gfx.drawString(counter.toString(), GameController.width/2-20, 400);
 			}
 		} else {
 			if (counter == 0) {
-				gfx.drawString("GO!", 300, 400);
+				gfx.drawString("GO!", GameController.width/2-60, 400);
 			} else {
-				gfx.drawString(counter.toString(), 340, 400);
+				gfx.drawString(counter.toString(), GameController.width/2-20, 400);
 			}
 		}
 	}
@@ -122,9 +122,8 @@ public class Game extends JComponent implements ActionListener {
 	private void setupMultiplayerMode() {
 		setupSingleplayerMode();
 		
-		GameController.windowWidth = 1456;
 		GameController.width = GameController.defWidth;
-		window.setSize(GameController.defWidth, GameController.windowHeight);
+		window.setSize(GameController.defWidth, GameController.height);
 		window.setLocationRelativeTo(null);
 		
 		
@@ -140,10 +139,10 @@ public class Game extends JComponent implements ActionListener {
 	
 	@Override
 	protected void paintComponent(Graphics g) {
-//		super.paintComponent(g);
+		super.paintComponent(g);
 		gfx = g;
 		if(singleplayerGameStarted) {
-			gfx.drawImage(background, 0, 0, GameController.width, GameController.windowHeight, null);
+			gfx.drawImage(background, 0, 0, 952, GameController.height, null);
 			gfx.drawImage(background2,0, 0, GameController.width, 50,null);
 			gfx.setColor(Color.lightGray);
 			gfx.setFont(new Font("Times", Font.BOLD, 17));
@@ -153,16 +152,16 @@ public class Game extends JComponent implements ActionListener {
 			if (GameController.width < GameController.defWidth) {
 				setupMultiplayerMode();
 			}
-			gfx.drawImage(background, 0, 0, (GameController.width - 16) / 2, GameController.windowHeight, null);
+			gfx.drawImage(background, 0, 0, 952, GameController.height, null);
 			gfx.drawImage(background2,0, 0, (GameController.width - 16) / 2, 50,null);
 			gfx.setColor(Color.lightGray);
 			gfx.setFont(new Font("Times", Font.BOLD, 17));
 			gfx.drawString("Punktzahl: "+ player2.getScore(), 0, 20);
 			gfx.drawString("Spieler 2: \n"+ player2.getName(), ((GameController.width - 16) / 2)-220, 20);
 			
-			gfx.drawImage(splitter,(GameController.width - 16) / 2, 0, 16, GameController.windowHeight,null);
+			gfx.drawImage(splitter,(GameController.width - 16) / 2, 0, 16, GameController.height,null);
 			
-			gfx.drawImage(background, (GameController.width + 16) / 2, 0, (GameController.width - 16) / 2, GameController.windowHeight, null);
+			gfx.drawImage(background, (GameController.width + 16) / 2, 0, (GameController.width - 16) / 2, GameController.height, null);
 			gfx.drawImage(background2,(GameController.width + 16) / 2, 0, (GameController.width - 16) / 2, 50,null);
 			gfx.setColor(Color.lightGray);
 			gfx.setFont(new Font("Times", Font.BOLD, 17));

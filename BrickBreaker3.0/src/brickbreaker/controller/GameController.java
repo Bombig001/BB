@@ -16,8 +16,8 @@ public class GameController {
 	private Game game;
 	private static JFrame window;
 	private static Menu mainMenu;
-	public static int windowWidth = 675;
-	public static int windowHeight = 720;
+//	public static int windowWidth = 675;
+//	public static int windowHeight = 720;
 	public static int defWidth;
 	public static int width;
 	public static int height;
@@ -31,11 +31,13 @@ public class GameController {
 		window = new JFrame("Brick Breaker Ultimate");
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		defWidth = (int)screenSize.getWidth();
+		System.out.println(defWidth);
 		width = (int)(screenSize.getWidth() -16) / 2;
+		System.out.println(width);
 		height = 720;
 		game = new Game(window);
 		mainMenu = new Menu(game);
-		window.setSize(width, windowHeight);
+		window.setSize(width, height);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setResizable(false);
 		window.getContentPane().setBackground(Color.darkGray);
