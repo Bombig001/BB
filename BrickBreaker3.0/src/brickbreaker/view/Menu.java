@@ -38,7 +38,7 @@ public class Menu  implements ActionListener{
 	private Game game;
 	private JLabel bgLogo;
 	private JLabel bg;
-	private JLabel label = new JLabel("TOPOMEDICS �");
+	private JLabel label = new JLabel("TOPOMEDICS ©");
 	private JLabel label1 = new JLabel("<html>&nbsp;&nbsp;&nbsp;Creator:<br/>Savas&nbsp;Celik</html>");
 	private JLabel label2 = new JLabel("Version 4.7");
 	private static Sound menuSound = new Sound("/res/sounds/op.wav",-30.0f);
@@ -47,16 +47,16 @@ public class Menu  implements ActionListener{
 		this.game = game;
 		//jf.getConte
 		label.setForeground(new Color(0x83a5db));
-		label.setFont(new Font("Charlemagne Std", Font.BOLD, 12));
+		label.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
 		label.setBounds(10,666,200,20);
 		
 		
 		label1.setForeground(new Color(0x83a5db));
-		label1.setFont(new Font("Charlemagne Std", Font.BOLD, 12));
+		label1.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
 		label1.setBounds(620,620,90,100);
 		
 		label2.setForeground(new Color(0x83a5db));
-		label2.setFont(new Font("Charlemagne Std", Font.BOLD, 12));
+		label2.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
 		label2.setBounds(300,666,80,20);
 		
 		singleIcon = new ImageIcon(this.getClass().getResource("/res/images/buttons/onePerson.png"));
@@ -78,12 +78,16 @@ public class Menu  implements ActionListener{
 		computerBtn = new MenuButton("Spieler vs. PC", 210, 500, 300, 30, new Color(0x738ebc), computerIcon, this);
 		settingsBtn = new MenuButton("Einstellungen", 210, 550, 300, 30, new Color(0x738ebc), settingsIcon, this);
 		infoBtn = new MenuButton("Info", 210, 600, 300, 30, new Color(0x738ebc), infoIcon, this);
+		menuSound.loop();
 	}
 	
 	public void start() {
 		game.removeAll();
 		GameController.getWindow().setSize(720, 720);
 		GameController.getWindow().setLocationRelativeTo(null);
+		GameController.width = (GameController.defWidth - 16) / 2;
+		game.multiplayerGameStarted = false;
+		game.singleplayerGameStarted = false;
 		game.add(singleBtn);
 		game.add(multiBtn);
 		game.add(computerBtn);
@@ -94,7 +98,6 @@ public class Menu  implements ActionListener{
 		game.add(label2);
 		game.add(bgLogo);
 		game.add(bg);
-		menuSound.loop();
 	}
 
 	@Override
@@ -180,9 +183,16 @@ public class Menu  implements ActionListener{
 			if (selected == 0) {
 				game.player1.setName(player1Name.getText());
 				game.player2.setName(player2Name.getText());
+				game.player2.setPlayertyp(Players.PLAYER2);
+				game.level = 1;
+				game.player1.getCurrentLevel().setCurrentLevel(game.level);
+				game.player1.loadUpStage();
+				game.player2.getCurrentLevel().setCurrentLevel(game.level);
+				game.player2.loadUpStage();
 				game.multiplayerGameStarted = true;
 				game.removeAll();
 				GameController.getWindow().setSize(GameController.defWidth, 720);
+				GameController.getWindow().setLocationRelativeTo(null);
 			}
 //			JTextField spieler1 = new JTextField();
 //			JTextField spieler2 = new JTextField();

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
@@ -35,11 +36,13 @@ public class Game extends JComponent implements ActionListener {
 	public Player player2;
 	public int level = 1;
 	public Graphics gfx;
-	Image background;
-	Image background2;
-	Image splitter;
-	Image p1winns;
-	Image p2winns;
+	private Image background;
+	private Image background2;
+	private Image splitter;
+	private Image p1winns;
+	private Image p2winns;
+	private ImageIcon homeIcon;
+	private MenuButton mainMenuButton;
 	private boolean gameOver;
 	private JFrame window;
 	private Instant timeStart;
@@ -52,6 +55,9 @@ public class Game extends JComponent implements ActionListener {
 		this.window = window;
 //		window.addKeyListener((KeyListener) p1);
 //		window.addMouseMotionListener(this); 
+		homeIcon = new ImageIcon(this.getClass().getResource("/res/images/buttons/home.png"));
+//		mainMenuButton = new MenuButton("Main Menu", 390, 3, 170, 30, new Color(0x738ebc), homeIcon, this);
+		mainMenuButton = new MenuButton("Main Menu", GameController.width/2-85, 3, 170, 30, new Color(0x738ebc), homeIcon, this);
 		background  = new ImageIcon(this.getClass().getResource("/res/images/background/1.jpg")).getImage();
 		background2 = new ImageIcon(this.getClass().getResource("/res/images/background/3.jpg")).getImage();
 		splitter = new ImageIcon(this.getClass().getResource("/res/images/background/splitter.jpg")).getImage();
@@ -170,6 +176,7 @@ public class Game extends JComponent implements ActionListener {
 			
 		}
 		gameDraw();
+		this.add(mainMenuButton);
 	}
 	
 	private void gameDraw() {
@@ -205,7 +212,12 @@ public class Game extends JComponent implements ActionListener {
 	}
 	
 	@Override
-	public void actionPerformed(ActionEvent e) {		
+	public void actionPerformed(ActionEvent e) {
+		
+		if (e.getSource() == mainMenuButton) {
+			GameController.getMainMenu().start();
+		}
+		
 		if(!gameOver && (singleplayerGameStarted || multiplayerGameStarted)) {
 			
 			player1.updateEntities();

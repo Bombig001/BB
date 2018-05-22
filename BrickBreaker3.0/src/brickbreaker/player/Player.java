@@ -82,7 +82,6 @@ public class Player {
 		entities = currentLevel.getBrickList();
 		ball.setPos(300, 500);
 		((Ball) ball).setBallStoped(true);
-//		((Ball) ball).respawn();
 		entities.add(ball);
 		entities.add(paddle);
 	}

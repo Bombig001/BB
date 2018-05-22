@@ -223,7 +223,7 @@ public class Paddle extends Item {
 			if (strgy != null) {
 				if (!strgy.getRandomChance()) {
 					if (((Ball) ball).isBallStoped()) {
-						if (this.getPos().getPosX() <= GameController.defWidth/4 && this.getPos().getPosX() >= GameController.defWidth/5) {
+						if (this.getPos().getPosX() <= ((int)GameController.defWidth/4) && this.getPos().getPosX() >= ((int)GameController.defWidth/8)) {
 							((Ball) ball).setBallStoped(false);
 							((Ball) ball).setSpeed(((Ball) ball).getDefSpeed());
 							((Ball) ball).initVelocity();

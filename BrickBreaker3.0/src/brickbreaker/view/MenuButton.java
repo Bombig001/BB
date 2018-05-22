@@ -24,7 +24,7 @@ public class MenuButton extends JButton implements MouseListener{
 		this.setFocusable(false);
 		this.setText(text);
 		this.setIcon(img);
-		this.setFont(new Font("Charlemagne Std", Font.BOLD, 20));
+		this.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
 		this.setForeground(Color.black);
 		this.setBackground(bColor);
 		this.setBounds(x, y, w, h);
