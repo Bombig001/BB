@@ -34,13 +34,13 @@ public class Menu  implements ActionListener{
 	private MenuButton computerBtn;
 	private MenuButton howToPlayBtn;
 	private MenuButton settingsBtn;
-	private MenuButton infoBtn;
+	private MenuButton impressumBtn;
 	private ImageIcon singleIcon;
 	private ImageIcon multiIcon;
 	private ImageIcon computerIcon;
 	private ImageIcon howToPlayIcon;
 	private ImageIcon settingsIcon;
-	private ImageIcon infoIcon;
+	private ImageIcon impressumIcon;
 	private ImageIcon logoIcon;
 	private ImageIcon bgIcon;
 	private ImageIcon homeIcon;
@@ -76,7 +76,7 @@ public class Menu  implements ActionListener{
 		computerIcon = new ImageIcon(this.getClass().getResource("/res/images/buttons/computer.png"));
 		howToPlayIcon = new ImageIcon(this.getClass().getResource("/res/images/buttons/game.png"));
 		settingsIcon = new ImageIcon(this.getClass().getResource("/res/images/buttons/settings.png"));
-		infoIcon = new ImageIcon(this.getClass().getResource("/res/images/buttons/about1.png"));
+		impressumIcon = new ImageIcon(this.getClass().getResource("/res/images/buttons/about1.png"));
 		logoIcon = new ImageIcon(this.getClass().getResource("/res/images/background/logo.png"));
 		bgIcon = new ImageIcon(this.getClass().getResource("/res/images/background/bg1.jpg"));
 		bg = new JLabel(bgIcon);
@@ -90,7 +90,7 @@ public class Menu  implements ActionListener{
 		computerBtn = new MenuButton("Spieler vs. PC", 210, 450, 300, 30, new Color(0x738ebc), computerIcon, this);
 		howToPlayBtn = new MenuButton("Spielanleitung", 210, 500, 300, 30, new Color(0x738ebc), howToPlayIcon, this);
 		settingsBtn = new MenuButton("Einstellungen", 210, 550, 300, 30, new Color(0x738ebc), settingsIcon, this);
-		infoBtn = new MenuButton("Impressum", 210, 600, 300, 30, new Color(0x738ebc), infoIcon, this);
+		impressumBtn = new MenuButton("Impressum", 210, 600, 300, 30, new Color(0x738ebc), impressumIcon, this);
 		menuSound.loop();
 	}
 	
@@ -106,7 +106,7 @@ public class Menu  implements ActionListener{
 		game.add(computerBtn);
 		game.add(howToPlayBtn);
 		game.add(settingsBtn);
-		game.add(infoBtn);
+		game.add(impressumBtn);
 		game.add(topomedicsLabel);
 		game.add(creatorLabel);
 		game.add(versionLabel);
@@ -361,14 +361,20 @@ public class Menu  implements ActionListener{
 		}
 		
 
-		// Info button
-		if ( e.getSource() == infoBtn) {
+		// impressum button
+		if ( e.getSource() == impressumBtn) {
 			
-			JOptionPane.showMessageDialog(null, "<html>Creator: <i>Savas Celik</i><hr/>"
-					+ "Powered By: <i>TOPOMEDICS</i><hr/>"
-					+ "Ort: <i>WISS, Zürich</i><hr/>" 
-					+ "Version: "+ GameController.getGameVersion() + "<hr/>"
-					+"<img src=\"http://cultofthepartyparrot.com/parrots/hd/parrot.gif\"></html>", "Info", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "<html><h1>Impressum</h1><br/>"
+					+ "<h3>Kontakt:</h3>"
+					+ "Savas Celik<br/>"
+					+ "Ifangstrasse 58<br/>"
+					+ "8153, Rümlang<br/>"
+					+ "savas.celik000@gmail.com<br/><hr/>"
+					+ "<h3>Unterstützt von:</h3>"
+					+ "TOPOMEDICS<br/>"
+					+ "Markus Ruggiero<br/>"
+					+ "WISS, Zürich<br/><hr/><br/>" 
+					+ "Version: "+ GameController.getGameVersion(), "Impressum", JOptionPane.INFORMATION_MESSAGE);
 			
 		}
 		
