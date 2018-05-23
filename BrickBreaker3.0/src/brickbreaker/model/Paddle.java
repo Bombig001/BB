@@ -104,10 +104,10 @@ public class Paddle extends Item {
 	@Override
 	public void colission(Item i) {
 		int windowwidth;
-		if (GameController.width == GameController.defWidth) {
-			windowwidth = GameController.width/2;
+		if (GameController.getWidth().intValue() == GameController.getDefWidth().intValue()) {
+			windowwidth = GameController.getWidth().intValue()/2;
 		} else {
-			windowwidth = GameController.width;
+			windowwidth = GameController.getWidth().intValue();
 		}
 		
 		
@@ -121,18 +121,18 @@ public class Paddle extends Item {
 		int w_ = i.getPos().getWidth().intValue();
 		int h_ = i.getPos().getHeight().intValue();
 		
-		if (game.multiplayerGameStarted && playertyp == Players.PLAYER1) {
+		if (game.isMultiplayerGame() && playertyp == Players.PLAYER1) {
 		
-			if (x <= (GameController.width + 16) / 2) {
-				this.getPos().setPosX((GameController.width + 16) / 2);
+			if (x <= (GameController.getWidth().intValue() + 16) / 2) {
+				this.getPos().setPosX((GameController.getWidth().intValue() + 16) / 2);
 			}
 			
-			if (x+w+speed >= GameController.defWidth) {
-				this.getPos().setPosX(GameController.defWidth - w-speed);
+			if (x+w+speed >= GameController.getDefWidth().intValue()) {
+				this.getPos().setPosX(GameController.getDefWidth().intValue() - w-speed);
 			}
 			
 		}
-		if (playertyp == Players.PLAYER2 || playertyp == Players.COMPUTER || game.singleplayerGameStarted) {
+		if (playertyp == Players.PLAYER2 || playertyp == Players.COMPUTER || game.isSingleplayerGame()) {
 			if (x <= 0) {
 				this.getPos().setPosX(0);
 			}
@@ -247,7 +247,7 @@ public class Paddle extends Item {
 		} else if (playertyp == Players.COMPUTER) {
 			if (strgy.getRandomChance()) {
 				if (((Ball) ball).isBallStoped()) {
-					if (this.getPos().getPosX() <= ((int)GameController.defWidth/4) && this.getPos().getPosX() >= ((int)GameController.defWidth/10)) {
+					if (this.getPos().getPosX() <= ((int)GameController.getDefWidth().intValue()/4) && this.getPos().getPosX() >= ((int)GameController.getDefWidth().intValue()/10)) {
 						((Ball) ball).setBallStoped(false);
 						((Ball) ball).setSpeed(((Ball) ball).getDefSpeed());
 						((Ball) ball).initVelocity();

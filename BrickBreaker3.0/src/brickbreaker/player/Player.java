@@ -194,9 +194,9 @@ public class Player {
 	}
 
 	public Image getPlayerwinns() {
-		if (playertyp == Players.PLAYER1 && game.singleplayerGameStarted == true) {
+		if (playertyp == Players.PLAYER1 && game.isSingleplayerGame() == true) {
 			playerwinns = new ImageIcon(this.getClass().getResource("/res/images/abgeschlossen.png")).getImage();
-		} else if (playertyp == Players.PLAYER1 && game.multiplayerGameStarted == true){
+		} else if (playertyp == Players.PLAYER1 && game.isMultiplayerGame() == true){
 			playerwinns = new ImageIcon(this.getClass().getResource("/res/images/player1winns.png")).getImage();
 		}
 		return playerwinns;

@@ -56,7 +56,7 @@ public class Menu  implements ActionListener{
 	public Menu(Game game) {
 		this.game = game;
 		homeIcon = new ImageIcon(this.getClass().getResource("/res/images/buttons/home.png"));
-		mainMenuButton = new MenuButton("Main Menu", GameController.width/2-85, 3, 170, 30, Color.ORANGE, homeIcon, this);
+		mainMenuButton = new MenuButton("Main Menu", GameController.getWidth().intValue()/2-85, 3, 170, 30, Color.ORANGE, homeIcon, this);
 		
 		topomedicsLabel.setForeground(new Color(0x83a5db));
 		topomedicsLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
@@ -98,9 +98,9 @@ public class Menu  implements ActionListener{
 		game.removeAll();
 		GameController.getWindow().setSize(720, 720);
 		GameController.getWindow().setLocationRelativeTo(null);
-		GameController.width = (GameController.defWidth - 16) / 2;
-		game.multiplayerGameStarted = false;
-		game.singleplayerGameStarted = false;
+		GameController.setWidth((GameController.getDefWidth().intValue() - 16) / 2);
+		game.setMultiplayerGame(false);
+		game.setSingleplayerGame(false);
 		game.add(singleBtn);
 		game.add(multiBtn);
 		game.add(computerBtn);
@@ -144,13 +144,13 @@ public class Menu  implements ActionListener{
 			} while (selected == 0 && (player1Name.getText().isEmpty() || player1Name.getText().length() > 8));
 			
 			if(selected == 0) {
-				game.level = (int)levelChoise.getSelectedItem();
-				game.player1.getCurrentLevel().setCurrentLevel(game.level);
-				game.player1.loadUpStage();
-				game.player1.setName(player1Name.getText());
-				game.singleplayerGameStarted = true;
+				game.setLevel((int)levelChoise.getSelectedItem());
+				game.getPlayer1().getCurrentLevel().setCurrentLevel(game.getLevel());
+				game.getPlayer1().loadUpStage();
+				game.getPlayer1().setName(player1Name.getText());
+				game.setSingleplayerGame(true);
 				game.removeAll();
-				GameController.getWindow().setSize((GameController.defWidth - 16) / 2, 720);
+				GameController.getWindow().setSize((GameController.getDefWidth().intValue() - 16) / 2, 720);
 				game.add(mainMenuButton);
 				
 			}
@@ -200,17 +200,20 @@ public class Menu  implements ActionListener{
 
 			
 			if (selected == 0) {
-				game.player1.setName(player1Name.getText());
-				game.player2.setName(player2Name.getText());
-				game.player2.setPlayertyp(Players.PLAYER2);
-				game.level = 1;
-				game.player1.getCurrentLevel().setCurrentLevel(game.level);
-				game.player1.loadUpStage();
-				game.player2.getCurrentLevel().setCurrentLevel(game.level);
-				game.player2.loadUpStage();
-				game.multiplayerGameStarted = true;
+				game.setLevel(1);
+				game.getPlayer1().getCurrentLevel().setCurrentLevel(game.getLevel());
+				game.getPlayer1().loadUpStage();
+				game.getPlayer1().setName(player1Name.getText());
+				
+				game.getPlayer2().setPlayertyp(Players.PLAYER2);
+				game.getPlayer2().getCurrentLevel().setCurrentLevel(game.getLevel());
+				game.getPlayer2().loadUpStage();
+				game.getPlayer2().setName(player2Name.getText());
+				
+				game.setMultiplayerGame(true);
+				
 				game.removeAll();
-				GameController.getWindow().setSize(GameController.defWidth, 720);
+				GameController.getWindow().setSize(GameController.getDefWidth().intValue(), 720);
 				GameController.getWindow().setLocationRelativeTo(null);
 				game.add(mainMenuButton);
 			}
@@ -243,28 +246,31 @@ public class Menu  implements ActionListener{
 			} while (selected == 0 && (player1Name.getText().isEmpty() || player1Name.getText().length() > 8));
 			
 			if (selected == 0) {
-				game.player1.setName(player1Name.getText());
-				game.player2.setPlayertyp(Players.COMPUTER);
-				game.player2.setName("Computer");
-				game.level = 1;
-				game.player1.getCurrentLevel().setCurrentLevel(game.level);
-				game.player1.loadUpStage();
-				game.player2.getCurrentLevel().setCurrentLevel(game.level);
-				game.player2.loadUpStage();
+				game.setLevel(1);
+				game.getPlayer1().getCurrentLevel().setCurrentLevel(game.getLevel());
+				game.getPlayer1().loadUpStage();
+				game.getPlayer1().setName(player1Name.getText());
+				
+				game.getPlayer2().setPlayertyp(Players.COMPUTER);
+				game.getPlayer2().getCurrentLevel().setCurrentLevel(game.getLevel());
+				game.getPlayer2().loadUpStage();
+				game.getPlayer2().setName("Computer");
+				
+				game.setMultiplayerGame(true);
 				
 				if (choise.getSelectedItem().equals("Einfach")) {
-					game.player2.getStrgy().setChance(70);
+					game.getPlayer2().getStrgy().setChance(70);
 				} else if (choise.getSelectedItem().equals("Mittel")) {
-					game.player2.getStrgy().setChance(80);
+					game.getPlayer2().getStrgy().setChance(80);
 				} else if (choise.getSelectedItem().equals("Schwer")) {
-					game.player2.getStrgy().setChance(90);
+					game.getPlayer2().getStrgy().setChance(90);
 				} else if (choise.getSelectedItem().equals("Profi")) {
-					game.player2.getStrgy().setChance(100);
+					game.getPlayer2().getStrgy().setChance(100);
 				}
 				
-				game.multiplayerGameStarted = true;
+				game.setMultiplayerGame(true);
 				game.removeAll();
-				GameController.getWindow().setSize(GameController.defWidth, 720);
+				GameController.getWindow().setSize(GameController.getDefWidth().intValue(), 720);
 				game.add(mainMenuButton);
 			}
 		}

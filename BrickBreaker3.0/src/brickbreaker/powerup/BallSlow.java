@@ -9,7 +9,7 @@ import brickbreaker.model.Ball;
 import brickbreaker.model.Item;
 
 public class BallSlow extends PowerUp{
-private int speedValue;
+	private int speedValue;
 	
 	public BallSlow(Integer x, Integer y, Item itemToEffect) {
 		super(x, y, itemToEffect);

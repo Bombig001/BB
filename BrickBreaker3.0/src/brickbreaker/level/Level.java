@@ -136,7 +136,7 @@ public class Level {
 //	}
 	
 	private void initLevel(int[][] mulLvl) {
-		int space = (((GameController.defWidth-16) / 2) - 605) / 2;
+		int space = (((GameController.getDefWidth()-16) / 2) - 605) / 2;
 		
 		brickList = new ArrayList<Item>();
 		for (int y = 0; y < mulLvl.length; y++) {

@@ -127,10 +127,10 @@ public class Ball extends Item {
 	@Override
 	public void colission(Item i) {
 		int windowwidth;
-		if (GameController.width == GameController.defWidth) {
-			windowwidth = GameController.width/2;
+		if (GameController.getWidth().intValue() == GameController.getDefWidth().intValue()) {
+			windowwidth = GameController.getWidth().intValue()/2;
 		} else {
-			windowwidth = GameController.width;
+			windowwidth = GameController.getWidth().intValue();
 		}
 		
 		int x = this.getPos().getPosX().intValue();
@@ -138,13 +138,14 @@ public class Ball extends Item {
 		int w = this.getPos().getWidth().intValue();
 		int h = this.getPos().getHeight().intValue();
 		
-		if (game.multiplayerGameStarted && playertyp == Players.PLAYER1) {
-			if (x-speed <= (GameController.width + 16) / 2) {
+		
+		if (game.isMultiplayerGame() && playertyp == Players.PLAYER1) {
+			if (x-speed <= (GameController.getWidth().intValue() + 16) / 2) {
 				this.setVelX(speed);
 				ballSound.start();
 			}
 			
-			if (x+w+speed >= GameController.defWidth) {
+			if (x+w+speed >= GameController.getDefWidth().intValue()) {
 				this.setVelX(-speed);
 				ballSound.start();
 			}
@@ -154,24 +155,23 @@ public class Ball extends Item {
 				ballSound.start();
 			}
 			
-			if (y+h >= GameController.height) {
+			if (y+h >= GameController.getHeight().intValue()) {
 				if (timeStart == null) {
 					timeStart = Instant.now();
 					this.setSpeed(0);
 					this.initVelocity();
-					this.setPos((int)(GameController.width/1.4), GameController.height);
+					this.setPos((int)(GameController.getWidth().intValue()/1.4), GameController.getHeight().intValue());
 				}
 				respawn();
 			}	
 		}
 		
-		if (playertyp == Players.PLAYER2 || playertyp == Players.COMPUTER || game.singleplayerGameStarted) {
+		if (playertyp == Players.PLAYER2 || playertyp == Players.COMPUTER || game.isSingleplayerGame()) {
 			if (x-speed <= 0) {
 				this.setVelX(speed);
 				ballSound.start();
 			}
-			
-			if (x+w >= Math.min(windowwidth,GameController.defWidth)) {
+			if (x+w >= windowwidth) {
 				this.setVelX(-speed);
 				ballSound.start();
 			}
@@ -181,12 +181,12 @@ public class Ball extends Item {
 				ballSound.start();
 			}
 			
-			if (y+h >= GameController.height) {
+			if (y+h >= GameController.getHeight().intValue()) {
 				if (timeStart == null) {
 					timeStart = Instant.now();
 					setSpeed(0);
 					this.initVelocity();
-					this.setPos(GameController.width/5, GameController.height);
+					this.setPos(GameController.getWidth().intValue()/5, GameController.getHeight().intValue());
 				}
 				respawn();
 			}	

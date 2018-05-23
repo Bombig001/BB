@@ -55,7 +55,7 @@ public abstract class PowerUp extends Item {
 					e.printStackTrace();
 				}
 			}
-		} else if (y > GameController.height) {
+		} else if (y > GameController.getHeight().intValue()) {
 			if (this.isVisible()) {
 				this.setVisible(false);
 				this.setDead(true);

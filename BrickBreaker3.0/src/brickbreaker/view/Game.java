@@ -30,12 +30,12 @@ import brickbreaker.powerup.PaddleExtended;
 import brickbreaker.powerup.PowerUp;
 
 public class Game extends JComponent implements ActionListener {
-	public boolean singleplayerGameStarted = false;
-	public boolean multiplayerGameStarted = false;
-	public Player player1;
-	public Player player2;
-	public int level = 1;
-	public Graphics gfx;
+	private boolean singleplayerGame = false;
+	private boolean multiplayerGame = false;
+	private Player player1;
+	private Player player2;
+	private int level = 1;
+	private Graphics gfx;
 	private Image background;
 	private Image background2;
 	private Image splitter;
@@ -63,11 +63,11 @@ public class Game extends JComponent implements ActionListener {
 		timeStop = Instant.now();
 		timePastBetween = Duration.between(timeStart, timeStop);
 		
-		if (multiplayerGameStarted) {
+		if (multiplayerGame) {
 			if (player1.getScore() > player2.getScore()) {
-				gfx.drawImage(player1.getPlayerwinns(), (GameController.width-player1.getPlayerwinns().getWidth(null))/2, 200, null);
+				gfx.drawImage(player1.getPlayerwinns(), (GameController.getWidth().intValue()-player1.getPlayerwinns().getWidth(null))/2, 200, null);
 			} else if (player1.getScore() < player2.getScore()) {
-				gfx.drawImage(player2.getPlayerwinns(), (GameController.width-player2.getPlayerwinns().getWidth(null))/2, 200, null);
+				gfx.drawImage(player2.getPlayerwinns(), (GameController.getWidth().intValue()-player2.getPlayerwinns().getWidth(null))/2, 200, null);
 			}
 			
 			if (timePastBetween.getSeconds() >= 5) {
@@ -80,7 +80,7 @@ public class Game extends JComponent implements ActionListener {
 				
 			}
 		} else {
-			gfx.drawImage(player1.getPlayerwinns(), (GameController.width-player1.getPlayerwinns().getWidth(null))/2, 200, null);
+			gfx.drawImage(player1.getPlayerwinns(), (GameController.getWidth().intValue()-player1.getPlayerwinns().getWidth(null))/2, 200, null);
 			if (timePastBetween.getSeconds() >= 5) { 
 				player1.resetEffects();
 				setupSingleplayerMode();
@@ -97,17 +97,17 @@ public class Game extends JComponent implements ActionListener {
 		gfx.setColor(Color.RED);
 		gfx.setFont(new Font("Arial", Font.PLAIN, 75));
 		
-		if(multiplayerGameStarted) {
+		if(multiplayerGame) {
 			if (counter == 0) {
-				gfx.drawString("GO!", GameController.width/2-60, 400);
+				gfx.drawString("GO!", GameController.getWidth().intValue()/2-60, 400);
 			} else {
-				gfx.drawString(counter.toString(), GameController.width/2-20, 400);
+				gfx.drawString(counter.toString(), GameController.getWidth().intValue()/2-20, 400);
 			}
 		} else {
 			if (counter == 0) {
-				gfx.drawString("GO!", GameController.width/2-60, 400);
+				gfx.drawString("GO!", GameController.getWidth().intValue()/2-60, 400);
 			} else {
-				gfx.drawString(counter.toString(), GameController.width/2-20, 400);
+				gfx.drawString(counter.toString(), GameController.getWidth().intValue()/2-20, 400);
 			}
 		}
 	}
@@ -120,15 +120,15 @@ public class Game extends JComponent implements ActionListener {
 	private void setupMultiplayerMode() {
 		setupSingleplayerMode();
 		
-		GameController.width = GameController.defWidth;
-		window.setSize(GameController.defWidth, GameController.height);
+		GameController.setWidth(GameController.getDefWidth().intValue());
+		window.setSize(GameController.getDefWidth().intValue(), GameController.getHeight().intValue());
 		window.setLocationRelativeTo(null);
 		
 		
 		player2.getCurrentLevel().setCurrentLevel(Math.min(level, Level.getMaxLevel()));
 		player2.loadUpStage();
 		for(Item it : player1.getEntities()) {
-			it.getPos().setPosX(it.getPos().getPosX() + (GameController.width + 16) / 2);
+			it.getPos().setPosX(it.getPos().getPosX() + (GameController.getWidth().intValue() + 16) / 2);
 			if (it instanceof Ball) {
 				it.setVelX(-it.getVelX());
 			}
@@ -139,49 +139,49 @@ public class Game extends JComponent implements ActionListener {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		gfx = g;
-		if(singleplayerGameStarted) {
-			gfx.drawImage(background, 0, 0, 952, GameController.height, null);
-			gfx.drawImage(background2,0, 0, GameController.width, 50,null);
+		if(singleplayerGame) {
+			gfx.drawImage(background, 0, 0, 952, GameController.getHeight().intValue(), null);
+			gfx.drawImage(background2,0, 0, GameController.getWidth().intValue(), 50,null);
 			gfx.setColor(Color.lightGray);
 			gfx.setFont(new Font("Times", Font.BOLD, 17));
 			gfx.drawString("Punktzahl: "+ player1.getScore(), 0, 20);
 			gfx.setFont(new Font("Times", Font.BOLD, 15));
-			gfx.drawString("Spielername: \n"+ player1.getName(), GameController.width-220, 15);
-			gfx.drawString("Level: \n"+ level, GameController.width-220, 35);
-		} else if (multiplayerGameStarted) {
-			if (GameController.width < GameController.defWidth) {
+			gfx.drawString("Spielername: \n"+ player1.getName(), GameController.getWidth().intValue()-220, 15);
+			gfx.drawString("Level: \n"+ level, GameController.getWidth().intValue()-220, 35);
+		} else if (multiplayerGame) {
+			if (GameController.getWidth().intValue() < GameController.getDefWidth().intValue()) {
 				setupMultiplayerMode();
 			}
-			gfx.drawImage(background, 0, 0, 952, GameController.height, null);
-			gfx.drawImage(background2,0, 0, (GameController.width - 16) / 2, 50,null);
+			gfx.drawImage(background, 0, 0, 952, GameController.getHeight().intValue(), null);
+			gfx.drawImage(background2,0, 0, (GameController.getWidth().intValue() - 16) / 2, 50,null);
 			gfx.setColor(Color.lightGray);
 			gfx.setFont(new Font("Times", Font.BOLD, 17));
 			gfx.drawString("Punktzahl: "+ player2.getScore(), 0, 20);
 			gfx.setFont(new Font("Times", Font.BOLD, 15));
-			gfx.drawString("Spieler 2: \n"+ player2.getName(), ((GameController.width - 16) / 2)-220, 15);
-			gfx.drawString("Level: \n"+ level, (GameController.width - 16 ) / 2 - 220, 35);
+			gfx.drawString("Spieler 2: \n"+ player2.getName(), ((GameController.getWidth().intValue() - 16) / 2)-220, 15);
+			gfx.drawString("Level: \n"+ level, (GameController.getWidth().intValue() - 16 ) / 2 - 220, 35);
 			
-			gfx.drawImage(splitter,(GameController.width - 16) / 2, 0, 16, GameController.height,null);
+			gfx.drawImage(splitter,(GameController.getWidth().intValue() - 16) / 2, 0, 16, GameController.getHeight().intValue(),null);
 			
-			gfx.drawImage(background, (GameController.width + 16) / 2, 0, (GameController.width - 16) / 2, GameController.height, null);
-			gfx.drawImage(background2,(GameController.width + 16) / 2, 0, (GameController.width - 16) / 2, 50,null);
+			gfx.drawImage(background, (GameController.getWidth().intValue() + 16) / 2, 0, (GameController.getWidth().intValue() - 16) / 2, GameController.getHeight().intValue(), null);
+			gfx.drawImage(background2,(GameController.getWidth().intValue() + 16) / 2, 0, (GameController.getWidth().intValue() - 16) / 2, 50,null);
 			gfx.setColor(Color.lightGray);
 			gfx.setFont(new Font("Times", Font.BOLD, 17));
-			gfx.drawString("Punktzahl: "+ player1.getScore(), (GameController.width + 16) / 2, 20);
+			gfx.drawString("Punktzahl: "+ player1.getScore(), (GameController.getWidth().intValue() + 16) / 2, 20);
 			gfx.setFont(new Font("Times", Font.BOLD, 15));
-			gfx.drawString("Spieler 1: \n"+ player1.getName(), GameController.width - 220, 15);
-			gfx.drawString("Level: \n"+ level, GameController.width-220, 35);
+			gfx.drawString("Spieler 1: \n"+ player1.getName(), GameController.getWidth().intValue() - 220, 15);
+			gfx.drawString("Level: \n"+ level, GameController.getWidth().intValue()-220, 35);
 		}
 		gameDraw();
 	}
 	
 	private void gameDraw() {
 		
-		if (singleplayerGameStarted || multiplayerGameStarted) {
+		if (singleplayerGame || multiplayerGame) {
 			
 			player1.drawEntities(gfx);
 			
-			if (multiplayerGameStarted) {
+			if (multiplayerGame) {
 				player2.drawEntities(gfx);
 			}
 		}
@@ -197,10 +197,10 @@ public class Game extends JComponent implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(!gameOver && (singleplayerGameStarted || multiplayerGameStarted)) {
+		if(!gameOver && (singleplayerGame || multiplayerGame)) {
 			player1.updateEntities();
 			
-			if (multiplayerGameStarted) {
+			if (multiplayerGame) {
 				player2.updateEntities();
 			}
 			
@@ -237,5 +237,45 @@ public class Game extends JComponent implements ActionListener {
 				timeStart = null;
 			}
 		}
+	}
+
+	public boolean isSingleplayerGame() {
+		return singleplayerGame;
+	}
+
+	public void setSingleplayerGame(boolean singleplayerGame) {
+		this.singleplayerGame = singleplayerGame;
+	}
+
+	public boolean isMultiplayerGame() {
+		return multiplayerGame;
+	}
+
+	public void setMultiplayerGame(boolean multiplayerGame) {
+		this.multiplayerGame = multiplayerGame;
+	}
+
+	public Player getPlayer1() {
+		return player1;
+	}
+
+	public void setPlayer1(Player player1) {
+		this.player1 = player1;
+	}
+
+	public Player getPlayer2() {
+		return player2;
+	}
+
+	public void setPlayer2(Player player2) {
+		this.player2 = player2;
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
 	}
 }

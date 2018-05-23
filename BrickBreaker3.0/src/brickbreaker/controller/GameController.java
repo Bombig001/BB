@@ -14,19 +14,14 @@ import brickbreaker.view.Menu;
 
 public class GameController {
 	private static float gameVersion = 4.7f;
-	private Game game;
+	private static Game game;
 	private static JFrame window;
 	private static Menu mainMenu;
-	public static Integer defWidth;
-	public static Integer width;
-	public static Integer height;
+	private static Integer defWidth;
+	private static Integer width;
+	private static Integer height;
 	
 	public static void main(String[] args) {
-		GameController gc = new GameController();
-		gc.initGameController();
-	}
-	
-	private void initGameController() {
 		window = new JFrame("Brick Breaker v"+gameVersion);
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		defWidth = (int)screenSize.getWidth();
@@ -54,6 +49,26 @@ public class GameController {
 
 	public static Menu getMainMenu() {
 		return mainMenu;
+	}
+
+	public static Integer getDefWidth() {
+		return defWidth;
+	}
+
+	public static Integer getWidth() {
+		return width;
+	}
+
+	public static void setWidth(Integer width) {
+		GameController.width = width;
+	}
+
+	public static Integer getHeight() {
+		return height;
+	}
+
+	public static void setHeight(Integer height) {
+		GameController.height = height;
 	}
 
 }
