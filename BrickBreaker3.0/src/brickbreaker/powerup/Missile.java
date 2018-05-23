@@ -13,7 +13,7 @@ public class Missile extends Item {
 	private Image state0;
 
 	public Missile(Integer x, Integer y, Integer w, Integer h) {
-		super(x, y, w, h, 1);
+		super(x, y, w, h);
 		state0 = new ImageIcon(this.getClass().getResource("/res/images/powerups/missileshots.png")).getImage(); 
 		this.setVelY(7);
 		visible = true;

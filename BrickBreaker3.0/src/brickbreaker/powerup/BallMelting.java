@@ -12,7 +12,7 @@ public class BallMelting extends PowerUp{
 
 	public BallMelting(Integer x, Integer y, Item itemToEffect) {
 		super(x, y, itemToEffect);
-		this.setCoolDown(3);
+		this.setCoolDown(6);
 		Image img = new ImageIcon(this.getClass().getResource("/res/images/powerups/meltingball.png")).getImage();
 		this.setImg(img);
 		this.setEffect(new Callable<Boolean>() {

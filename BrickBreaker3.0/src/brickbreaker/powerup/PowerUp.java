@@ -22,7 +22,7 @@ public abstract class PowerUp extends Item {
 	private Duration timePastBetween;
 	
 	public PowerUp(Integer x, Integer y, Item itemToEffect) {
-		super(x, y, 50, 13, 1);
+		super(x, y, 50, 13);
 		this.setVelY(2);
 		visible = true;
 		collected = false;

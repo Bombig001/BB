@@ -1,6 +1,7 @@
 package brickbreaker.view;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,9 +11,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.JSlider;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import org.w3c.dom.Text;
 
 import brickbreaker.controller.GameController;
 import brickbreaker.model.Ball;
@@ -26,26 +32,32 @@ public class Menu  implements ActionListener{
 	private MenuButton singleBtn;
 	private MenuButton multiBtn;
 	private MenuButton computerBtn;
+	private MenuButton howToPlayBtn;
 	private MenuButton settingsBtn;
 	private MenuButton infoBtn;
 	private ImageIcon singleIcon;
 	private ImageIcon multiIcon;
 	private ImageIcon computerIcon;
+	private ImageIcon howToPlayIcon;
+	private ImageIcon settingsIcon;
 	private ImageIcon infoIcon;
 	private ImageIcon logoIcon;
-	private ImageIcon settingsIcon;
 	private ImageIcon bgIcon;
+	private ImageIcon homeIcon;
+	private MenuButton mainMenuButton;
 	private Game game;
 	private JLabel bgLogo;
 	private JLabel bg;
-	private JLabel label = new JLabel("TOPOMEDICS ©");
+	private JLabel label = new JLabel("TOPOMEDICS © Copyright 2018");
 	private JLabel label1 = new JLabel("<html>&nbsp;&nbsp;&nbsp;Creator:<br/>Savas&nbsp;Celik</html>");
 	private JLabel label2 = new JLabel("Version 4.7");
 	private static Sound menuSound = new Sound("/res/sounds/op.wav",-30.0f);
 	
 	public Menu(Game game) {
 		this.game = game;
-		//jf.getConte
+		homeIcon = new ImageIcon(this.getClass().getResource("/res/images/buttons/home.png"));
+		mainMenuButton = new MenuButton("Main Menu", GameController.width/2-85, 3, 170, 30, Color.ORANGE, homeIcon, this);
+		
 		label.setForeground(new Color(0x83a5db));
 		label.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
 		label.setBounds(10,666,200,20);
@@ -62,10 +74,10 @@ public class Menu  implements ActionListener{
 		singleIcon = new ImageIcon(this.getClass().getResource("/res/images/buttons/onePerson.png"));
 		multiIcon = new ImageIcon(this.getClass().getResource("/res/images/buttons/twoPerson.png"));
 		computerIcon = new ImageIcon(this.getClass().getResource("/res/images/buttons/computer.png"));
+		howToPlayIcon = new ImageIcon(this.getClass().getResource("/res/images/buttons/game.png"));
 		settingsIcon = new ImageIcon(this.getClass().getResource("/res/images/buttons/settings.png"));
 		infoIcon = new ImageIcon(this.getClass().getResource("/res/images/buttons/about1.png"));
 		logoIcon = new ImageIcon(this.getClass().getResource("/res/images/background/logo.png"));
-		//bgIcon = new ImageIcon("res/background/bg1.jpg");
 		bgIcon = new ImageIcon(this.getClass().getResource("/res/images/background/bg1.jpg"));
 		bg = new JLabel(bgIcon);
 		bg.setBounds(0, 0, 720, 720);
@@ -73,11 +85,12 @@ public class Menu  implements ActionListener{
 		bgLogo = new JLabel(logoIcon);
 		bgLogo.setBounds(0, 100, 720, 190);
 		
-		singleBtn = new MenuButton("Einzelspieler", 210, 400, 300, 30, new Color(0x738ebc), singleIcon, this);
-		multiBtn = new MenuButton("Spieler vs. Spieler", 210, 450, 300, 30, new Color(0x738ebc), multiIcon, this);
-		computerBtn = new MenuButton("Spieler vs. PC", 210, 500, 300, 30, new Color(0x738ebc), computerIcon, this);
+		singleBtn = new MenuButton("Einzelspieler", 210, 350, 300, 30, new Color(0x738ebc), singleIcon, this);
+		multiBtn = new MenuButton("Spieler vs. Spieler", 210, 400, 300, 30, new Color(0x738ebc), multiIcon, this);
+		computerBtn = new MenuButton("Spieler vs. PC", 210, 450, 300, 30, new Color(0x738ebc), computerIcon, this);
+		howToPlayBtn = new MenuButton("Spielanleitung", 210, 500, 300, 30, new Color(0x738ebc), howToPlayIcon, this);
 		settingsBtn = new MenuButton("Einstellungen", 210, 550, 300, 30, new Color(0x738ebc), settingsIcon, this);
-		infoBtn = new MenuButton("Info", 210, 600, 300, 30, new Color(0x738ebc), infoIcon, this);
+		infoBtn = new MenuButton("Impressum", 210, 600, 300, 30, new Color(0x738ebc), infoIcon, this);
 		menuSound.loop();
 	}
 	
@@ -91,6 +104,7 @@ public class Menu  implements ActionListener{
 		game.add(singleBtn);
 		game.add(multiBtn);
 		game.add(computerBtn);
+		game.add(howToPlayBtn);
 		game.add(settingsBtn);
 		game.add(infoBtn);
 		game.add(label);
@@ -113,14 +127,14 @@ public class Menu  implements ActionListener{
 			
 			do {
 				Object[] message = {"<html>Namen eingeben(*): <br/><i style=\"color:red;\"><sub>maximal 8 Zeichen</sub></i></html>", player1Name,player1Warning,
-						"<html>Level ausw�hlen: <br/></html>",levelChoise, "<html><i style=\"font-size:8.5px;\">Felder mit (*) sind Pflichtfelder!</sub></i></html>"};
+						"<html>Level auswählen: <br/></html>",levelChoise, "<html><i style=\"font-size:8.5px;\">Felder mit (*) sind Pflichtfelder!</sub></i></html>"};
 				selected = JOptionPane.showConfirmDialog(null, message, "Einzelspieler", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 				
 				if(player1Name.getText().isEmpty()) {
 					player1Warning = "<html><p style=\"color:red;font-size:8.5px;\">Bitte Namen eingeben!</p></html>";
 				}
 				
-				if (!player1Name.getText().isEmpty() && !player1Name.getText().matches("^[a-zA-Z�����������]+$")) {
+				if (!player1Name.getText().isEmpty() && !player1Name.getText().matches("^[a-zA-Züèöéäàç]+$")) {
 					player1Name.setText("");
 					player1Warning = "<html><p style=\"color:red;font-size:8.5px;\">Nur Buchstaben erlaubt!</p></html>";
 				} else if (!player1Name.getText().isEmpty()){
@@ -137,10 +151,15 @@ public class Menu  implements ActionListener{
 				game.singleplayerGameStarted = true;
 				game.removeAll();
 				GameController.getWindow().setSize((GameController.defWidth - 16) / 2, 720);
+				game.add(mainMenuButton);
 				
 			}
 		}
 		
+
+		if (e.getSource() == mainMenuButton) {
+			GameController.getMainMenu().start();
+		}
 		
 		// Multiplayer button
 		if ( e.getSource() == multiBtn) {
@@ -193,47 +212,12 @@ public class Menu  implements ActionListener{
 				game.removeAll();
 				GameController.getWindow().setSize(GameController.defWidth, 720);
 				GameController.getWindow().setLocationRelativeTo(null);
+				game.add(mainMenuButton);
 			}
-//			JTextField spieler1 = new JTextField();
-//			JTextField spieler2 = new JTextField();
-//			JOptionPane pane;
-//			do {
-//	                Object[] message = {"<html>Bitte Namen eingeben!<br/><i style=\"color:red\"><sub>maximal 8 Zeichen</sub></i></html>","Spieler 1:", spieler1, 
-//	        		"Spieler 2:", spieler2,};
-//
-//	                pane = new JOptionPane( message, 
-//	                                                JOptionPane.PLAIN_MESSAGE, 
-//	                                                JOptionPane.OK_CANCEL_OPTION);
-//	                pane.createDialog(null, "Spielernamen").setVisible(true);
-//	                if (pane.getValue() == null || pane.getValue().hashCode() == 2) {
-//	                	Game.spieler1 = "abbruch";
-//	                	Game.spieler2 = "abbruch";
-//	                }else {
-//	                	Game.spieler1 = spieler1.getText();
-//	                	Game.spieler2 = spieler2.getText();
-//	                }
-//	                
-//	                
-//			} while(Game.spieler1.equals("") || Game.spieler1.length() > 8);
-//			
-//			if(!Game.spieler1.equals("abbruch") && !Game.spieler2.equals("abbruch")) {
-//				Game.multiplayerGameStarted = true;
-//				jf.removeAll();
-//			}
 		}
 		
 		// computer button
 		if (e.getSource() == computerBtn) {
-//			Object[] options = {"Einfach", "Mittel", "Schwer", "God Like", "Abbrechen"};
-//          int selected = JOptionPane.showOptionDialog(null,
-//                                                      "Treffen Sie eine Auswahl",
-//                                                      "Schwierigkeistgrad",
-//						    JOptionPane.DEFAULT_OPTION, 
-//                                                      JOptionPane.INFORMATION_MESSAGE, 
-//						    computerIcon, options, options[0]);
-			
-			// oder
-			
 			String[] options = {"Einfach", "Mittel", "Schwer", "Profi"};
 			int selected;
 			JTextField player1Name = new JTextField();
@@ -262,6 +246,11 @@ public class Menu  implements ActionListener{
 				game.player1.setName(player1Name.getText());
 				game.player2.setPlayertyp(Players.COMPUTER);
 				game.player2.setName("Computer");
+				game.level = 1;
+				game.player1.getCurrentLevel().setCurrentLevel(game.level);
+				game.player1.loadUpStage();
+				game.player2.getCurrentLevel().setCurrentLevel(game.level);
+				game.player2.loadUpStage();
 				
 				if (choise.getSelectedItem().equals("Einfach")) {
 					game.player2.setDifficultyLevel(67);
@@ -276,9 +265,60 @@ public class Menu  implements ActionListener{
 				game.multiplayerGameStarted = true;
 				game.removeAll();
 				GameController.getWindow().setSize(GameController.defWidth, 720);
+				game.add(mainMenuButton);
 			}
 		}
 		
+		// Spielanleitung Button
+		if ( e.getSource() == howToPlayBtn) {
+			ImageIcon paddleIcon = new ImageIcon(this.getClass().getResource("/res/images/paddle/paddle1state0.png"));
+			ImageIcon brickStandardIcon = new ImageIcon(this.getClass().getResource("/res/images/bricks/green1.png"));
+			ImageIcon brickMetalIcon = new ImageIcon(this.getClass().getResource("/res/images/bricks/grey2.png"));
+			ImageIcon ballIcon = new ImageIcon(this.getClass().getResource("/res/images/ball/ball0.png"));
+			ImageIcon gameIcon = new ImageIcon(this.getClass().getResource("/res/images/spielsteuerung/gameplay.png"));
+			ImageIcon rightKey = new ImageIcon(this.getClass().getResource("/res/images/spielsteuerung/rightKey.png"));
+			ImageIcon leftKey = new ImageIcon(this.getClass().getResource("/res/images/spielsteuerung/leftKey.png"));
+			ImageIcon enterKey = new ImageIcon(this.getClass().getResource("/res/images/spielsteuerung/enter2.png"));
+			ImageIcon dKey = new ImageIcon(this.getClass().getResource("/res/images/spielsteuerung/dKey.png"));
+			ImageIcon aKey = new ImageIcon(this.getClass().getResource("/res/images/spielsteuerung/aKey.png"));
+			ImageIcon spaceKey = new ImageIcon(this.getClass().getResource("/res/images/spielsteuerung/spaceKey.png"));
+			ImageIcon paddleExtendedIcon = new ImageIcon(this.getClass().getResource("/res/images/powerups/extendpaddle.png"));
+			ImageIcon paddleShortenedIcon = new ImageIcon(this.getClass().getResource("/res/images/powerups/shortpaddle.png"));
+			ImageIcon ballFastIcon = new ImageIcon(this.getClass().getResource("/res/images/powerups/fastball.png"));
+			ImageIcon ballSlowIcon = new ImageIcon(this.getClass().getResource("/res/images/powerups/slowball.png"));
+			ImageIcon ballMeltingIcon = new ImageIcon(this.getClass().getResource("/res/images/powerups/meltingball.png"));
+			ImageIcon paddleMissileIcon = new ImageIcon(this.getClass().getResource("/res/images/powerups/paddlemissle.png"));
+
+			Object[] message = {"<html><h2>Lass den Ball vom Blaken abprallen und <br/> zerbreche die Blöcke um das Level abzuschliessen</h2></html>",gameIcon,
+					"<html><h1>Spiel Items</h1></html>",
+					paddleIcon,"<html>Das ist der Balken, mit dem man den Ball mittels Abprallungen steuern kann<br/><br/></html>",
+					brickStandardIcon,"<html>Standard Block, wird bei der ersten Kollision mit dem Ball zerstört<br/><br/></html>",
+					brickMetalIcon,"<html>Metal Block, wird erst bei der dritten Kollision mit dem Ball zerstört<br/><br/></html>",
+					ballIcon,"<html>Das ist der Ball<br/><br/></html>",
+					"<html><h1>Spielsteuerung</h1></html>",
+					"<html><h3 style=\"color:green;\">Spieler 1</h3></html>",
+					rightKey,"<html>Bewegt den Balken nach rechts<br/><br/></html>",
+					leftKey,"<html>Bewegt den Balken nach links<br/><br/></html>",
+					enterKey,"<html>Setz den Ball in Bewegung<br/><br/></html>",
+					"<html><h3 style=\"color:green;\">Spieler 2</h3></html>",
+					dKey,"<html>Bewegt den Balken nach rechts<br/><br/></html>",
+					aKey,"<html>Bewegt den Balken nach links<br/><br/></html>",
+					spaceKey,"<html>Setz den Ball in Bewegung<br/><br/></html>",
+					"<html><h1>Power Ups</h1></html>",
+					paddleExtendedIcon,"<html>[ Power Up - Langer Balken ]<br/>Verlängert den Balken<br/><br/></html>",
+					paddleShortenedIcon,"<html>[ Power Up - Kurzer Balken ]<br/>Verkleinert den Balken<br/><br/></html>",
+					ballFastIcon,"<html>[ Power Up - Schneller Ball ]<br/>Erhöht die Geschwindigkeit des Balles<br/><br/></html>",
+					ballSlowIcon,"<html>[ Power Up - Langsamer Ball ]<br/>Verlangsamt die Geschwindigkeit des Balles<br/><br/></html>",
+					ballMeltingIcon,"<html>[ Power Up - Schmelzender Ball ]<br/>Der Ball durchbohrt alle Blöcke und prallt davon nicht ab<br/><br/></html>",
+					paddleMissileIcon,"<html>[ Power Up - Rakete ]<br/>Der Balken feuert Raketen ab<br/><br/></html>"};
+			
+			JList<Object> gameplayList = new JList<Object>(message);
+			gameplayList.setForeground(Color.black);
+			JScrollPane scrollPane = new JScrollPane(gameplayList);
+			scrollPane.setPreferredSize( new Dimension( 500, 500 ) );
+			JOptionPane.showMessageDialog(null, scrollPane, "Spielanleitung",  
+			                                       JOptionPane.PLAIN_MESSAGE);
+		}
 		
 		// Settings button
 		if (e.getSource() == settingsBtn) {
@@ -308,8 +348,8 @@ public class Menu  implements ActionListener{
 	        } else if (selected == 1) {
 	        	menuSound.setVolume(menuSound.getDefVolume());
 	        	Ball.getBallSound().setVolume(Ball.getBallSound().getDefVolume());
-	        	//Brick.getBrickToBallSound0().setVolume(Brick.getBrickToBallSound0().getDefVolume());
-	        	//Brick.getBrickToBallSound1().setVolume(Brick.getBrickToBallSound1().getDefVolume());
+	        	Brick.getBrickToBallSound0().setVolume(Brick.getBrickToBallSound0().getDefVolume());
+	        	Brick.getBrickToBallSound1().setVolume(Brick.getBrickToBallSound1().getDefVolume());
 	        	Paddle.getPaddleToBallSound().setVolume(Paddle.getPaddleToBallSound().getDefVolume());
 	        }
 		}
@@ -318,9 +358,9 @@ public class Menu  implements ActionListener{
 		// Info button
 		if ( e.getSource() == infoBtn) {
 			
-			JOptionPane.showMessageDialog(null, "<html>Creator: Savas Celik<hr/>"
-					+ "Powered By: TOPOMEDICS �<hr/>"
-					+ "Ort: WISS, Z�rich<hr/>" 
+			JOptionPane.showMessageDialog(null, "<html>Creator: <i>Savas Celik</i><hr/>"
+					+ "Powered By: <i>TOPOMEDICS</i><hr/>"
+					+ "Ort: <i>WISS, Zürich</i><hr/>" 
 					+ "Version: 4.7<hr/>"
 					+"<img src=\"http://cultofthepartyparrot.com/parrots/hd/parrot.gif\"></html>", "Info", JOptionPane.INFORMATION_MESSAGE);
 			

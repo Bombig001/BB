@@ -35,13 +35,11 @@ public class MenuButton extends JButton implements MouseListener{
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		this.setBounds(pos.getPosX()-20,pos.getPosY(),pos.getWidth()+40,30);
-		//Sound.startHover();
 		buttonSound.start();
 	}
 

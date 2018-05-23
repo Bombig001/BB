@@ -41,7 +41,7 @@ public class Paddle extends Item {
 	private boolean effectMissile;
 
 	public Paddle(String name, Integer x, Integer y, Integer w, Integer h, Players playertyp, Item ball, Game game) {
-		super(x, y, w, h, 3);
+		super(x, y, w, h);
 		this.game = game;
 		effectExtended = false;
 		score = 0;
@@ -160,6 +160,28 @@ public class Paddle extends Item {
 		int y = this.getPos().getPosY().intValue();
 		int w = this.getPos().getWidth().intValue();
 		int h = this.getPos().getHeight().intValue();
+		
+		if (effectMissile) {
+			if (playertyp == Players.PLAYER1) {
+				state0  = new ImageIcon(this.getClass().getResource("/res/images/paddle/paddle1MissileState0.png")).getImage();
+				state1  = new ImageIcon(this.getClass().getResource("/res/images/paddle/paddle1MissileState1.png")).getImage();
+				state2  = new ImageIcon(this.getClass().getResource("/res/images/paddle/paddle1MissileState2.png")).getImage();
+			} else {
+				state0  = new ImageIcon(this.getClass().getResource("/res/images/paddle/paddle2MissileState0.png")).getImage();
+				state1  = new ImageIcon(this.getClass().getResource("/res/images/paddle/paddle2MissileState1.png")).getImage();
+				state2  = new ImageIcon(this.getClass().getResource("/res/images/paddle/paddle2MissileState2.png")).getImage();
+			}
+		} else {
+			if (playertyp == Players.PLAYER1) {
+				state0  = new ImageIcon(this.getClass().getResource("/res/images/paddle/paddle1state0.png")).getImage();
+				state1  = new ImageIcon(this.getClass().getResource("/res/images/paddle/paddle1state1.png")).getImage();
+				state2  = new ImageIcon(this.getClass().getResource("/res/images/paddle/paddle1state2.png")).getImage();
+			} else {
+				state0  = new ImageIcon(this.getClass().getResource("/res/images/paddle/paddle2state0.png")).getImage();
+				state1  = new ImageIcon(this.getClass().getResource("/res/images/paddle/paddle2state1.png")).getImage();
+				state2  = new ImageIcon(this.getClass().getResource("/res/images/paddle/paddle2state2.png")).getImage();
+			}
+		}
 		
 		if (stateCounter <= 10) {
 			img = state0;

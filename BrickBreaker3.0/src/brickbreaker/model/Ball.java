@@ -28,7 +28,7 @@ public class Ball extends Item {
 	private boolean effectSlow;
 
 	public Ball(Integer x, Integer y, Integer w, Integer h, int i, Players playertyp, Game game) {
-		super(x, y, w, h, 1);
+		super(x, y, w, h);
 		this.game = game;
 		defSpeed = 7;
 		speed = 7;

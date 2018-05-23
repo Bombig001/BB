@@ -22,20 +22,22 @@ import brickbreaker.powerup.PowerUp;
 import brickbreaker.view.Game;
 
 public class Player {
+	private Game game;
 	private String name;
 	private int difficultyLevel;
-	Players playertyp;
+	private Players playertyp;
 	private Level currentLevel;
 	private ArrayList<Item> entities;
 	private ArrayList<PowerUp> powerups;
 	private Item ball;
 	private Item paddle;
 	private int score;
-	Image playerwinns;
+	private Image playerwinns;
 	private Random rand;
 	private int randomInt;
 	
 	public Player(Game game, Players playertyp) {
+		this.game = game;
 		this.playertyp = playertyp;
 		if (playertyp == Players.PLAYER1) {
 			playerwinns = new ImageIcon(this.getClass().getResource("/res/images/player1winns.png")).getImage();
@@ -175,6 +177,9 @@ public class Player {
 	}
 
 	public Image getPlayerwinns() {
+		if (playertyp == Players.PLAYER1 && game.singleplayerGameStarted == true) {
+			playerwinns = new ImageIcon(this.getClass().getResource("/res/images/abgeschlossen.png")).getImage();
+		}
 		return playerwinns;
 	}
 	

@@ -39,10 +39,6 @@ public class Game extends JComponent implements ActionListener {
 	private Image background;
 	private Image background2;
 	private Image splitter;
-	private Image p1winns;
-	private Image p2winns;
-	private ImageIcon homeIcon;
-	private MenuButton mainMenuButton;
 	private boolean gameOver;
 	private JFrame window;
 	private Instant timeStart;
@@ -55,14 +51,9 @@ public class Game extends JComponent implements ActionListener {
 		this.window = window;
 //		window.addKeyListener((KeyListener) p1);
 //		window.addMouseMotionListener(this); 
-		homeIcon = new ImageIcon(this.getClass().getResource("/res/images/buttons/home.png"));
-//		mainMenuButton = new MenuButton("Main Menu", 390, 3, 170, 30, new Color(0x738ebc), homeIcon, this);
-		mainMenuButton = new MenuButton("Main Menu", GameController.width/2-85, 3, 170, 30, new Color(0x738ebc), homeIcon, this);
 		background  = new ImageIcon(this.getClass().getResource("/res/images/background/1.jpg")).getImage();
 		background2 = new ImageIcon(this.getClass().getResource("/res/images/background/3.jpg")).getImage();
 		splitter = new ImageIcon(this.getClass().getResource("/res/images/background/splitter.jpg")).getImage();
-		p1winns = new ImageIcon(this.getClass().getResource("/res/images/player1winns.png")).getImage();
-		p2winns = new ImageIcon(this.getClass().getResource("/res/images/player2winns.png")).getImage();
 		player1 = new Player(this,Players.PLAYER1);
 		player2 = new Player(this,Players.PLAYER2);
 		setupSingleplayerMode();
@@ -102,7 +93,7 @@ public class Game extends JComponent implements ActionListener {
 			counter--;
 		}
 		
-		gfx.setColor(new Color(0x6E2C00));
+		gfx.setColor(Color.RED);
 		gfx.setFont(new Font("Arial", Font.PLAIN, 75));
 		
 		if(multiplayerGameStarted) {
@@ -153,7 +144,9 @@ public class Game extends JComponent implements ActionListener {
 			gfx.setColor(Color.lightGray);
 			gfx.setFont(new Font("Times", Font.BOLD, 17));
 			gfx.drawString("Punktzahl: "+ player1.getScore(), 0, 20);
-			gfx.drawString("Spielername: \n"+ player1.getName(), GameController.width-220, 20);
+			gfx.setFont(new Font("Times", Font.BOLD, 15));
+			gfx.drawString("Spielername: \n"+ player1.getName(), GameController.width-220, 15);
+			gfx.drawString("Level: \n"+ level, GameController.width-220, 35);
 		} else if (multiplayerGameStarted) {
 			if (GameController.width < GameController.defWidth) {
 				setupMultiplayerMode();
@@ -163,7 +156,9 @@ public class Game extends JComponent implements ActionListener {
 			gfx.setColor(Color.lightGray);
 			gfx.setFont(new Font("Times", Font.BOLD, 17));
 			gfx.drawString("Punktzahl: "+ player2.getScore(), 0, 20);
-			gfx.drawString("Spieler 2: \n"+ player2.getName(), ((GameController.width - 16) / 2)-220, 20);
+			gfx.setFont(new Font("Times", Font.BOLD, 15));
+			gfx.drawString("Spieler 2: \n"+ player2.getName(), ((GameController.width - 16) / 2)-220, 15);
+			gfx.drawString("Level: \n"+ level, (GameController.width - 16 ) / 2 - 220, 35);
 			
 			gfx.drawImage(splitter,(GameController.width - 16) / 2, 0, 16, GameController.height,null);
 			
@@ -172,11 +167,11 @@ public class Game extends JComponent implements ActionListener {
 			gfx.setColor(Color.lightGray);
 			gfx.setFont(new Font("Times", Font.BOLD, 17));
 			gfx.drawString("Punktzahl: "+ player1.getScore(), (GameController.width + 16) / 2, 20);
-			gfx.drawString("Spieler 1: \n"+ player1.getName(), GameController.width - 220, 20);
-			
+			gfx.setFont(new Font("Times", Font.BOLD, 15));
+			gfx.drawString("Spieler 1: \n"+ player1.getName(), GameController.width - 220, 15);
+			gfx.drawString("Level: \n"+ level, GameController.width-220, 35);
 		}
 		gameDraw();
-		this.add(mainMenuButton);
 	}
 	
 	private void gameDraw() {
@@ -213,13 +208,7 @@ public class Game extends JComponent implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
-		if (e.getSource() == mainMenuButton) {
-			GameController.getMainMenu().start();
-		}
-		
 		if(!gameOver && (singleplayerGameStarted || multiplayerGameStarted)) {
-			
 			player1.updateEntities();
 			
 			if (multiplayerGameStarted) {

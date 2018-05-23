@@ -10,6 +10,7 @@ import brickbreaker.sound.Sound;
 public class Brick extends Item {
 	
 	private boolean isSmashed;
+	private Integer health;
 	private Image state0;
 	private Image state1;
 	private Image state2;
@@ -17,7 +18,8 @@ public class Brick extends Item {
 	private static Sound brickToBallSound1 = new Sound("/res/sounds/bounceBrick1.wav",-10.0f);
 
 	public Brick(Integer x, Integer y, Integer w, Integer h, Integer color) {
-		super(x, y, w, h, 1);
+		super(x, y, w, h);
+		this.health = 1;
 		if ( color == 1 ) {
 			this.setHealth(3);
 			state0 = new ImageIcon(this.getClass().getResource("/res/images/bricks/grey0.png")).getImage();
@@ -38,6 +40,16 @@ public class Brick extends Item {
 		}
 	}
 	
+	private Integer getHealth() {
+		return health;
+	}
+
+
+
+	private void setHealth(Integer health) {
+		this.health = health;
+	}
+
 	public void dealDamage() {
 		if(this.getHealth() > 1) {
 			this.setHealth(this.getHealth().intValue() - 1);
