@@ -14,7 +14,6 @@ import brickbreaker.position.Position;
 import brickbreaker.sound.Sound;
 
 public class MenuButton extends JButton implements MouseListener{
-	private Color bColor;
 	private Position pos;
 	private static Sound buttonSound = new Sound("/res/sounds/hover.wav",-15.0f);
 	

@@ -14,7 +14,7 @@ private int speedValue;
 	public BallSlow(Integer x, Integer y, Item itemToEffect) {
 		super(x, y, itemToEffect);
 		speedValue = 5;
-		this.setCoolDown(3);
+		this.setEffectDuration(3);
 		Image img = new ImageIcon(this.getClass().getResource("/res/images/powerups/slowball.png")).getImage();
 		this.setImg(img);
 		this.setEffect(new Callable<Boolean>() {

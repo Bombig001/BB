@@ -24,13 +24,12 @@ import brickbreaker.view.Game;
 
 public class Paddle extends Item {
 	private Game game;
-	private Integer score;
 	private int stateCounter = 0;
 	private Image img;
 	private Image state0;
 	private Image state1;
 	private Image state2;
-	private TastaturEingabe taste;
+	private KeyboardInput taste;
 	private int speed;
 	private static Sound paddleToBallSound = new Sound("/res/sounds/bouncePaddle.wav",-10.0f);
 	private Players playertyp;
@@ -40,13 +39,13 @@ public class Paddle extends Item {
 	private boolean effectShortened;
 	private boolean effectMissile;
 
-	public Paddle(String name, Integer x, Integer y, Integer w, Integer h, Players playertyp, Item ball, Game game) {
+	public Paddle(Integer x, Integer y, Integer w, Integer h, Players playertyp, Item ball, Game game, Strategy strgy) {
 		super(x, y, w, h);
 		this.game = game;
+		this.strgy = strgy;
 		effectExtended = false;
-		score = 0;
 		speed = 9;
-		taste = new TastaturEingabe(game);
+		taste = new KeyboardInput(game);
 		if (playertyp == Players.PLAYER1) {
 		state0  = new ImageIcon(this.getClass().getResource("/res/images/paddle/paddle1state0.png")).getImage();
 		state1  = new ImageIcon(this.getClass().getResource("/res/images/paddle/paddle1state1.png")).getImage();
@@ -96,6 +95,10 @@ public class Paddle extends Item {
 
 	public void setPlayertyp(Players playertyp) {
 		this.playertyp = playertyp;
+	}
+	
+	public Strategy getStrgy() {
+		return strgy;
 	}
 
 	@Override
@@ -242,30 +245,26 @@ public class Paddle extends Item {
 				}
 			});
 		} else if (playertyp == Players.COMPUTER) {
-			if (strgy != null) {
-				if (!strgy.getRandomChance()) {
-					if (((Ball) ball).isBallStoped()) {
-						if (this.getPos().getPosX() <= ((int)GameController.defWidth/4) && this.getPos().getPosX() >= ((int)GameController.defWidth/8)) {
-							((Ball) ball).setBallStoped(false);
-							((Ball) ball).setSpeed(((Ball) ball).getDefSpeed());
-							((Ball) ball).initVelocity();
-						} else if (this.getPos().getPosX() < 300){
-							this.setVelX(speed);
-						} else {
-							this.setVelX(-speed);
-						}
-					} else if (!((Ball) ball).isBallStoped() && ((Ball) ball).getSpeed() != 0) {
-						if (ball.getPos().getPosX() > (this.getPos().getPosX() + this.getPos().getHeight().intValue())) {
-							this.setVelX(speed);
-						} else {
-							this.setVelX(-speed);
-						}
+			if (strgy.getRandomChance()) {
+				if (((Ball) ball).isBallStoped()) {
+					if (this.getPos().getPosX() <= ((int)GameController.defWidth/4) && this.getPos().getPosX() >= ((int)GameController.defWidth/10)) {
+						((Ball) ball).setBallStoped(false);
+						((Ball) ball).setSpeed(((Ball) ball).getDefSpeed());
+						((Ball) ball).initVelocity();
+					} else if (this.getPos().getPosX() < 300){
+						this.setVelX(speed);
+					} else {
+						this.setVelX(-speed);
 					}
-				} else {
-					this.setVelX(0);
+				} else if (!((Ball) ball).isBallStoped() && ((Ball) ball).getSpeed() != 0) {
+					if (ball.getPos().getPosX() > (this.getPos().getPosX() + this.getPos().getHeight().intValue())) {
+						this.setVelX(speed);
+					} else {
+						this.setVelX(-speed);
+					}
 				}
 			} else {
-				strgy = new Strategy(game.player2.getDifficultyLevel());
+				this.setVelX(0);
 			}
 		}
 		

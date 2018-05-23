@@ -9,18 +9,18 @@ import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 
-public class TastaturEingabe {
+public class KeyboardInput {
 	private InputMap inp;
-	private ActionMap ap;
+	private ActionMap am;
 	
-	public TastaturEingabe(JComponent comp) {
+	public KeyboardInput(JComponent comp) {
 		inp = comp.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-		ap = comp.getActionMap();
+		am = comp.getActionMap();
 	}
 	
 	public void tasteGedrückt(int KeyCode,String id, ActionListener lambda) {
 		inp.put(KeyStroke.getKeyStroke(KeyCode, 0, false), id);
-		ap.put(id, new AbstractAction() {
+		am.put(id, new AbstractAction() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -32,7 +32,7 @@ public class TastaturEingabe {
 	
 	public void tasteLosgelassen(int KeyCode,String id, ActionListener lambda) {
 		inp.put(KeyStroke.getKeyStroke(KeyCode, 0, true), id);
-		ap.put(id, new AbstractAction() {
+		am.put(id, new AbstractAction() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {

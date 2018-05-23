@@ -14,7 +14,7 @@ public abstract class PowerUp extends Item {
 	private boolean visible;
 	private boolean collected;
 	private boolean dead;
-	private int coolDown;
+	private int effectDuration;
 	private Item itemToEffect;
 	private Callable<Boolean> effect;
 	private Instant timeStart;
@@ -26,7 +26,7 @@ public abstract class PowerUp extends Item {
 		this.setVelY(2);
 		visible = true;
 		collected = false;
-		coolDown = 0;
+		effectDuration = 0;
 		this.itemToEffect = itemToEffect;
 	}
 	
@@ -95,12 +95,12 @@ public abstract class PowerUp extends Item {
 		}
 	}
 
-	public int getCoolDown() {
-		return coolDown;
+	public int getEffectDuration() {
+		return effectDuration;
 	}
 
-	public void setCoolDown(int coolDown) {
-		this.coolDown = coolDown;
+	public void setEffectDuration(int effectDuration) {
+		this.effectDuration = effectDuration;
 	}
 
 	public boolean isVisible() {
@@ -118,8 +118,6 @@ public abstract class PowerUp extends Item {
 	public void setCollected(boolean collected) {
 		this.collected = collected;
 	}
-	
-	
 	
 	public boolean isDead() {
 		return dead;
@@ -154,7 +152,7 @@ public abstract class PowerUp extends Item {
 	public boolean checkIfExpired() {
 		timeStop = Instant.now();
 		timePastBetween = Duration.between(timeStart, timeStop);
-		if (timePastBetween.getSeconds() >= coolDown) {
+		if (timePastBetween.getSeconds() >= effectDuration) {
 			return true;
 		} else {
 			return false;

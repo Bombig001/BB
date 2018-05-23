@@ -8,16 +8,17 @@ public class Strategy {
 	
 	public boolean getRandomChance() {
 		// 100 god like
-		// 80 sehr schwer
-		// 70 mittel-schwer
-		// 67 leicht
-		if (rnd.nextInt(100) >= chance) {
+		// 90 sehr schwer
+		// 80 mittel-schwer
+		// 70 leicht
+		if (rnd.nextInt(100) <= chance) {
 			return true;
 		}
 		return false;
 	}
-	
-	public Strategy(int chance) {
+
+	public void setChance(int chance) {
 		this.chance = chance;
 	}
+	
 }

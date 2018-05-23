@@ -138,11 +138,6 @@ public class Ball extends Item {
 		int w = this.getPos().getWidth().intValue();
 		int h = this.getPos().getHeight().intValue();
 		
-//		int x_ = i.getPos().getPosX().intValue();
-//		int y_ = i.getPos().getPosY().intValue();
-//		int w_ = i.getPos().getWidth().intValue();
-//		int h_ = i.getPos().getHeight().intValue();
-		
 		if (game.multiplayerGameStarted && playertyp == Players.PLAYER1) {
 			if (x-speed <= (GameController.width + 16) / 2) {
 				this.setVelX(speed);

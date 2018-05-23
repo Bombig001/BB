@@ -13,6 +13,7 @@ import brickbreaker.view.Game;
 import brickbreaker.view.Menu;
 
 public class GameController {
+	private static float gameVersion = 4.7f;
 	private Game game;
 	private static JFrame window;
 	private static Menu mainMenu;
@@ -26,7 +27,7 @@ public class GameController {
 	}
 	
 	private void initGameController() {
-		window = new JFrame("Brick Breaker Ultimate");
+		window = new JFrame("Brick Breaker v"+gameVersion);
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		defWidth = (int)screenSize.getWidth();
 		width = (int)(screenSize.getWidth() -16) / 2;
@@ -36,12 +37,15 @@ public class GameController {
 		window.setSize(width, height);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setResizable(false);
-		window.getContentPane().setBackground(Color.darkGray);
 		window.add(game);
 		mainMenu.start();
 		window.setVisible(true);
 		Timer t = new Timer(15,game);
 		t.start();
+	}
+
+	public static float getGameVersion() {
+		return gameVersion;
 	}
 
 	public static JFrame getWindow() {

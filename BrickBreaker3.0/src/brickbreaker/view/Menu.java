@@ -48,9 +48,9 @@ public class Menu  implements ActionListener{
 	private Game game;
 	private JLabel bgLogo;
 	private JLabel bg;
-	private JLabel label = new JLabel("TOPOMEDICS © Copyright 2018");
-	private JLabel label1 = new JLabel("<html>&nbsp;&nbsp;&nbsp;Creator:<br/>Savas&nbsp;Celik</html>");
-	private JLabel label2 = new JLabel("Version 4.7");
+	private JLabel topomedicsLabel = new JLabel("TOPOMEDICS © Copyright 2018");
+	private JLabel creatorLabel = new JLabel("<html>&nbsp;&nbsp;&nbsp;Creator:<br/>Savas&nbsp;Celik</html>");
+	private JLabel versionLabel = new JLabel("Version " + GameController.getGameVersion());
 	private static Sound menuSound = new Sound("/res/sounds/op.wav",-30.0f);
 	
 	public Menu(Game game) {
@@ -58,18 +58,18 @@ public class Menu  implements ActionListener{
 		homeIcon = new ImageIcon(this.getClass().getResource("/res/images/buttons/home.png"));
 		mainMenuButton = new MenuButton("Main Menu", GameController.width/2-85, 3, 170, 30, Color.ORANGE, homeIcon, this);
 		
-		label.setForeground(new Color(0x83a5db));
-		label.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
-		label.setBounds(10,666,200,20);
+		topomedicsLabel.setForeground(new Color(0x83a5db));
+		topomedicsLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
+		topomedicsLabel.setBounds(10,666,200,20);
 		
 		
-		label1.setForeground(new Color(0x83a5db));
-		label1.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
-		label1.setBounds(620,620,90,100);
+		creatorLabel.setForeground(new Color(0x83a5db));
+		creatorLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
+		creatorLabel.setBounds(640,620,90,100);
 		
-		label2.setForeground(new Color(0x83a5db));
-		label2.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
-		label2.setBounds(300,666,80,20);
+		versionLabel.setForeground(new Color(0x83a5db));
+		versionLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
+		versionLabel.setBounds(330,666,80,20);
 		
 		singleIcon = new ImageIcon(this.getClass().getResource("/res/images/buttons/onePerson.png"));
 		multiIcon = new ImageIcon(this.getClass().getResource("/res/images/buttons/twoPerson.png"));
@@ -107,9 +107,9 @@ public class Menu  implements ActionListener{
 		game.add(howToPlayBtn);
 		game.add(settingsBtn);
 		game.add(infoBtn);
-		game.add(label);
-		game.add(label1);
-		game.add(label2);
+		game.add(topomedicsLabel);
+		game.add(creatorLabel);
+		game.add(versionLabel);
 		game.add(bgLogo);
 		game.add(bg);
 	}
@@ -253,13 +253,13 @@ public class Menu  implements ActionListener{
 				game.player2.loadUpStage();
 				
 				if (choise.getSelectedItem().equals("Einfach")) {
-					game.player2.setDifficultyLevel(67);
+					game.player2.getStrgy().setChance(70);
 				} else if (choise.getSelectedItem().equals("Mittel")) {
-					game.player2.setDifficultyLevel(70);
+					game.player2.getStrgy().setChance(80);
 				} else if (choise.getSelectedItem().equals("Schwer")) {
-					game.player2.setDifficultyLevel(80);
+					game.player2.getStrgy().setChance(90);
 				} else if (choise.getSelectedItem().equals("Profi")) {
-					game.player2.setDifficultyLevel(100);
+					game.player2.getStrgy().setChance(100);
 				}
 				
 				game.multiplayerGameStarted = true;
@@ -294,7 +294,7 @@ public class Menu  implements ActionListener{
 					paddleIcon,"<html>Das ist der Balken, mit dem man den Ball mittels Abprallungen steuern kann<br/><br/></html>",
 					brickStandardIcon,"<html>Standard Block, wird bei der ersten Kollision mit dem Ball zerstört<br/><br/></html>",
 					brickMetalIcon,"<html>Metal Block, wird erst bei der dritten Kollision mit dem Ball zerstört<br/><br/></html>",
-					ballIcon,"<html>Das ist der Ball<br/><br/></html>",
+					ballIcon,"<html>Das ist der Ball, benutze sie um Blöcke zu zerstören<br/><br/></html>",
 					"<html><h1>Spielsteuerung</h1></html>",
 					"<html><h3 style=\"color:green;\">Spieler 1</h3></html>",
 					rightKey,"<html>Bewegt den Balken nach rechts<br/><br/></html>",
@@ -361,7 +361,7 @@ public class Menu  implements ActionListener{
 			JOptionPane.showMessageDialog(null, "<html>Creator: <i>Savas Celik</i><hr/>"
 					+ "Powered By: <i>TOPOMEDICS</i><hr/>"
 					+ "Ort: <i>WISS, Zürich</i><hr/>" 
-					+ "Version: 4.7<hr/>"
+					+ "Version: "+ GameController.getGameVersion() + "<hr/>"
 					+"<img src=\"http://cultofthepartyparrot.com/parrots/hd/parrot.gif\"></html>", "Info", JOptionPane.INFORMATION_MESSAGE);
 			
 		}

@@ -14,7 +14,7 @@ public class PaddleExtended extends PowerUp{
 	public PaddleExtended(Integer x, Integer y, Item itemToEffect) {
 		super(x, y, itemToEffect);
 		extendValue = 10;
-		this.setCoolDown(3);
+		this.setEffectDuration(3);
 		Image img = new ImageIcon(this.getClass().getResource("/res/images/powerups/extendpaddle.png")).getImage();
 		this.setImg(img);
 		this.setEffect(new Callable<Boolean>() {

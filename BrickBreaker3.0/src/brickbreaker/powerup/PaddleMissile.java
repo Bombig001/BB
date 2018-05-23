@@ -27,7 +27,7 @@ public class PaddleMissile extends PowerUp {
 		super(x, y, itemToEffect);
 		missileList = new ArrayList<Missile>();
 		this.player = player;
-		this.setCoolDown(10);
+		this.setEffectDuration(10);
 		Image img = new ImageIcon(this.getClass().getResource("/res/images/powerups/paddlemissle.png")).getImage();
 		this.setImg(img);
 		this.setEffect(new Callable<Boolean>() {
@@ -46,7 +46,7 @@ public class PaddleMissile extends PowerUp {
 					Item it = player.getEntities().get(i);
 					if (it instanceof Brick) {
 						m.colission(it);
-						if (((Brick) it).getIsSmashed()) {
+						if (((Brick) it).isSmashed()) {
 							player.getEntities().remove(i);
 							player.setScore(player.getScore()+10);
 							i--;
@@ -93,7 +93,7 @@ public class PaddleMissile extends PowerUp {
 	@Override
 	public void startEffect() {
 			((Paddle) this.getItemToEffect()).setEffectMissile(true);
-			if (this.getTimePastBetween().getSeconds() < this.getCoolDown()-1) {
+			if (this.getTimePastBetween().getSeconds() < this.getEffectDuration() - 1) {
 				if (this.getTimePastBetween().toMillis() >= shoots) {
 				shoots += millisBetweenShoots;
 				Missile myMissile = new Missile(getItemToEffect().getPos().getPosX(), getItemToEffect().getPos().getPosY()-20, 6, 13);

@@ -15,7 +15,7 @@ public class PaddleShortened extends PowerUp{
 	public PaddleShortened(Integer x, Integer y, Item itemToEffect) {
 		super(x, y, itemToEffect);
 		shortingValue = 10;
-		this.setCoolDown(3);
+		this.setEffectDuration(3);
 		Image img = new ImageIcon(this.getClass().getResource("/res/images/powerups/shortpaddle.png")).getImage();
 		this.setImg(img);
 		this.setEffect(new Callable<Boolean>() {

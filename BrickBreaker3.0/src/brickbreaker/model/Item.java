@@ -2,7 +2,7 @@ package brickbreaker.model;
 
 import brickbreaker.position.Position;
 
-public abstract class Item implements ItemHandler{
+public abstract class Item implements StandardHandler{
 	private Position pos;
 	private Integer velX;
 	private Integer velY;

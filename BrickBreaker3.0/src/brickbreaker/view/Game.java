@@ -67,7 +67,7 @@ public class Game extends JComponent implements ActionListener {
 			if (player1.getScore() > player2.getScore()) {
 				gfx.drawImage(player1.getPlayerwinns(), (GameController.width-player1.getPlayerwinns().getWidth(null))/2, 200, null);
 			} else if (player1.getScore() < player2.getScore()) {
-				gfx.drawImage(player2.getPlayerwinns(), (GameController.width-player1.getPlayerwinns().getWidth(null))/2, 200, null);
+				gfx.drawImage(player2.getPlayerwinns(), (GameController.width-player2.getPlayerwinns().getWidth(null))/2, 200, null);
 			}
 			
 			if (timePastBetween.getSeconds() >= 5) {
@@ -77,6 +77,7 @@ public class Game extends JComponent implements ActionListener {
 				gameOver = false;
 				watingTime = 0;
 				counter = 5;
+				
 			}
 		} else {
 			gfx.drawImage(player1.getPlayerwinns(), (GameController.width-player1.getPlayerwinns().getWidth(null))/2, 200, null);
@@ -178,22 +179,10 @@ public class Game extends JComponent implements ActionListener {
 		
 		if (singleplayerGameStarted || multiplayerGameStarted) {
 			
+			player1.drawEntities(gfx);
+			
 			if (multiplayerGameStarted) {
-				for(Item it : player2.getEntities()) {
-					it.draw(gfx);
-				}
-				
-				for (PowerUp pu : player2.getPowerups()) {
-					pu.draw(gfx);
-				}
-			}
-			
-			for(Item it : player1.getEntities()) {
-				it.draw(gfx);
-			}
-			
-			for (PowerUp pu : player1.getPowerups()) {
-				pu.draw(gfx);
+				player2.drawEntities(gfx);
 			}
 		}
 		
@@ -216,11 +205,8 @@ public class Game extends JComponent implements ActionListener {
 			}
 			
 			countBricksAndCheckWin();
-			repaint();
 		}
-		if (gameOver) {
-			repaint();
-		}
+		repaint();
 		
 	}
 	

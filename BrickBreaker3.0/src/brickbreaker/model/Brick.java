@@ -9,7 +9,7 @@ import brickbreaker.sound.Sound;
 
 public class Brick extends Item {
 	
-	private boolean isSmashed;
+	private boolean smashed;
 	private Integer health;
 	private Image state0;
 	private Image state1;
@@ -44,8 +44,6 @@ public class Brick extends Item {
 		return health;
 	}
 
-
-
 	private void setHealth(Integer health) {
 		this.health = health;
 	}
@@ -55,17 +53,17 @@ public class Brick extends Item {
 			this.setHealth(this.getHealth().intValue() - 1);
 		    brickToBallSound1.start();
 		} else {
-			this.isSmashed = true;
+			this.smashed = true;
 			brickToBallSound0.start();
 		}
 	}
 
-	public boolean getIsSmashed() {
-		return isSmashed;
+	public boolean isSmashed() {
+		return smashed;
 	}
 
-	public void setSmashed(boolean isSmashed) {
-		this.isSmashed = isSmashed;
+	public void setSmashed(boolean smashed) {
+		this.smashed = smashed;
 	}
 	
 	public static Sound getBrickToBallSound0() {
