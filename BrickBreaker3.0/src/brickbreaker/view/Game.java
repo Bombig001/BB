@@ -113,7 +113,7 @@ public class Game extends JComponent implements ActionListener {
 	}
 	
 	private void setupSingleplayerMode() {
-		player1.getCurrentLevel().setCurrentLevel(Math.min(level, Level.getMaxLevel()));
+		player1.getCurrentLevel().setCurrentLevel(Math.min(level, Level.getMaxLevel().intValue()));
 		player1.loadUpStage();
 	}
 	
@@ -125,7 +125,7 @@ public class Game extends JComponent implements ActionListener {
 		window.setLocationRelativeTo(null);
 		
 		
-		player2.getCurrentLevel().setCurrentLevel(Math.min(level, Level.getMaxLevel()));
+		player2.getCurrentLevel().setCurrentLevel(Math.min(level, Level.getMaxLevel().intValue()));
 		player2.loadUpStage();
 		for(Item it : player1.getEntities()) {
 			it.getPos().setPosX(it.getPos().getPosX() + (GameController.getWidth().intValue() + 16) / 2);

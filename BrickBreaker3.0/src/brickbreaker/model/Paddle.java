@@ -25,11 +25,8 @@ import brickbreaker.view.Game;
 public class Paddle extends Item {
 	private Game game;
 	private int stateCounter = 0;
-	private Image img;
-	private Image state0;
-	private Image state1;
-	private Image state2;
-	private KeyboardInput taste;
+	private Image img, state0, state1, state2;
+	private KeyboardInput kbd;
 	private int speed;
 	private static Sound paddleToBallSound = new Sound("/res/sounds/bouncePaddle.wav",-10.0f);
 	private Players playertyp;
@@ -45,7 +42,7 @@ public class Paddle extends Item {
 		this.strgy = strgy;
 		effectExtended = false;
 		speed = 9;
-		taste = new KeyboardInput(game);
+		kbd = new KeyboardInput(game);
 		if (playertyp == Players.PLAYER1) {
 		state0  = new ImageIcon(this.getClass().getResource("/res/images/paddle/paddle1state0.png")).getImage();
 		state1  = new ImageIcon(this.getClass().getResource("/res/images/paddle/paddle1state1.png")).getImage();
@@ -202,20 +199,20 @@ public class Paddle extends Item {
 	@Override
 	public void update() {
 		if (playertyp == Players.PLAYER1) {
-			taste.tasteGedrückt(KeyEvent.VK_LEFT,"player1Links", (evt) -> {
+			kbd.tasteGedrückt(KeyEvent.VK_LEFT,"player1Links", (evt) -> {
 				this.setVelX(-speed);
 			});
-			taste.tasteLosgelassen(KeyEvent.VK_LEFT,"player1LinksStop", (evt) -> {
+			kbd.tasteLosgelassen(KeyEvent.VK_LEFT,"player1LinksStop", (evt) -> {
 				this.setVelX(0);
 			});
 			
-			taste.tasteGedrückt(KeyEvent.VK_RIGHT,"player1Rechts", (evt) -> {
+			kbd.tasteGedrückt(KeyEvent.VK_RIGHT,"player1Rechts", (evt) -> {
 				this.setVelX(speed);
 			});
-			taste.tasteLosgelassen(KeyEvent.VK_RIGHT,"player1RechtsStop", (evt) -> {
+			kbd.tasteLosgelassen(KeyEvent.VK_RIGHT,"player1RechtsStop", (evt) -> {
 				this.setVelX(0);
 			});
-			taste.tasteLosgelassen(KeyEvent.VK_ENTER,"player1BallGainSpeed", (evt) -> {
+			kbd.tasteLosgelassen(KeyEvent.VK_ENTER,"player1BallGainSpeed", (evt) -> {
 				if (((Ball) ball).isBallStoped()) {
 					((Ball) ball).setBallStoped(false);
 					((Ball) ball).setSpeed(((Ball) ball).getDefSpeed());
@@ -223,21 +220,21 @@ public class Paddle extends Item {
 				}
 			});
 		} else if (playertyp == Players.PLAYER2) {
-			taste.tasteGedrückt(KeyEvent.VK_A,"player2Links", (evt) -> {
+			kbd.tasteGedrückt(KeyEvent.VK_A,"player2Links", (evt) -> {
 				this.setVelX(-speed);
 			});
-			taste.tasteLosgelassen(KeyEvent.VK_A,"player2LinksStop", (evt) -> {
+			kbd.tasteLosgelassen(KeyEvent.VK_A,"player2LinksStop", (evt) -> {
 				this.setVelX(0);
 			});
 			
-			taste.tasteGedrückt(KeyEvent.VK_D,"player2Rechts", (evt) -> {
+			kbd.tasteGedrückt(KeyEvent.VK_D,"player2Rechts", (evt) -> {
 				this.setVelX(speed);
 			});
-			taste.tasteLosgelassen(KeyEvent.VK_D,"player2RechtsStop", (evt) -> {
+			kbd.tasteLosgelassen(KeyEvent.VK_D,"player2RechtsStop", (evt) -> {
 				this.setVelX(0);
 			});
 			
-			taste.tasteLosgelassen(KeyEvent.VK_SPACE,"player2BallGainSpeed", (evt) -> {
+			kbd.tasteLosgelassen(KeyEvent.VK_SPACE,"player2BallGainSpeed", (evt) -> {
 				if (((Ball) ball).isBallStoped()) {
 					((Ball) ball).setBallStoped(false);
 					((Ball) ball).setSpeed(((Ball) ball).getDefSpeed());

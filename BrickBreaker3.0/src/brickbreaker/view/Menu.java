@@ -150,7 +150,7 @@ public class Menu  implements ActionListener{
 				game.getPlayer1().setName(player1Name.getText());
 				game.setSingleplayerGame(true);
 				game.removeAll();
-				GameController.getWindow().setSize((GameController.getDefWidth().intValue() - 16) / 2, 720);
+				GameController.getWindow().setSize((GameController.getDefWidth().intValue() - 16) / 2, GameController.getHeight());
 				game.add(mainMenuButton);
 				
 			}
@@ -158,7 +158,7 @@ public class Menu  implements ActionListener{
 		
 
 		if (e.getSource() == mainMenuButton) {
-			GameController.getMainMenu().start();
+			this.start();
 		}
 		
 		// Multiplayer button
@@ -213,7 +213,7 @@ public class Menu  implements ActionListener{
 				game.setMultiplayerGame(true);
 				
 				game.removeAll();
-				GameController.getWindow().setSize(GameController.getDefWidth().intValue(), 720);
+				GameController.getWindow().setSize(GameController.getDefWidth().intValue(), GameController.getHeight());
 				GameController.getWindow().setLocationRelativeTo(null);
 				game.add(mainMenuButton);
 			}
@@ -270,7 +270,7 @@ public class Menu  implements ActionListener{
 				
 				game.setMultiplayerGame(true);
 				game.removeAll();
-				GameController.getWindow().setSize(GameController.getDefWidth().intValue(), 720);
+				GameController.getWindow().setSize(GameController.getDefWidth().intValue(), GameController.getHeight());
 				game.add(mainMenuButton);
 			}
 		}
@@ -336,7 +336,7 @@ public class Menu  implements ActionListener{
 				JSlider SoundSlider = new JSlider();
 				soundSliders[i] = SoundSlider;
 				soundSliders[i].setMaximum(0);
-				soundSliders[i].setMinimum(-60);
+				soundSliders[i].setMinimum(-70);
 			}
 			soundSliders[0].setValue((int)menuSound.getVolume());
 			soundSliders[1].setValue((int)Ball.getBallSound().getVolume());
@@ -373,8 +373,9 @@ public class Menu  implements ActionListener{
 					+ "<h3>Unterstützt von:</h3>"
 					+ "TOPOMEDICS<br/>"
 					+ "Markus Ruggiero<br/>"
-					+ "WISS, Zürich<br/><hr/><br/>" 
-					+ "Version: "+ GameController.getGameVersion(), "Impressum", JOptionPane.INFORMATION_MESSAGE);
+					+ "WISS, Zürich<br/><hr/><br/>"
+					+ "Version: "+ GameController.getGameVersion()
+					+ "<br/>TOPOMEDICS © Copyright 2018" , "Impressum", JOptionPane.INFORMATION_MESSAGE);
 			
 		}
 		

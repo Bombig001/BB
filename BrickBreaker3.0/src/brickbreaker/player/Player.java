@@ -8,6 +8,7 @@ import java.util.Random;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 
+import brickbreaker.controller.GameController;
 import brickbreaker.level.Level;
 import brickbreaker.model.Ball;
 import brickbreaker.model.Brick;
@@ -55,8 +56,8 @@ public class Player {
 		currentLevel = new Level();
 		entities = new ArrayList<Item>();
 		powerups = new ArrayList<PowerUp>();
-		ball = new Ball(260, 100, 18, 18,0, playertyp, game);
-		paddle = new Paddle(300, 660, 97, 26, playertyp, ball, game,strgy);
+		ball = new Ball(260, 100, 18, 18, playertyp, game);
+		paddle = new Paddle(300, GameController.getHeight()-60, 97, 26, playertyp, ball, game,strgy);
 		score = 0;
 		rand = new Random();
 	}

@@ -7,10 +7,7 @@ public class Strategy {
 	private int chance;
 	
 	public boolean getRandomChance() {
-		// 100 god like
-		// 90 sehr schwer
-		// 80 mittel-schwer
-		// 70 leicht
+		
 		if (rnd.nextInt(100) <= chance) {
 			return true;
 		}
