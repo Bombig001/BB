@@ -140,7 +140,7 @@ public class Game extends JComponent implements ActionListener {
 		super.paintComponent(g);
 		gfx = g;
 		if(singleplayerGame) {
-			gfx.drawImage(background, 0, 0, 952, GameController.getHeight().intValue(), null);
+			gfx.drawImage(background, 0, 0, GameController.getWidth().intValue(), GameController.getHeight().intValue(), null);
 			gfx.drawImage(background2,0, 0, GameController.getWidth().intValue(), 50,null);
 			gfx.setColor(Color.lightGray);
 			gfx.setFont(new Font("Times", Font.BOLD, 17));

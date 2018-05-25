@@ -7,44 +7,15 @@ import javax.swing.ImageIcon;
 
 import brickbreaker.sound.Sound;
 
-/**
- * Diese Klasse dient dazu, ein Brickobjekt zu erstellen.
- * 
- * @author Savas Celik
- *
- */
 public class Brick extends Item {
 	
-	/**
-	 * Klassenvariablen, die den brickToBallSound haelt.
-	 */
 	private static Sound brickToBallSound0 = new Sound("/res/sounds/bounceBrick0.wav",-10.0f);
 	private static Sound brickToBallSound1 = new Sound("/res/sounds/bounceBrick1.wav",-10.0f);
-	
-	/**
-	 * Instanzvariable, die den Zustand für smashed haelt.
-	 */
 	private boolean smashed;
-	
-	/**
-	 * Instanzvariable, die den health haelt.
-	 */
 	private Integer health;
-	
-	/**
-	 * Instanzvariablen, die das Bild für die Bricks haelt.
-	 */
 	private Image state0, state1, state2;
 	
-	/**
-	 * Konstruktor
-	 * 
-	 * @param x - Ein Integer, welcher die x Position beschreibt.
-	 * @param y - Ein Integer, welcher die y Position beschreibt.
-	 * @param w	- Ein Integer, welcher die Breite beschreibt.
-	 * @param h	- Ein Integer, welcher die Hoehe beschreibt.
-	 * @param color - Ein Integer, welcher die Farbe beschreibt.
-	 */
+	
 	public Brick(Integer x, Integer y, Integer w, Integer h, Integer color) {
 		super(x, y, w, h);
 		this.health = 1;
@@ -68,25 +39,14 @@ public class Brick extends Item {
 		}
 	}
 	
-	/**
-	 * Liefert das aktuelle Leben des Bricks als Integer.
-	 * 
-	 * @return health als Integer.
-	 */
 	private Integer getHealth() {
 		return health;
 	}
 	
-	/**
-	 * @param health - Aendert den Lebenswert des Bricks.
-	 */
 	private void setHealth(Integer health) {
 		this.health = health;
 	}
 
-	/**
-	 * Fuegt dem Brick Schaden zu.
-	 */
 	public void dealDamage() {
 		if(this.getHealth() > 1) {
 			this.setHealth(this.getHealth().intValue() - 1);
@@ -97,38 +57,18 @@ public class Brick extends Item {
 		}
 	}
 	
-	/**
-	 * Liefert den Zustand von smashed als boolean.
-	 * 
-	 * @return smashed als boolean.
-	 */
 	public boolean isSmashed() {
 		return smashed;
 	}
 	
-	/**
-	 * Klassenmethode, Liefert den brickToBallSound0 als Sound.
-	 * 
-	 * @return brickToBallSound0 als Sound.
-	 */
 	public static Sound getBrickToBallSound0() {
 		return brickToBallSound0;
 	}
 	
-	/**
-	 * Klassenmethode, Liefert den brickToBallSound1 als Sound.
-	 * 
-	 * @return brickToBallSound1 als Sound.
-	 */
 	public static Sound getBrickToBallSound1() {
 		return brickToBallSound1;
 	}
 
-	/**
-	 * Die Methode draw von StandardHanler wird überschrieben und für den Brick angepasst.
-	 * 
-	 * @see StandardHandler
-	 */
 	@Override
 	public void draw(Graphics gfx) {
 		int x = this.getPos().getPosX().intValue();
@@ -147,11 +87,6 @@ public class Brick extends Item {
 		}
 	}
 	
-	/**
-	 * Die Methode colission von StandardHanler wird überschrieben und für den Brick angepasst.
-	 * 
-	 * @see StandardHandler
-	 */
 	@Override
 	public void colission(Item i) {
 		int x = this.getPos().getPosX().intValue();
@@ -181,11 +116,6 @@ public class Brick extends Item {
 			 }
 	}
 	
-	/**
-	 * Die Methode colission von StandardHanler wird überschrieben.
-	 * 
-	 * @see StandardHandler
-	 */
 	@Override
 	public void update() {
 		

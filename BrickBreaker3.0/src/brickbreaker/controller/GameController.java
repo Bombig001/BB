@@ -9,48 +9,15 @@ import javax.swing.Timer;
 import brickbreaker.view.Game;
 import brickbreaker.view.Menu;
 
-/**
- * Controllerklasse, hier wird das Spielfenster erstellt .
- * @author Savas Celik
- *
- */
 public class GameController {
-	
-	/**
-	 * Die Konstante fuer die Spielversion.
-	 */
 	private static final float gameVersion = 4.7f;
-	
-	/**
-	 * Klassenvariable, Das Game Objekt ein JComponent
-	 * Alles wird hier darauf gezeichnet.
-	 */
 	private static Game game;
-	
-	/**
-	 * Klassenvariable. Das JFrame Objekt, um ein Fenster zu erzeugen.
-	 */
 	private static JFrame window;
-	
-	/**
-	 * Klassenvariable, fuer die Breite des Monitors. 
-	 */
 	private static Integer defWidth;
-	
-	/**
-	 * Klassenvariable, fuer die Breite des Spielfensters.
-	 */
 	private static Integer width;
-	
-	/**
-	 * Klassenvariable, fuer die Hoehe des Spielfensters.
-	 */
 	private static Integer height;
 	
-	/**
-	 * Die Main-Methode
-	 * @param args
-	 */
+	
 	public static void main(String[] args) {
 		Menu mainMenu; // Lokale Variable, fuer das Menue.
 		
@@ -71,56 +38,26 @@ public class GameController {
 		t.start();	// timer wird gestartet.
 	}
 	
-	/**
-	 * Klassenmethode, Liefert den wert der Spielversion als float.
-	 * 
-	 * @return gameVersion als float.
-	 */
 	public static float getGameVersion() {
 		return gameVersion;
 	}
 	
-	/**
-	 * Klassenmethode, Liefert das Fenster als JFrame.
-	 * 
-	 * @return window als JFrame.
-	 */
 	public static JFrame getWindow() {
 		return window;
 	}
 	
-	/**
-	 * Klassenmethode, Liefert die Standardbreite des Monitors als Integer.
-	 * 
-	 * @return defWidth als Integer.
-	 */
 	public static Integer getDefWidth() {
 		return defWidth;
 	}
 	
-	/**
-	 * Klassenmethode, Liefert die Breite des Spielfensters ( Hauptmenue wird nicht als Spielfenster angesehen) als Integer.
-	 * 
-	 * @return width als Integer.
-	 */
 	public static Integer getWidth() {
 		return width;
 	}
 	
-	/**
-	 * Klassenmethode
-	 * 
-	 * @param width - Ein Integer, welcher die Breite des Spielfensters verändert.
-	 */
 	public static void setWidth(Integer width) {
 		GameController.width = width;
 	}
 	
-	/**
-	 * Klassenmethode, Liefert die Hoehe des Spielfensters als Integer.
-	 * 
-	 * @return height als Integer.
-	 */
 	public static Integer getHeight() {
 		return height;
 	}

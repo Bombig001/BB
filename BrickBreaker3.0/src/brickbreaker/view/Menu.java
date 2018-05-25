@@ -150,7 +150,8 @@ public class Menu  implements ActionListener{
 				game.getPlayer1().setName(player1Name.getText());
 				game.setSingleplayerGame(true);
 				game.removeAll();
-				GameController.getWindow().setSize((GameController.getDefWidth().intValue() - 16) / 2, GameController.getHeight());
+				GameController.setWidth((GameController.getDefWidth().intValue() - 16) / 2);
+				GameController.getWindow().setSize(GameController.getWidth(), GameController.getHeight());
 				game.add(mainMenuButton);
 				
 			}
